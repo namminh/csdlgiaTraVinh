@@ -34,13 +34,12 @@ class KT_THEO_CHI_TIEU extends React.Component {
     super(props);
     this.state = {
       checkSelected: [],
-      lsDiaBan: [],
-      lsDinhKy: [],
-      lsChiTiet1: [],
-      lsChiTiet2: [],
-      'switch-1': true,
-      'switch-2': false,
-      isDinhKySelected: false,
+      lsDoanhNghiep: [],
+      lsLoaiGia: [],
+      lsNhomHHDV: [],
+      data_1: [],
+      lsHHDV: [],
+      lsHHDVDK: [],
       startDate: new Date(),
       endDate: new Date(),
       mode: 'date',
@@ -48,6 +47,88 @@ class KT_THEO_CHI_TIEU extends React.Component {
       isEndDatePickerVisible: false,
       isDataLoaded: false,
     };
+  }
+
+  fetDmDoanhNghiep() {
+    axios.get(`http://113.160.48.98:8790/mwebapi/getdmdoanhnghiep`).then((res) => {
+      const ls = JSON.parse(JSON.stringify(res.data.Result));
+      let arr = [];
+      // console.log(ls[1]);
+
+      ls.map((item) => {
+        arr.push(item.TEN_DOANH_NGHIEP);
+      });
+
+      //console.log(arr[1]);
+
+      this.setState({
+        lsDoanhNghiep: arr,
+      });
+      this.setState({
+        data_1: ls,
+      });
+      console.log(this.state.data_1);
+    });
+  }
+
+  fetDmLoaiGia() {
+    axios.get(`http://113.160.48.98:8790/mwebapi/GetDmLoaiGia`).then((res) => {
+      const ls = JSON.parse(JSON.stringify(res.data.Result));
+      let arr = [];
+      ls.map((item) => {
+        arr.push(item.TEN_LOAI_GIA);
+      });
+      this.setState({
+        lsLoaiGia: arr,
+      });
+    });
+  }
+
+  fetNhomHHDV() {
+    axios.get(`http://113.160.48.98:8790/mwebapi/GetDmNhomHangHoa`).then((res) => {
+      const ls = JSON.parse(JSON.stringify(res.data.Result));
+      let arr = [];
+      ls.map((item) => {
+        arr.push(item.TEN_NHOM_HANG_HOA);
+      });
+      this.setState({
+        lsNhomHHDV: arr,
+      });
+      console.log(ls);
+    });
+  }
+
+  fetHHDV() {
+    axios.get(`http://113.160.48.98:8790/mwebapi/GetDmHangHoaDichVu`).then((res) => {
+      const ls = JSON.parse(JSON.stringify(res.data.Result));
+      let arr = [];
+      ls.map((item) => {
+        arr.push(item.TEN_HANG_HOA_DICH_VU);
+      });
+      this.setState({
+        lsHHDV: arr,
+      });
+      console.log(ls);
+    });
+  }
+
+  fetHHDVDK() {
+    axios.get(`http://113.160.48.98:8790/mwebapi/GetDmHHDVDKGia`).then((res) => {
+      const ls = JSON.parse(JSON.stringify(res.data.Result));
+      let arr = [];
+      ls.map((item) => {
+        arr.push(item.TEN_SAN_PHAM);
+      });
+      this.setState({
+        lsHHDV: arr,
+      });
+      console.log(ls);
+    });
+  }
+
+  componentDidMount() {
+    this.fetDmDoanhNghiep();
+    this.fetDmLoaiGia();
   }
 
   toggleSwitch = (switchId) => this.setState({ [switchId]: !this.state[switchId] });
@@ -103,13 +184,24 @@ class KT_THEO_CHI_TIEU extends React.Component {
     return (
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.articles}>
         <Block flex>
-          <Card item={articles[0]} horizontal />
+          {this.state.data_1.map((item, index) => {
+            return (
+              <Card
+                key={index}
+                item={item}
+                full
+                titleStyle={styles.productTitle}
+                imageStyle={{ height: 300, width: '100%', resizeMode: 'contain' }}
+              />
+            );
+          })}
+          {/* <Card item={articles[0]} horizontal />
           <Block flex row>
             <Card item={articles[1]} style={{ marginRight: theme.SIZES.BASE }} />
             <Card item={articles[2]} />
           </Block>
           <Card item={articles[3]} horizontal />
-          <Card item={articles[4]} full />
+          <Card item={articles[4]} full /> */}
         </Block>
       </ScrollView>
     );
@@ -180,52 +272,170 @@ class KT_THEO_CHI_TIEU extends React.Component {
     //var headers = new Headers();
     //headers.append('X-CSCAPI-KEY', 'API_KEY');
 
-    var requestOptions = {
-      method: 'GET',
-      //headers: headers,
-      redirect: 'follow',
-    };
+    // var requestOptions = {
+    //   method: 'GET',
+    //   //headers: headers,
+    //   redirect: 'follow',
+    // };
 
-    fetch('http://113.160.48.98:8790/mwebapi/getdmdiaban', requestOptions)
-      .then((response) => response.json())
-      .then((result) => {
-        //console.log(JSON.stringify(result));
+    // fetch('http://113.160.48.98:8790/mwebapi/getdmdoanhnghiep', requestOptions)
+    //   .then((response) => response.json())
+    //   .then((result) => {
+    //     if (result) {
+    //       let ret = result.Result;
+    //       var count = Object.keys(ret).length;
+    //       let ls = [];
+    //       for (var i = 0; i < count; i++) {
+    //         ls.push(ret[i].TEN_DOANH_NGHIEP);
+    //       }
+    //       this.setState({
+    //         lsDoanhNghiep: ls,
+    //       });
+    //     }
+    //   })
+    //   .catch((error) => console.log('error', error));
 
-        //console.log(count);
-        if (result) {
-          let ret = result.Result;
-          var count = Object.keys(ret).length;
-          let countryArray = [];
-          for (var i = 0; i < count; i++) {
-            countryArray.push(ret[i].TEN_DIA_BAN);
-          }
-          this.setState({
-            lsDiaBan: countryArray,
-          });
-          // }
-          // this.setState({
-          //   lsDiaBan: countryArray,
-          // });
-        }
-      })
-      .catch((error) => console.log('error', error));
+    // fetch('http://113.160.48.98:8790/mwebapi/GetDmLoaiGia', requestOptions)
+    //   .then((response) => response.json())
+    //   .then((result) => {
+    //     if (result) {
+    //       let ret = result.Result;
+    //       var count = Object.keys(ret).length;
+    //       let ls = [];
+    //       for (var i = 0; i < count; i++) {
+    //         ls.push(ret[i].TEN_LOAI_GIA);
+    //       }
+    //       this.setState({
+    //         lsLoaiGia: ls,
+    //       });
+    //     }
+    //   })
+    //   .catch((error) => console.log('error', error));
 
-    var config = {
-      method: 'get',
-      url: 'http://10.0.2.2:25351/getdmdoanhnghiep',
-      // headers: {
-      //   'X-CSCAPI-KEY': 'API_KEY',
-      // },
-    };
+    // var config = {
+    //   method: 'get',
+    //   url: 'http://113.160.48.98:8790/mwebapi/getdmdoanhnghiep',
+    //   // headers: {
+    //   //   'X-CSCAPI-KEY': 'API_KEY',
+    //   // },
+    // };
 
-    axios(config)
-      .then(function (response) {
-        console.log(JSON.stringify(response.data));
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+    // axios(config)
+    //   .then((response) => {
+    //     if (response) {
+    //       var ls = JSON.parse(JSON.stringify(response.data.Result));
+    //       let arr = [];
+    //       ls.map((item) => {
+    //         arr.push(item.TEN_DOANH_NGHIEP);
+    //       });
+    //       this.setState({
+    //         lsDoanhNghiep: arr,
+    //       });
+    //     }
+    //   })
+    //   .catch(function (error) {
+    //     console.log(error);
+    //   });
 
+    // config = {
+    //   method: 'get',
+    //   url: 'http://113.160.48.98:8790/mwebapi/GetDmLoaiGia',
+    //   // headers: {
+    //   //   'X-CSCAPI-KEY': 'API_KEY',
+    //   // },
+    // };
+
+    // axios(config)
+    //   .then((response) => {
+    //     if (response) {
+    //       var ls = JSON.parse(JSON.stringify(response.data.Result));
+    //       let arr = [];
+    //       ls.map((item) => {
+    //         arr.push(item.TEN_LOAI_GIA);
+    //       });
+    //       this.setState({
+    //         lsLoaiGia: arr,
+    //       });
+    //     }
+    //   })
+    //   .catch(function (error) {
+    //     console.log(error);
+    //   });
+
+    // config = {
+    //   method: 'get',
+    //   url: 'http://113.160.48.98:8790/mwebapi/GetDmNhomHangHoa',
+    //   // headers: {
+    //   //   'X-CSCAPI-KEY': 'API_KEY',
+    //   // },
+    // };
+
+    // axios(config)
+    //   .then((response) => {
+    //     if (response) {
+    //       var ls = JSON.parse(JSON.stringify(response.data.Result));
+    //       let arr = [];
+    //       ls.map((item) => {
+    //         arr.push(item.TEN_NHOM_HANG_HOA);
+    //       });
+    //       this.setState({
+    //         lsNhomHHDV: arr,
+    //       });
+    //     }
+    //   })
+    //   .catch(function (error) {
+    //     console.log(error);
+    //   });
+
+    // config = {
+    //   method: 'get',
+    //   url: 'http://113.160.48.98:8790/mwebapi/GetDmHangHoaDichVu',
+    //   // headers: {
+    //   //   'X-CSCAPI-KEY': 'API_KEY',
+    //   // },
+    // };
+
+    // axios(config)
+    //   .then((response) => {
+    //     if (response) {
+    //       var ls = JSON.parse(JSON.stringify(response.data.Result));
+    //       let arr = [];
+    //       ls.map((item) => {
+    //         arr.push(item.TEN_HANG_HOA_DICH_VU);
+    //       });
+    //       this.setState({
+    //         lsHHDV: arr,
+    //       });
+    //     }
+    //   })
+    //   .catch(function (error) {
+    //     console.log(error);
+    //   });
+
+    // config = {
+    //   method: 'get',
+    //   url: 'http://113.160.48.98:8790/mwebapi/GetDmHHDVDKGia',
+    //   // headers: {
+    //   //   'X-CSCAPI-KEY': 'API_KEY',
+    //   // },
+    // };
+
+    // axios(config)
+    //   .then((response) => {
+    //     if (response) {
+    //       var ls = JSON.parse(JSON.stringify(response.data.Result));
+    //       let arr = [];
+    //       ls.map((item) => {
+    //         arr.push(item.TEN_SAN_PHAM);
+    //       });
+    //       this.setState({
+    //         lsHHDVDK: arr,
+    //       });
+    //     }
+    //   })
+    //   .catch(function (error) {
+    //     console.log(error);
+    //   });
     return (
       <Block flex style={styles.group}>
         <Block style={{ paddingHorizontal: theme.SIZES.BASE }}>
@@ -233,7 +443,7 @@ class KT_THEO_CHI_TIEU extends React.Component {
             Doanh Nghiệp
           </Text>
           <Block style={{ marginTop: 8 }}>
-            <Select defaultIndex={0} options={this.state.lsDiaBan} />
+            <Select defaultIndex={0} options={this.state.lsDoanhNghiep} />
           </Block>
         </Block>
         <Block row style={{ paddingHorizontal: theme.SIZES.BASE }}>
@@ -296,7 +506,7 @@ class KT_THEO_CHI_TIEU extends React.Component {
             Loại giá
           </Text>
           <Block style={{ flex: 1, marginTop: 8 }}>
-            <Select defaultIndex={0} options={['15 Ngày', '6 Tháng', 'Năm']} />
+            <Select defaultIndex={0} options={this.state.lsLoaiGia} />
           </Block>
         </Block>
         <Block style={{ paddingHorizontal: theme.SIZES.BASE }}>
@@ -304,7 +514,7 @@ class KT_THEO_CHI_TIEU extends React.Component {
             Nhóm Hàng hóa dịch vụ
           </Text>
           <Block style={{ flex: 1, marginTop: 8 }}>
-            <Select defaultIndex={0} options={['2022', '2021', '2020']} />
+            <Select defaultIndex={0} options={this.state.lsNhomHHDV} />
           </Block>
         </Block>
         <Block style={{ paddingHorizontal: theme.SIZES.BASE }}>
@@ -312,7 +522,7 @@ class KT_THEO_CHI_TIEU extends React.Component {
             Hàng hóa dịch vụ
           </Text>
           <Block style={{ flex: 1, marginTop: 8 }}>
-            <Select defaultIndex={0} options={['2022', '2021', '2020']} />
+            <Select defaultIndex={0} options={this.state.lsHHDV} />
           </Block>
         </Block>
         <Block style={{ paddingHorizontal: theme.SIZES.BASE }}>
@@ -320,7 +530,7 @@ class KT_THEO_CHI_TIEU extends React.Component {
             Hàng hóa dịch vụ đăng ký
           </Text>
           <Block style={{ flex: 1, marginTop: 8 }}>
-            <Select defaultIndex={0} options={['2022', '2021', '2020']} />
+            <Select defaultIndex={0} options={this.state.lsHHDVDK} />
           </Block>
         </Block>
         <Block style={{ paddingHorizontal: theme.SIZES.BASE, marginTop: 10 }}>
