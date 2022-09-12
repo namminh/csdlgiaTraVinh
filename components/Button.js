@@ -7,7 +7,8 @@ import nowTheme from '../constants/Theme';
 
 class ArButton extends React.Component {
   render() {
-    const { small, shadowless, children, color, style, fontSize, round, ...props } = this.props;
+    const { small, shadowless, children, color, style, fontSize, round, justifyContent, ...props } =
+      this.props;
 
     const colorStyle = color && nowTheme.COLORS[color.toUpperCase()];
 
@@ -18,14 +19,18 @@ class ArButton extends React.Component {
         : color && { backgroundColor: colorStyle },
       round && { borderRadius: nowTheme.SIZES.BASE * 2 },
       !shadowless && styles.shadow,
-      { ...style }
+      justifyContent,
+      { ...style },
     ];
 
     return (
       <Button
         style={buttonStyles}
         shadowless
-        textStyle={{ fontSize: fontSize || 12, fontWeight: '700' }}
+        textStyle={{
+          fontSize: fontSize || 12,
+          fontWeight: '700',
+        }}
         {...props}
       >
         {children}
@@ -47,16 +52,17 @@ ArButton.propTypes = {
       'success',
       'warning',
       'simple',
-      'neutral'
-    ])
-  ])
+      'neutral',
+      'border',
+    ]),
+  ]),
 };
 
 const styles = StyleSheet.create({
   smallButton: {
     width: 75,
-    height: 28
-  }
+    height: 28,
+  },
 });
 
 export default ArButton;

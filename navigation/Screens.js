@@ -19,6 +19,8 @@ import Register from '../screens/Register';
 import Login from '../screens/Login';
 import TRANG_CHU from '../screens/TRANG_CHU';
 import KT_THEO_BIEU_MAU from '../screens/KT_THEO_BIEU_MAU';
+import KT_THEO_CHI_TIEU from '../screens/KT_THEO_CHI_TIEU';
+import BaoCaoGiaThiTruong116 from '../screens/BaoCaoGiaThiTruong116';
 
 import SettingsScreen from '../screens/Settings';
 
@@ -47,6 +49,77 @@ function TRANG_CHUStack(props) {
             <Header title="Trang chủ" search options navigation={navigation} scene={scene} />
           ),
           cardStyle: { backgroundColor: '#FFFFFF' },
+        }}
+      />
+    </Stack.Navigator>
+  );
+}
+
+function BaoCaoGiaThiTruong116Stack(props) {
+  return (
+    <Stack.Navigator
+      initialRouteName="BaoCaoGiaThiTruong116"
+      screenOptions={{
+        mode: 'card',
+        headerShown: 'screen',
+      }}
+    >
+      <Stack.Screen
+        name="BaoCaoGiaThiTruong116"
+        component={BaoCaoGiaThiTruong116}
+        options={{
+          header: ({ navigation, scene }) => (
+            <Header title="Báo cáo giá thị trường TT116" navigation={navigation} scene={scene} />
+          ),
+          backgroundColor: '#FFFFFF',
+        }}
+      />
+      {/* <Stack.Screen name="Home" component={BottomNavigator} /> */}
+    </Stack.Navigator>
+  );
+}
+
+function KT_THEO_CHI_TIEUStack(props) {
+  return (
+    <Stack.Navigator
+      initialRouteName="KT_THEO_CHI_TIEU"
+      screenOptions={{
+        mode: 'card',
+        headerShown: 'screen',
+      }}
+    >
+      <Stack.Screen
+        name="KT_THEO_CHI_TIEU"
+        component={KT_THEO_CHI_TIEU}
+        options={{
+          header: ({ navigation, scene }) => (
+            <Header title="Khai thác dữ liệu theo chỉ tiêu" navigation={navigation} scene={scene} />
+          ),
+          backgroundColor: '#FFFFFF',
+        }}
+      />
+      {/* <Stack.Screen name="Home" component={BottomNavigator} /> */}
+    </Stack.Navigator>
+  );
+}
+
+function KT_THEO_BIEU_MAUStack(props) {
+  return (
+    <Stack.Navigator
+      initialRouteName="KT_THEO_BIEU_MAU"
+      screenOptions={{
+        mode: 'card',
+        headerShown: 'screen',
+      }}
+    >
+      <Stack.Screen
+        name="KT_THEO_BIEU_MAU"
+        component={KT_THEO_BIEU_MAU}
+        options={{
+          header: ({ navigation, scene }) => (
+            <Header title="Khai thác theo biểu mẫu" navigation={navigation} scene={scene} />
+          ),
+          backgroundColor: '#FFFFFF',
         }}
       />
     </Stack.Navigator>
@@ -92,28 +165,6 @@ function ArticlesStack(props) {
         options={{
           header: ({ navigation, scene }) => (
             <Header title="Articles" navigation={navigation} scene={scene} />
-          ),
-          backgroundColor: '#FFFFFF',
-        }}
-      />
-    </Stack.Navigator>
-  );
-}
-function KT_THEO_BIEU_MAUStack(props) {
-  return (
-    <Stack.Navigator
-      initialRouteName="KT_THEO_BIEU_MAU"
-      screenOptions={{
-        mode: 'card',
-        headerShown: 'screen',
-      }}
-    >
-      <Stack.Screen
-        name="KT_THEO_BIEU_MAU"
-        component={KT_THEO_BIEU_MAU}
-        options={{
-          header: ({ navigation, scene }) => (
-            <Header title="Khai thác theo biểu mẫu" navigation={navigation} scene={scene} />
           ),
           backgroundColor: '#FFFFFF',
         }}
@@ -250,6 +301,27 @@ function AppStack(props) {
         }}
       /> */}
       <Drawer.Screen
+        name="KT_THEO_BIEU_MAU"
+        component={KT_THEO_BIEU_MAUStack}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Drawer.Screen
+        name="KT_THEO_CHI_TIEU"
+        component={KT_THEO_CHI_TIEUStack}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Drawer.Screen
+        name="BaoCaoGiaThiTruong116"
+        component={BaoCaoGiaThiTruong116Stack}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Drawer.Screen
         name="Components"
         component={ComponentsStack}
         options={{
@@ -259,13 +331,6 @@ function AppStack(props) {
       <Drawer.Screen
         name="Articles"
         component={ArticlesStack}
-        options={{
-          headerShown: false,
-        }}
-      />
-      <Drawer.Screen
-        name="KT_THEO_BIEU_MAU"
-        component={KT_THEO_BIEU_MAUStack}
         options={{
           headerShown: false,
         }}

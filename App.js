@@ -29,7 +29,7 @@ const assetImages = [
 ];
 
 // cache product images
-articles.map((article) => assetImages.push(article.image));
+articles.map((item) => assetImages.push(item.image));
 
 function cacheImages(images) {
   return images.map((image) => {

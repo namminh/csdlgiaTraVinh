@@ -2,17 +2,19 @@ import React from 'react';
 import { StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 import ModalDropdown from 'react-native-modal-dropdown';
-import { Block, Text } from 'galio-framework';
+import { Block, Text, theme } from 'galio-framework';
 
 import Icon from './Icon';
 import { nowTheme } from '../constants';
 
-class DropDown extends React.Component {
+class Select extends React.Component {
   state = {
-    value: 1
+    value: '- Chọn -',
   };
 
   handleOnSelect = (index, value) => {
+    // console.log(index);
+    // console.log(value);
     const { onSelect } = this.props;
 
     this.setState({ value: value });
@@ -60,19 +62,20 @@ class DropDown extends React.Component {
   }
 }
 
-DropDown.propTypes = {
+Select.propTypes = {
   onSelect: PropTypes.func,
   iconName: PropTypes.string,
   iconFamily: PropTypes.string,
   iconSize: PropTypes.number,
   color: PropTypes.string,
-  textStyle: PropTypes.any
+  textStyle: PropTypes.any,
 };
 
 const styles = StyleSheet.create({
   qty: {
-    width: 100,
-    backgroundColor: nowTheme.COLORS.DEFAULT,
+    flex: 1,
+    //backgroundColor: nowTheme.COLORS.PRIMARY,
+    backgroundColor: nowTheme.COLORS.BORDER,
     paddingHorizontal: 16,
     paddingTop: 10,
     paddingBottom: 9.5,
@@ -80,17 +83,19 @@ const styles = StyleSheet.create({
     shadowColor: 'rgba(0, 0, 0, 0.1)',
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 4,
-    shadowOpacity: 1
+    shadowOpacity: 1,
+    borderColor: nowTheme.COLORS.BLACK,
   },
   text: {
-    color: nowTheme.COLORS.WHITE,
-    fontWeight: '600'
+    color: nowTheme.COLORS.BLACK,
+    fontWeight: '500',
   },
   dropdown: {
     marginTop: 8,
     marginLeft: -16,
-    width: 100
-  }
+    flex: 0.5,
+    width: '92%',
+  },
 });
 
-export default DropDown;
+export default Select;

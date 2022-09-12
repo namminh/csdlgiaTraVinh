@@ -80,7 +80,7 @@ class DrawerItem extends React.Component {
             color={focused ? nowTheme.COLORS.PRIMARY : 'white'}
           />
         );
-      case 'GIA_THI_TRUONG':
+      case 'BaoCaoGiaThiTruong116':
         return (
           <Icon
             name="spaceship2x"
