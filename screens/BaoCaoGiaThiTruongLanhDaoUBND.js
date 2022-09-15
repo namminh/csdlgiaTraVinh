@@ -256,7 +256,10 @@ class BaoCaoGiaThiTruongLanhDaoUBND extends React.Component {
     this.setState({ isDataLoaded: false });
     this.fetData();
     this.setState({ isDataLoaded: true });
-    //console.log(this.state.lsData.slice(0, 10));
+    var ret = this.state.lsData;
+    if (!ret || Object.keys(ret).length <= 0) {
+      this.showToast('Không tìm thấy dữ liệu phù hợp');
+    } //console.log(this.state.lsData.slice(0, 10));
   };
 
   componentDidMount() {

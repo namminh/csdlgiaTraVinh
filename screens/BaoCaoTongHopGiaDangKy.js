@@ -217,6 +217,10 @@ class BaoCaoTongHopGiaDangKy extends React.Component {
     this.setState({ isDataLoaded: false });
     this.fetData();
     this.setState({ isDataLoaded: true });
+    var ret = this.state.lsData;
+    if (!ret || Object.keys(ret).length <= 0) {
+      this.showToast('Không tìm thấy dữ liệu phù hợp');
+    }
     //console.log(this.state.lsData);
   };
   showToast = (message) => {
