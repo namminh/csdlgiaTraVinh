@@ -38,6 +38,8 @@ class BaoCaoGiaThiTruong116 extends React.Component {
       'switch-1': true,
       'switch-2': false,
       isDinhKySelected: false,
+      isSelectKyDuLieu: false,
+      kyDuLieuSel: 0,
     };
   }
 
@@ -160,7 +162,7 @@ class BaoCaoGiaThiTruong116 extends React.Component {
           </Text>
           <Block style={{ marginTop: 8 }}>
             {/* <Select defaultIndex={1} options={['Tỉnh Nam Định', 'Huyện Hải Hậu']} /> */}
-            <Select defaultIndex={0} options={this.state.lsDiaBan} />
+            <Select defaultIndex={0} options={this.state.lsDiaBan} id="selectQuanHuyen" />
           </Block>
         </Block>
         <Block style={{ paddingHorizontal: theme.SIZES.BASE }}>
@@ -192,7 +194,9 @@ class BaoCaoGiaThiTruong116 extends React.Component {
             Năm
           </Text>
           <Block style={{ flex: 1, marginTop: 8 }}>
-            <Select defaultIndex={0} options={['2022', '2021', '2020']} />
+            {this.state.isSelectKyDuLieu && (
+              <Select defaultIndex={0} options={['2022', '2021', '2020']} />
+            )}
           </Block>
         </Block>
         <Block style={{ paddingHorizontal: theme.SIZES.BASE, marginTop: 10 }}>

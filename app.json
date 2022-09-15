@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Now UI React Native",
-    "slug": "now-ui-react-native",
+    "name": "CSDL Gia dia phuong",
+    "slug": "csdl-gia-dia-phuong",
     "privacy": "public",
     "platforms": [
       "ios",
@@ -24,7 +24,7 @@
     "ios": {
       "supportsTablet": true
     },
-    "description": "Now UI React Native, based on Now UI Design System. Coded by Creative Tim",
+    "description": "CSDL GIA DIA PHUONG SOFTWARE. @HiPT",
     "android": {
       "package": "blah.com"
     }

@@ -8,7 +8,7 @@ import { TabButton, BIcons } from '../components';
 //import { View } from 'react-native';
 import TRANG_CHU from '../screens/TRANG_CHU';
 import KT_THEO_BIEU_MAU from '../screens/KT_THEO_BIEU_MAU';
-import KT_THEO_CHI_TIEU from '../screens/KT_THEO_CHI_TIEU';
+import BaoCaoTongHopGiaDangKy from '../screens/BaoCaoTongHopGiaDangKy';
 import Login from '../screens/Login';
 import Profile from '../screens/Profile';
 import TRANG_CHUStack from '../navigation/Screens';
@@ -21,7 +21,7 @@ const TabArr = [
     type: BIcons.Ionicons,
     activeIcon: 'home',
     inActiveIcon: 'home-outline',
-    component: KT_THEO_CHI_TIEU,
+    component: BaoCaoTongHopGiaDangKy,
   },
   {
     route: 'KT_THEO_BIEU_MAU',

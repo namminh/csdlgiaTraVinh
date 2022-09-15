@@ -7,9 +7,18 @@ import { Block, Text, theme } from 'galio-framework';
 import Icon from './Icon';
 import { nowTheme } from '../constants';
 
+const initialState = {
+  value: '- Chọn -',
+};
+
 class Select extends React.Component {
+  constructor(props) {
+    super(props);
+    this.dropdownRef = React.createRef();
+  }
   state = {
-    value: '- Chọn -',
+    index: -1,
+    value: this.props.defaultValue,
   };
 
   handleOnSelect = (index, value) => {
@@ -18,9 +27,19 @@ class Select extends React.Component {
     const { onSelect } = this.props;
 
     this.setState({ value: value });
+    this.setState({ index: index });
     onSelect && onSelect(index, value);
   };
 
+  clearState = () => {
+    this.setState({ index: initialState.index, value: initialState.value });
+  };
+  // componentDidMount() {
+  //   // const { value, options } = this.props;
+  //   // const selectedIdx = (options || []).findIndex((option) => option === value);
+  //   // this.dropdownRef.current.select(selectedIdx);
+  //   //console.log(this.props.options);
+  // }
   render() {
     const {
       onSelect,
@@ -34,17 +53,23 @@ class Select extends React.Component {
       ...props
     } = this.props;
 
+    //console.log(this.props);
+
     const modalStyles = [styles.qty, color && { backgroundColor: color }, style];
 
     const textStyles = [styles.text, textStyle];
 
+    //console.log(props.defaultValue);
     return (
       <ModalDropdown
         style={modalStyles}
         onSelect={this.handleOnSelect}
         dropdownStyle={styles.dropdown}
         dropdownTextStyle={{ paddingLeft: 16, fontSize: 12 }}
+        defaultValue={props.defaultValue}
         {...props}
+        data={this.state}
+        ref={this.dropdownRef}
       >
         <Block flex row middle space="between">
           <Text size={12} style={textStyles}>

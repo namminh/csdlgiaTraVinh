@@ -19,8 +19,10 @@ import Register from '../screens/Register';
 import Login from '../screens/Login';
 import TRANG_CHU from '../screens/TRANG_CHU';
 import KT_THEO_BIEU_MAU from '../screens/KT_THEO_BIEU_MAU';
-import KT_THEO_CHI_TIEU from '../screens/KT_THEO_CHI_TIEU';
+import BaoCaoTongHopGiaDangKy from '../screens/BaoCaoTongHopGiaDangKy';
+import BaoCaoTongHopGiaKeKhai from '../screens/BaoCaoTongHopGiaKeKhai';
 import BaoCaoGiaThiTruong116 from '../screens/BaoCaoGiaThiTruong116';
+import BaoCaoGiaThiTruongLanhDaoUBND from '../screens/BaoCaoGiaThiTruongLanhDaoUBND';
 
 import SettingsScreen from '../screens/Settings';
 
@@ -79,21 +81,72 @@ function BaoCaoGiaThiTruong116Stack(props) {
   );
 }
 
-function KT_THEO_CHI_TIEUStack(props) {
+function BaoCaoTongHopGiaDangKyStack(props) {
   return (
     <Stack.Navigator
-      initialRouteName="KT_THEO_CHI_TIEU"
+      initialRouteName="BaoCaoTongHopGiaDangKy"
       screenOptions={{
         mode: 'card',
         headerShown: 'screen',
       }}
     >
       <Stack.Screen
-        name="KT_THEO_CHI_TIEU"
-        component={KT_THEO_CHI_TIEU}
+        name="BaoCaoTongHopGiaDangKy"
+        component={BaoCaoTongHopGiaDangKy}
         options={{
           header: ({ navigation, scene }) => (
             <Header title="Khai thác dữ liệu theo chỉ tiêu" navigation={navigation} scene={scene} />
+          ),
+          backgroundColor: '#FFFFFF',
+        }}
+      />
+      {/* <Stack.Screen name="Home" component={BottomNavigator} /> */}
+    </Stack.Navigator>
+  );
+}
+function BaoCaoTongHopGiaKeKhaiStack(props) {
+  return (
+    <Stack.Navigator
+      initialRouteName="BaoCaoTongHopGiaKeKhai"
+      screenOptions={{
+        mode: 'card',
+        headerShown: 'screen',
+      }}
+    >
+      <Stack.Screen
+        name="BaoCaoTongHopGiaKeKhai"
+        component={BaoCaoTongHopGiaKeKhai}
+        options={{
+          header: ({ navigation, scene }) => (
+            <Header title="Báo cáo Tổng hợp giá kê khai" navigation={navigation} scene={scene} />
+          ),
+          backgroundColor: '#FFFFFF',
+        }}
+      />
+      {/* <Stack.Screen name="Home" component={BottomNavigator} /> */}
+    </Stack.Navigator>
+  );
+}
+
+function BaoCaoGiaThiTruongLanhDaoUBNDStack(props) {
+  return (
+    <Stack.Navigator
+      initialRouteName="BaoCaoGiaThiTruongLanhDaoUBND"
+      screenOptions={{
+        mode: 'card',
+        headerShown: 'screen',
+      }}
+    >
+      <Stack.Screen
+        name="BaoCaoGiaThiTruongLanhDaoUBND"
+        component={BaoCaoGiaThiTruongLanhDaoUBND}
+        options={{
+          header: ({ navigation, scene }) => (
+            <Header
+              title="Chức năng Báo cáo phục vụ lãnh đạo STC, UBND"
+              navigation={navigation}
+              scene={scene}
+            />
           ),
           backgroundColor: '#FFFFFF',
         }}
@@ -288,7 +341,8 @@ function AppStack(props) {
     >
       <Drawer.Screen
         name="TRANG_CHU"
-        component={BottomNavigator}
+        //component={TRANG_CHUStack}
+        component={BaoCaoGiaThiTruongLanhDaoUBNDStack}
         options={{
           headerShown: false,
         }}
@@ -308,8 +362,15 @@ function AppStack(props) {
         }}
       />
       <Drawer.Screen
-        name="KT_THEO_CHI_TIEU"
-        component={KT_THEO_CHI_TIEUStack}
+        name="BaoCaoTongHopGiaDangKy"
+        component={BaoCaoTongHopGiaDangKyStack}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Drawer.Screen
+        name="BaoCaoTongHopGiaKeKhai"
+        component={BaoCaoTongHopGiaKeKhaiStack}
         options={{
           headerShown: false,
         }}
@@ -317,6 +378,13 @@ function AppStack(props) {
       <Drawer.Screen
         name="BaoCaoGiaThiTruong116"
         component={BaoCaoGiaThiTruong116Stack}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Drawer.Screen
+        name="BaoCaoGiaThiTruongLanhDaoUBND"
+        component={BaoCaoGiaThiTruongLanhDaoUBNDStack}
         options={{
           headerShown: false,
         }}

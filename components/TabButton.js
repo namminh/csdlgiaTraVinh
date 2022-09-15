@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { COLORS } from '../constants';
-import { BIcon } from '../components';
+import { BIcon } from '.';
 
 //import * as Animatable from 'react-native-animatable';
 

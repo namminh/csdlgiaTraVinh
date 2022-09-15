@@ -2,6 +2,7 @@ import { Block, Text, theme } from 'galio-framework';
 import { Linking, StyleSheet, TouchableOpacity } from 'react-native';
 
 import Icon from './Icon';
+import { BIcon } from '.';
 import React from 'react';
 import nowTheme from '../constants/Theme';
 //import Login from '../screens/Login';
@@ -13,9 +14,9 @@ class DrawerItem extends React.Component {
     switch (name) {
       case 'TRANG_CHU':
         return (
-          <Icon
-            name="app2x"
-            family="NowExtra"
+          <BIcon
+            name="md-home-outline"
+            //family="NowExtra"
             size={18}
             color={focused ? nowTheme.COLORS.PRIMARY : 'white'}
             style={{ opacity: 0.5 }}
@@ -31,7 +32,7 @@ class DrawerItem extends React.Component {
             style={{ opacity: 0.5 }}
           />
         );
-      case 'KT_THEO_CHI_TIEU':
+      case 'BaoCaoTongHopGiaDangKy':
         return (
           <Icon
             name="paper"
@@ -41,11 +42,59 @@ class DrawerItem extends React.Component {
             style={{ opacity: 0.5 }}
           />
         );
-      case 'KT_GIA_VLXD':
+      case 'BaoCaoTongHopGiaKeKhai':
         return (
           <Icon
-            name="list-bullet2x"
+            name="briefcase-242x"
             family="NowExtra"
+            size={18}
+            color={focused ? nowTheme.COLORS.PRIMARY : 'white'}
+            style={{ opacity: 0.5 }}
+          />
+        );
+      case 'BaoCaoGiaThiTruong142':
+        return (
+          <BIcon
+            name="md-today-outline"
+            //family="NowExtra"
+            size={18}
+            color={focused ? nowTheme.COLORS.PRIMARY : 'white'}
+            style={{ opacity: 0.5 }}
+          />
+        );
+      case 'TraCuuGiaHHDVNhaNuocDinhGia':
+        return (
+          <BIcon
+            name="md-open-outline"
+            //family="NowExtra"
+            size={18}
+            color={focused ? nowTheme.COLORS.PRIMARY : 'white'}
+            style={{ opacity: 0.5 }}
+          />
+        );
+      case 'BaoCaoGiaThiThuongTongHop':
+        return (
+          <BIcon
+            name="md-file-tray-stacked-outline"
+            //family="NowExtra"
+            size={18}
+            color={focused ? nowTheme.COLORS.PRIMARY : 'white'}
+            style={{ opacity: 0.5 }}
+          />
+        );
+      case 'KhaiThacGiaVLXD':
+        return (
+          <BIcon
+            name="md-cog"
+            size={18}
+            color={focused ? nowTheme.COLORS.PRIMARY : 'white'}
+            style={{ opacity: 0.5 }}
+          />
+        );
+      case 'BaoCaoTongHopGiaTaiSanTDG':
+        return (
+          <BIcon
+            name="ios-receipt-outline"
             size={18}
             color={focused ? nowTheme.COLORS.PRIMARY : 'white'}
             style={{ opacity: 0.5 }}
@@ -90,7 +139,7 @@ class DrawerItem extends React.Component {
             color={focused ? nowTheme.COLORS.PRIMARY : 'white'}
           />
         );
-      case 'BC_LANH_DAO':
+      case 'BaoCaoGiaThiTruongLanhDaoUBND':
         return (
           <Icon
             name="mobile2x"
