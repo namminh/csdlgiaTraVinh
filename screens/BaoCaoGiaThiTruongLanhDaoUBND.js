@@ -117,11 +117,13 @@ class BaoCaoGiaThiTruongLanhDaoUBND extends React.Component {
 
   async fetData() {
     //let url = `http://113.160.48.98:8790/mwebapi/GetBaoCaoGiaThiTruongLanhDaoUBND?DIA_BAN_ID=10843&KY_DU_LIEU_ID=24&KY_DU_LIEU_CHI_TIET_1_ID=37&KY_DU_LIEU_CHI_TIET_2_ID=&NAM=2022`;
-    let url = `http://113.160.48.98:8790/mwebapi/GetBaoCaoGiaThiTruongLanhDaoUBND?DIA_BAN_ID=${DIA_BAN_ID}&KY_DU_LIEU_ID=${KY_DU_LIEU_ID}&KY_DU_LIEU_CHI_TIET_1_ID=${
-      KY_DU_LIEU_CHI_TIET_1_ID ? KY_DU_LIEU_CHI_TIET_1_ID : ''
-    }&KY_DU_LIEU_CHI_TIET_2_ID=${
-      KY_DU_LIEU_CHI_TIET_2_ID ? KY_DU_LIEU_CHI_TIET_2_ID : ''
-    }&NAM=${NAM}`;
+    let url = `http://113.160.48.98:8790/mwebapi/GetBaoCaoGiaThiTruongLanhDaoUBND?DIA_BAN_ID=${
+      this.state.selectedDiaBanId ?? ''
+    }&KY_DU_LIEU_ID=${this.state.selectedDinhKyId ?? ''}&KY_DU_LIEU_CHI_TIET_1_ID=${
+      this.state.selectedDinhKyChiTiet1Id ?? ''
+    }&KY_DU_LIEU_CHI_TIET_2_ID=${this.state.selectedDinhKyChiTiet2Id ?? ''}&NAM=${
+      this.state.selectedNam ?? ''
+    }`;
     console.log(url);
     axios.get(url).then((res) => {
       const ls = JSON.parse(JSON.stringify(res.data.Result));
