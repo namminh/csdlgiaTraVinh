@@ -24,6 +24,8 @@ import BaoCaoTongHopGiaKeKhai from '../screens/BaoCaoTongHopGiaKeKhai';
 import BaoCaoGiaThiTruong116 from '../screens/BaoCaoGiaThiTruong116';
 import BaoCaoGiaThiTruongLanhDaoUBND from '../screens/BaoCaoGiaThiTruongLanhDaoUBND';
 
+import BaoCaoGiaThiTruong142 from '../screens/BaoCaoGiaThiTruong142';
+
 import SettingsScreen from '../screens/Settings';
 
 import { createDrawerNavigator } from '@react-navigation/drawer';
@@ -72,6 +74,30 @@ function BaoCaoGiaThiTruong116Stack(props) {
         options={{
           header: ({ navigation, scene }) => (
             <Header title="Báo cáo giá thị trường TT116" navigation={navigation} scene={scene} />
+          ),
+          backgroundColor: '#FFFFFF',
+        }}
+      />
+      {/* <Stack.Screen name="Home" component={BottomNavigator} /> */}
+    </Stack.Navigator>
+  );
+}
+
+function BaoCaoGiaThiTruong142Stack(props) {
+  return (
+    <Stack.Navigator
+      initialRouteName="BaoCaoGiaThiTruong142"
+      screenOptions={{
+        mode: 'card',
+        headerShown: 'screen',
+      }}
+    >
+      <Stack.Screen
+        name="BaoCaoGiaThiTruong142"
+        component={BaoCaoGiaThiTruong142}
+        options={{
+          header: ({ navigation, scene }) => (
+            <Header title="Báo cáo giá thị trường TT142" navigation={navigation} scene={scene} />
           ),
           backgroundColor: '#FFFFFF',
         }}
@@ -342,7 +368,7 @@ function AppStack(props) {
       <Drawer.Screen
         name="TRANG_CHU"
         //component={TRANG_CHUStack}
-        component={BaoCaoGiaThiTruongLanhDaoUBNDStack}
+        component={TRANG_CHUStack}
         options={{
           headerShown: false,
         }}
@@ -378,6 +404,13 @@ function AppStack(props) {
       <Drawer.Screen
         name="BaoCaoGiaThiTruong116"
         component={BaoCaoGiaThiTruong116Stack}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Drawer.Screen
+        name="BaoCaoGiaThiTruong142"
+        component={BaoCaoGiaThiTruong142Stack}
         options={{
           headerShown: false,
         }}

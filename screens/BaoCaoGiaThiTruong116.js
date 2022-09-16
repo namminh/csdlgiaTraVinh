@@ -7,6 +7,7 @@ import {
   Image,
   Animated,
   ImageBackground,
+  ToastAndroid,
 } from 'react-native';
 
 import Articles from './Articles';
@@ -19,6 +20,7 @@ import { Button, Select, Icon, Input, Header, Switch } from '../components';
 
 import Img from '../components/Img';
 import { Card } from '../components';
+import { Card_116 } from '../components';
 
 import axios from 'axios';
 
@@ -29,94 +31,278 @@ const thumbMeasure = (width - 48 - 32) / 3;
 class BaoCaoGiaThiTruong116 extends React.Component {
   constructor(props) {
     super(props);
+    const year = new Date().getFullYear();
+    this.years = Array.from(new Array(20), (val, index) => year - index);
     this.state = {
       checkSelected: [],
       lsDiaBan: [],
-      lsDinhKy: [],
+      lsTenDiaBan: [],
+      selectedDiaBanId: null,
+      lsKyDuLieu: [],
+      lsTenKyDuLieu: [],
+      lsKyDuLieuChiTiet: [],
+      lsTenKyDuLieuChiTiet: [],
       lsChiTiet1: [],
+      lsTenChiTiet1: [],
       lsChiTiet2: [],
-      'switch-1': true,
-      'switch-2': false,
-      isDinhKySelected: false,
-      isSelectKyDuLieu: false,
+      lsTenChiTiet2: [],
+      lsNam: this.years,
+      isSelectedKyDuLieu: false,
+      isShowChiTiet1: false,
+      isShowChiTiet2: false,
       kyDuLieuSel: 0,
+      selectedDinhKyId: null,
+      selectedDinhKyChiTiet1Id: null,
+      selectedDinhKyChiTiet2Id: null,
+      selectedNam: null,
+      isDataLoaded: false,
+      lsData: [],
     };
   }
 
   toggleSwitch = (switchId) => this.setState({ [switchId]: !this.state[switchId] });
 
-  renderTableCell = () => {
-    const { navigation } = this.props;
-    return (
-      <Block flex style={styles.group}>
-        <Text size={16} style={styles.title}>
-          Table Cell
-        </Text>
-        <Block style={{ paddingHorizontal: theme.SIZES.BASE }}>
-          <Block style={styles.rows}>
-            <TouchableOpacity onPress={() => navigation.navigate('Pro')}>
-              <Block row middle space="between" style={{ paddingTop: 7 }}>
-                <Text
-                  style={{ fontFamily: 'montserrat-regular' }}
-                  size={14}
-                  color={nowTheme.COLORS.TEXT}
-                >
-                  Manage Options
-                </Text>
-                <Icon name="chevron-right" family="entypo" style={{ paddingRight: 5 }} />
-              </Block>
-            </TouchableOpacity>
-          </Block>
-        </Block>
-      </Block>
+  fetDmDiaBan() {
+    axios.get(`http://113.160.48.98:8790/mwebapi/getdmdiaban`).then((res) => {
+      const json = JSON.parse(JSON.stringify(res.data.Result));
+      this.setState({
+        lsDiaBan: json,
+      });
+      let arr = [];
+
+      json.map((item) => {
+        arr.push(item.TEN_DIA_BAN);
+      });
+
+      this.setState({
+        lsTenDiaBan: arr,
+      });
+    });
+  }
+
+  fetDmKyDuLieu() {
+    axios.get(`http://113.160.48.98:8790/mwebapi/GetDmKyDuLieu`).then((res) => {
+      const json = JSON.parse(JSON.stringify(res.data.Result));
+
+      this.setState({
+        lsKyDuLieu: json,
+      });
+      let arr = [];
+
+      json.map((item) => {
+        arr.push(item.TEN_DINH_KY);
+      });
+
+      this.setState({
+        lsTenKyDuLieu: arr,
+      });
+    });
+  }
+  fetDmKyDuLieuChiTiet() {
+    axios.get(`http://113.160.48.98:8790/mwebapi/GetDmKyDuLieuChiTiet`).then((res) => {
+      const json = JSON.parse(JSON.stringify(res.data.Result));
+      this.setState({
+        lsKyDuLieuChiTiet: json,
+      });
+      let arr = [];
+
+      json.map((item) => {
+        arr.push(item.TEN_DINH_KY_CHI_TIET);
+      });
+
+      this.setState({
+        lsTenKyDuLieuChiTiet: arr,
+      });
+    });
+  }
+
+  async fetData() {
+   
+    // let url = `http://113.160.48.98:8790/mwebapi/LayBaoCaoGiaThiTruong116`;
+    let url = `http://113.160.48.98:8790/mwebapi/GetBaoCaoGiaThiTruong116?DIA_BAN_ID=${this.state.selectedDiaBanId}&KY_DU_LIEU_ID=${this.state.selectedDinhKyId}&KY_DU_LIEU_CHI_TIET_1_ID=${
+      this.state.selectedDinhKyChiTiet1Id ? this.state.selectedDinhKyChiTiet1Id : ''
+    }&KY_DU_LIEU_CHI_TIET_2_ID=${
+      this.state.selectedDinhKyChiTiet2Id ? this.state.selectedDinhKyChiTiet2Id : ' '
+    }&NAM=${this.state.selectedNam}`;
+    
+
+    console.log('NAMNM URL');
+    console.log(url);
+    axios.get(url).then((res) => {
+      const ls = JSON.parse(JSON.stringify(res.data.Result));
+      var count = Object.keys(ls).length;
+      if (count === 0) this.showToast('Không tìm thấy dữ liệu phù hợp');
+      setTimeout(() => {
+        this.setState({
+          lsData: ls,
+        });
+      }, 2000);
+    });
+  }
+
+  onSelectedDiaBan(index) {
+    if (index >= 0) {
+      let selected = this.state.lsDiaBan[index];
+      selected && this.setState({ selectedDiaBanId: selected.DIA_BAN_ID });
+    }
+  }
+  onSelectedKyDuLieu(index) {
+    if (index >= 0) {
+      let dinhKyId = this.state.lsKyDuLieu[index].DINH_KY_ID;
+      //console.log(dinhKyId);
+      this.setState({ selectedDinhKyId: dinhKyId });
+      if (dinhKyId === 27) {
+        this.setState({ isShowChiTiet1: false });
+      } else {
+        this.setState({ isShowChiTiet1: true });
+      }
+      if (dinhKyId === 19 || dinhKyId === 22 || dinhKyId === 26) {
+        this.setState({ isShowChiTiet2: true });
+      } else {
+        this.setState({ isShowChiTiet2: false });
+      }
+      //console.log(this.state.lsKyDuLieuChiTiet);
+      let name1 = [],
+        ls1 = [];
+      if (dinhKyId === 19 || dinhKyId === 22 || dinhKyId === 24 || dinhKyId === 26) {
+        this.setState({ lsChiTiet1: [] });
+        this.setState({ lsTenChiTiet1: [] });
+
+        this.state.lsKyDuLieuChiTiet.map(function (item) {
+          //console.log(item);
+          if (item.DINH_KY_ID === 24) {
+            name1.push(item.TEN_DINH_KY_CHI_TIET);
+            ls1.push(item);
+          }
+        });
+      } else {
+        this.setState({ lsChiTiet1: [] });
+        this.setState({ lsTenChiTiet1: [] });
+
+        this.state.lsKyDuLieuChiTiet.map(function (item) {
+          //console.log(item);
+          if (item.DINH_KY_ID === dinhKyId) {
+            //console.log(item);
+            name1.push(item.TEN_DINH_KY_CHI_TIET);
+            ls1.push(item);
+          }
+        });
+      }
+      //console.log(name1);
+
+      this.setState({ lsChiTiet1: ls1 });
+      this.setState({ lsTenChiTiet1: name1 });
+
+      this.setState({ isSelectedKyDuLieu: true });
+      let selected = this.state.lsKyDuLieu[index];
+      selected && this.setState({ selectedDinhKyId: selected.DINH_KY_ID });
+    } else {
+      this.setState({ isSelectedKyDuLieu: false });
+      this.setState({ selectedDinhKyId: -1 });
+    }
+  }
+
+  onSelectedKyChiTiet1(index) {
+    let sel = this.state.lsChiTiet1[index];
+    //console.log(sel);
+    let dinhKyChiTiet1Id = sel.DINH_KY_CHI_TIET_ID;
+    //console.log(dinhKyChiTiet1Id);
+    this.setState({ selectedDinhKyChiTiet1Id: dinhKyChiTiet1Id });
+    //console.log(this.state.selectedDinhKyId);
+    let dinhKyId = this.state.selectedDinhKyId;
+    //console.log(dinhKyId);
+    let name2 = [],
+      ls2 = [];
+    //var count = Object.keys(this.state.lsKyDuLieuChiTiet).length;
+    //console.log(count);
+    this.state.lsKyDuLieuChiTiet.map(function (item) {
+      if (item.DINH_KY_ID === dinhKyId && item.CHA_ID === dinhKyChiTiet1Id) {
+        name2.push(item.TEN_DINH_KY_CHI_TIET);
+        ls2.push(item);
+      }
+    });
+    //console.log(ls2);
+    this.setState({ lsChiTiet2: ls2 });
+    this.setState({ lsTenChiTiet2: name2 });
+  }
+
+  onSelectedNam(value) {
+    this.setState({ selectedNam: value });
+  }
+
+  showSearchResult = () => {
+    //console.log('Xem bao cao');
+    let DIA_BAN_ID = this.state.selectedDiaBanId;
+    let KY_DU_LIEU_ID = this.state.selectedDinhKyId;
+    let KY_DU_LIEU_CHI_TIET_1_ID = this.state.selectedDinhKyChiTiet1Id;
+    let KY_DU_LIEU_CHI_TIET_2_ID = this.state.selectedDinhKyChiTiet2Id;
+    let NAM = this.state.selectedNam;
+    console.log(
+      `${DIA_BAN_ID},${KY_DU_LIEU_ID},${KY_DU_LIEU_CHI_TIET_1_ID},${KY_DU_LIEU_CHI_TIET_2_ID},${NAM}`
     );
+    if (!DIA_BAN_ID) {
+      this.showToast('Bạn phải chọn Quận/Huyện');
+      return;
+    }
+    if (!KY_DU_LIEU_ID) {
+      this.showToast('Bạn phải chọn Kỳ dữ liệu');
+      return;
+    }
+    if (KY_DU_LIEU_ID && !KY_DU_LIEU_CHI_TIET_1_ID) {
+      this.showToast('Bạn phải chọn Kỳ dữ liệu chi tiết');
+      return;
+    }
+    if (!NAM) {
+      this.showToast('Bạn phải chọn Năm');
+      return;
+    }
+    console.log('truoc')
+    console.log(
+      `${this.state.isDataLoaded}`
+    );
+    this.setState({ isDataLoaded: false });
+    this.fetData();
+    this.setState({ isDataLoaded: true });
+    console.log('sau')
+    console.log(
+      `${this.state.isDataLoaded}`
+    );
+    //console.log(this.state.lsData.slice(0, 10));
   };
 
-  renderCards = () => {
-    scrollX = new Animated.Value(0);
-    cards = [articles[5], articles[6]];
+  componentDidMount() {
+    this.fetDmDiaBan();
+    this.fetDmKyDuLieu();
+    this.fetDmKyDuLieuChiTiet();
+  }
+  showToast = (message) => {
+    console.log(message);
+    ToastAndroid.show(message, ToastAndroid.SHORT);
+  };
+  showToastWithGravity = (message) => {
+    ToastAndroid.showWithGravity(message, ToastAndroid.SHORT, ToastAndroid.CENTER);
+  };
+  showToastWithGravityAndOffset = (message) => {
+    ToastAndroid.showWithGravityAndOffset(message, ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50);
+  };
+  renderSearchResult = () => {
     return (
-      <Block flex style={styles.group}>
-        <Articles />
-        <Block flex card center shadow style={styles.category}>
-          <ImageBackground
-            source={Images.Products['path']}
-            style={[styles.imageBlock, { width: width - theme.SIZES.BASE * 2, height: 252 }]}
-            imageStyle={{
-              width: width - theme.SIZES.BASE * 2,
-              height: 252,
-            }}
-          >
-            <Block style={styles.categoryTitle}>
-              <Text size={18} bold color={theme.COLORS.WHITE}>
-                View article
-              </Text>
-            </Block>
-          </ImageBackground>
-        </Block>
-        <ScrollView
-          horizontal={true}
-          style={styles.contentContainer}
-          showsHorizontalScrollIndicator={false}
-          showsVerticalScrollIndicator={false}
-          scrollEventThrottle={16}
-          contentContainerStyle={{
-            width: width * 2,
-          }}
-        >
-          {cards.map((item, index) => {
+      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.articles}>
+        <Block flex>
+          {this.state.lsData.slice(0, 100).map((item, index) => {
+            //console.log(this.state.lsData.slice(0, 2));
             return (
-              <Card
+              <Card_116
                 key={index}
                 item={item}
-                full
+                horizontal
                 titleStyle={styles.productTitle}
                 imageStyle={{ height: 300, width: '100%', resizeMode: 'contain' }}
               />
             );
           })}
-        </ScrollView>
-      </Block>
+        </Block>
+      </ScrollView>
     );
   };
 
@@ -124,45 +310,35 @@ class BaoCaoGiaThiTruong116 extends React.Component {
     //var headers = new Headers();
     //headers.append('X-CSCAPI-KEY', 'API_KEY');
 
-    var requestOptions = {
-      method: 'GET',
-      //headers: headers,
-      redirect: 'follow',
-    };
-
-    fetch('http://113.160.48.98:8790/mwebapi/GetDmDiaBan', requestOptions)
-      .then((response) => response.json())
-      .then((result) => {
-        //console.log(JSON.stringify(result));
-
-        //console.log(count);
-        if (result) {
-          let ret = result.Result;
-          var count = Object.keys(ret).length;
-          let countryArray = [];
-          for (var i = 0; i < count; i++) {
-            countryArray.push(ret[i].TEN_DIA_BAN);
-          }
-          this.setState({
-            lsDiaBan: countryArray,
-          });
-          // }
-          // this.setState({
-          //   lsDiaBan: countryArray,
-          // });
-        }
-      })
-      .catch((error) => console.log('error', error));
-
     return (
       <Block flex style={styles.group}>
+        <Block style={{ paddingHorizontal: theme.SIZES.BASE }}>
+          <Text style={{ fontFamily: 'montserrat-regular' }} muted>
+            Lấy dữ liệu
+          </Text>
+          <Block style={{ marginTop: 8 }}>
+            {/* <Select defaultIndex={1} options={['Tỉnh Nam Định', 'Huyện Hải Hậu']} /> */}
+            <Select
+              defaultIndex={-1}
+              defaultValue={'Dữ liệu hàng hóa dịch vụ'}
+              options={['Dữ liệu hàng hóa dịch vụ', 'Dữ liệu sản phẩm']}
+            />
+          </Block>
+        </Block>
         <Block style={{ paddingHorizontal: theme.SIZES.BASE }}>
           <Text style={{ fontFamily: 'montserrat-regular' }} muted>
             Quận/Huyện
           </Text>
           <Block style={{ marginTop: 8 }}>
             {/* <Select defaultIndex={1} options={['Tỉnh Nam Định', 'Huyện Hải Hậu']} /> */}
-            <Select defaultIndex={0} options={this.state.lsDiaBan} id="selectQuanHuyen" />
+            <Select
+              defaultIndex={-1}
+              defaultValue={'- Chọn -'}
+              options={this.state.lsTenDiaBan}
+              onSelect={(index, value) => {
+                this.onSelectedDiaBan(index);
+              }}
+            />
           </Block>
         </Block>
         <Block style={{ paddingHorizontal: theme.SIZES.BASE }}>
@@ -170,41 +346,70 @@ class BaoCaoGiaThiTruong116 extends React.Component {
             Kỳ dữ liệu
           </Text>
           <Block style={{ flex: 1, marginTop: 8 }}>
-            <Select defaultIndex={0} options={['15 Ngày', '6 Tháng', 'Năm']} />
+            <Select
+              defaultIndex={-1}
+              defaultValue={'- Chọn -'}
+              options={this.state.lsTenKyDuLieu}
+              onSelect={(index, value) => {
+                this.onSelectedKyDuLieu(index);
+              }}
+            />
           </Block>
         </Block>
-        <Block style={{ paddingHorizontal: theme.SIZES.BASE }}>
-          <Text style={{ fontFamily: 'montserrat-regular', marginTop: theme.SIZES.BASE }} muted>
-            Tháng
-          </Text>
-          <Block style={{ flex: 1, marginTop: 8 }}>
-            <Select defaultIndex={0} options={['15 Ngày', '6 Tháng', 'Năm']} />
+        {this.state.isShowChiTiet1 && (
+          <Block style={{ paddingHorizontal: theme.SIZES.BASE }}>
+            <Text style={{ fontFamily: 'montserrat-regular', marginTop: theme.SIZES.BASE }} muted>
+              Tháng
+            </Text>
+            <Block style={{ flex: 1, marginTop: 8 }}>
+              <Select
+                defaultIndex={-1}
+                defaultValue={'- Chọn -'}
+                options={this.state.lsTenChiTiet1}
+                onSelect={(index, value) => {
+                  this.onSelectedKyChiTiet1(index);
+                }}
+                ref="selKyChiTiet1"
+              />
+            </Block>
           </Block>
-        </Block>
-        <Block style={{ paddingHorizontal: theme.SIZES.BASE }}>
-          <Text style={{ fontFamily: 'montserrat-regular', marginTop: theme.SIZES.BASE }} muted>
-            Ngày
-          </Text>
-          <Block style={{ flex: 1, marginTop: 8 }}>
-            <Select defaultIndex={0} options={['15 Ngày', '6 Tháng', 'Năm']} />
+        )}
+        {this.state.isShowChiTiet2 && (
+          <Block style={{ paddingHorizontal: theme.SIZES.BASE }}>
+            <Text style={{ fontFamily: 'montserrat-regular', marginTop: theme.SIZES.BASE }} muted>
+              Ngày
+            </Text>
+            <Block style={{ flex: 1, marginTop: 8 }}>
+              <Select
+                defaultValue={'- Chọn -'}
+                defaultIndex={-1}
+                options={this.state.lsTenChiTiet2}
+              />
+            </Block>
           </Block>
-        </Block>
+        )}
         <Block style={{ paddingHorizontal: theme.SIZES.BASE }}>
           <Text style={{ fontFamily: 'montserrat-regular', marginTop: theme.SIZES.BASE }} muted>
             Năm
           </Text>
           <Block style={{ flex: 1, marginTop: 8 }}>
-            {this.state.isSelectKyDuLieu && (
-              <Select defaultIndex={0} options={['2022', '2021', '2020']} />
-            )}
+            <Select
+              defaultIndex={-1}
+              defaultValue={'- Chọn -'}
+              options={this.years}
+              onSelect={(index, value) => {
+                this.setState({ selectedNam: value });
+              }}
+            />
           </Block>
         </Block>
         <Block style={{ paddingHorizontal: theme.SIZES.BASE, marginTop: 10 }}>
           <Block center>
             <Button
               textStyle={{ fontFamily: 'montserrat-regular', fontSize: 16 }}
-              color="warning"
+              color="active"
               style={styles.button}
+              onPress={this.showSearchResult}
             >
               Xem báo cáo
             </Button>
@@ -222,6 +427,7 @@ class BaoCaoGiaThiTruong116 extends React.Component {
           contentContainerStyle={{ paddingBottom: 30, width }}
         >
           {this.renderForm()}
+          {this.state.isDataLoaded && this.renderSearchResult()}
           {/* {this.renderCards()} */}
         </ScrollView>
       </Block>
