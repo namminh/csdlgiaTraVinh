@@ -341,19 +341,12 @@ function AppStack(props) {
     >
       <Drawer.Screen
         name="TRANG_CHU"
-        //component={TRANG_CHUStack}
-        component={BaoCaoGiaThiTruongLanhDaoUBNDStack}
+        component={TRANG_CHUStack}
+        // component={BaoCaoGiaThiTruongLanhDaoUBNDStack}
         options={{
           headerShown: false,
         }}
       />
-      {/* <Drawer.Screen
-        name="TRANG_CHU"
-        component={TRANG_CHUStack}
-        options={{
-          headerShown: false,
-        }}
-      /> */}
       <Drawer.Screen
         name="KT_THEO_BIEU_MAU"
         component={KT_THEO_BIEU_MAUStack}
