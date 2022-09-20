@@ -21,6 +21,7 @@ import { Button, Select, Icon, Input, Header, Switch } from '../components';
 import Img from '../components/Img';
 import { Card } from '../components';
 import { Card_116 } from '../components';
+import { Card_142 } from '../components';
 
 import axios from 'axios';
 
@@ -28,7 +29,7 @@ const { width } = Dimensions.get('screen');
 
 const thumbMeasure = (width - 48 - 32) / 3;
 
-class BaoCaoGiaThiTruong116 extends React.Component {
+class BaoCaoGiaThiTruong142 extends React.Component {
   constructor(props) {
     super(props);
     const year = new Date().getFullYear();
@@ -37,6 +38,8 @@ class BaoCaoGiaThiTruong116 extends React.Component {
       checkSelected: [],
       lsDiaBan: [],
       lsTenDiaBan: [],
+      lsdanhmuchanghoa: [],
+      lsTenhanghoa: [],
       selectedDiaBanId: null,
       lsKyDuLieu: [],
       lsTenKyDuLieu: [],
@@ -52,6 +55,7 @@ class BaoCaoGiaThiTruong116 extends React.Component {
       isShowChiTiet2: false,
       kyDuLieuSel: 0,
       selectedDinhKyId: null,
+      selectedhanghoaId: null,
       selectedDinhKyChiTiet1Id: null,
       selectedDinhKyChiTiet2Id: null,
       selectedNam: null,
@@ -61,6 +65,26 @@ class BaoCaoGiaThiTruong116 extends React.Component {
   }
 
   toggleSwitch = (switchId) => this.setState({ [switchId]: !this.state[switchId] });
+
+  fetDmhanghoa() {
+    axios.get(`http://113.160.48.98:8790/mwebapi/GetDmNhomHangHoa142`).then((res) => {
+      const json = JSON.parse(JSON.stringify(res.data.Result));
+      this.setState({
+        lsdanhmuchanghoa: json,
+      });
+      let arr = [];
+      
+      json.map((item) => {
+        arr.push(item.TEN_NHOM_HANG_HOA);
+      });
+
+      this.setState({
+        lsTenhanghoa: arr,
+      });
+
+      
+    });
+  }
 
   fetDmDiaBan() {
     axios.get(`http://113.160.48.98:8790/mwebapi/getdmdiaban`).then((res) => {
@@ -77,6 +101,7 @@ class BaoCaoGiaThiTruong116 extends React.Component {
       this.setState({
         lsTenDiaBan: arr,
       });
+      
     });
   }
 
@@ -118,12 +143,12 @@ class BaoCaoGiaThiTruong116 extends React.Component {
 
   async fetData() {
    
-    // let url = `http://113.160.48.98:8790/mwebapi/LayBaoCaoGiaThiTruong116`;
-    let url = `http://113.160.48.98:8790/mwebapi/GetBaoCaoGiaThiTruong116?DIA_BAN_ID=${this.state.selectedDiaBanId}&KY_DU_LIEU_ID=${this.state.selectedDinhKyId}&KY_DU_LIEU_CHI_TIET_1_ID=${
+    let url = `http://113.160.48.98:8790/mwebapi/GetBaoCaoGiaThiTruong142?SAN_PHAM_ID=HHDV&NHOM_HANG_HOA_ID=${this.state.selectedhanghoaId}&DIA_BAN_ID=${this.state.selectedDiaBanId}&KY_DU_LIEU_ID=${this.state.selectedDinhKyId}&KY_DU_LIEU_CHI_TIET_1_ID=${
       this.state.selectedDinhKyChiTiet1Id ? this.state.selectedDinhKyChiTiet1Id : ''
     }&KY_DU_LIEU_CHI_TIET_2_ID=${
       this.state.selectedDinhKyChiTiet2Id ? this.state.selectedDinhKyChiTiet2Id : ' '
     }&NAM=${this.state.selectedNam}`;
+    
     
 
     console.log('NAMNM URL');
@@ -140,10 +165,19 @@ class BaoCaoGiaThiTruong116 extends React.Component {
     });
   }
 
+  onSelectedhanghoa(index) {
+    if (index >= 0) {
+      let selected = this.state.lsdanhmuchanghoa[index];
+      selected && this.setState({ selectedhanghoaId: selected.NHOM_HANG_HOA_ID });
+     
+    }
+  }
+
   onSelectedDiaBan(index) {
     if (index >= 0) {
       let selected = this.state.lsDiaBan[index];
       selected && this.setState({ selectedDiaBanId: selected.DIA_BAN_ID });
+      
     }
   }
   onSelectedKyDuLieu(index) {
@@ -232,14 +266,20 @@ class BaoCaoGiaThiTruong116 extends React.Component {
 
   showSearchResult = () => {
     //console.log('Xem bao cao');
+    let NHOM_HANG_HOA_ID = this.state.selectedhanghoaId;
     let DIA_BAN_ID = this.state.selectedDiaBanId;
     let KY_DU_LIEU_ID = this.state.selectedDinhKyId;
     let KY_DU_LIEU_CHI_TIET_1_ID = this.state.selectedDinhKyChiTiet1Id;
     let KY_DU_LIEU_CHI_TIET_2_ID = this.state.selectedDinhKyChiTiet2Id;
     let NAM = this.state.selectedNam;
     console.log(
-      `${DIA_BAN_ID},${KY_DU_LIEU_ID},${KY_DU_LIEU_CHI_TIET_1_ID},${KY_DU_LIEU_CHI_TIET_2_ID},${NAM}`
+      `${NHOM_HANG_HOA_ID},${DIA_BAN_ID},${KY_DU_LIEU_ID},${KY_DU_LIEU_CHI_TIET_1_ID},${KY_DU_LIEU_CHI_TIET_2_ID},${NAM}`
     );
+    if (!NHOM_HANG_HOA_ID) {
+      
+      this.showToast('Bạn phải chọn Nhóm hàng hóa');
+      return;
+    }
     if (!DIA_BAN_ID) {
       this.showToast('Bạn phải chọn Quận/Huyện');
       return;
@@ -256,21 +296,14 @@ class BaoCaoGiaThiTruong116 extends React.Component {
       this.showToast('Bạn phải chọn Năm');
       return;
     }
-    console.log('truoc')
-    console.log(
-      `${this.state.isDataLoaded}`
-    );
     this.setState({ isDataLoaded: false });
     this.fetData();
     this.setState({ isDataLoaded: true });
-    console.log('sau')
-    console.log(
-      `${this.state.isDataLoaded}`
-    );
     //console.log(this.state.lsData.slice(0, 10));
   };
 
   componentDidMount() {
+    this.fetDmhanghoa();
     this.fetDmDiaBan();
     this.fetDmKyDuLieu();
     this.fetDmKyDuLieuChiTiet();
@@ -292,7 +325,7 @@ class BaoCaoGiaThiTruong116 extends React.Component {
           {this.state.lsData.slice(0, 100).map((item, index) => {
             //console.log(this.state.lsData.slice(0, 2));
             return (
-              <Card_116
+              <Card_142
                 key={index}
                 item={item}
                 horizontal
@@ -312,6 +345,7 @@ class BaoCaoGiaThiTruong116 extends React.Component {
 
     return (
       <Block flex style={styles.group}>
+        
         <Block style={{ paddingHorizontal: theme.SIZES.BASE }}>
           <Text style={{ fontFamily: 'montserrat-regular' }} muted>
             Lấy dữ liệu
@@ -322,6 +356,21 @@ class BaoCaoGiaThiTruong116 extends React.Component {
               defaultIndex={-1}
               defaultValue={'Dữ liệu hàng hóa dịch vụ'}
               options={['Dữ liệu hàng hóa dịch vụ', 'Dữ liệu sản phẩm']}
+            />
+          </Block>
+        </Block>
+        <Block style={{ paddingHorizontal: theme.SIZES.BASE }}>
+          <Text style={{ fontFamily: 'montserrat-regular' }} muted>
+            Nhóm hàng hóa, Dịch vụ
+          </Text>
+          <Block style={{ marginTop: 8 }}>
+            <Select
+              defaultIndex={-1}
+              defaultValue={'- Chọn -'}
+              options={this.state.lsTenhanghoa}
+              onSelect={(index, value) => {
+                this.onSelectedhanghoa(index);
+              }}
             />
           </Block>
         </Block>
@@ -501,4 +550,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default BaoCaoGiaThiTruong116;
+export default BaoCaoGiaThiTruong142;

@@ -11,6 +11,8 @@ import BIcon from './BIcons';
 import BIcons from './BIcons';
 import CardBaoCaoTongHopGiaDangKy from './CardBaoCaoTongHopGiaDangKy';
 import CardBaoCaoGiaThiTruongLanhDaoUBND from './CardBaoCaoGiaThiTruongLanhDaoUBND';
+import Card_116 from './Card_116';
+import Card_142 from './Card_142';
 
 export {
   Button,
@@ -26,4 +28,6 @@ export {
   BIcons,
   CardBaoCaoTongHopGiaDangKy,
   CardBaoCaoGiaThiTruongLanhDaoUBND,
+  Card_116,
+  Card_142,
 };
