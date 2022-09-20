@@ -24,7 +24,7 @@ import BaoCaoTongHopGiaKeKhai from '../screens/BaoCaoTongHopGiaKeKhai';
 import BaoCaoGiaThiTruong116 from '../screens/BaoCaoGiaThiTruong116';
 import BaoCaoGiaThiTruongLanhDaoUBND from '../screens/BaoCaoGiaThiTruongLanhDaoUBND';
 
-import SettingsScreen from '../screens/Settings';
+//import SettingsScreen from '../screens/Settings';
 
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createStackNavigator } from '@react-navigation/stack';

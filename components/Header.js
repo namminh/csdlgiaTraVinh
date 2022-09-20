@@ -124,6 +124,7 @@ class Header extends React.Component {
       />
     );
   };
+
   renderOptions = () => {
     const { navigation, optionLeft, optionRight } = this.props;
 
