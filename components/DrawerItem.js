@@ -10,7 +10,6 @@ import nowTheme from '../constants/Theme';
 class DrawerItem extends React.Component {
   renderIcon = () => {
     const { name, title, focused } = this.props;
-
     switch (name) {
       case 'TRANG_CHU':
         return (
@@ -186,7 +185,7 @@ class DrawerItem extends React.Component {
 
   render() {
     const { focused, name, title, type, navigation } = this.props;
-
+    console.log(`${this.props.name}:${this.props.focused}`);
     const containerStyles = [
       styles.defaultStyle,
       focused ? [styles.activeStyle, styles.shadow] : null,
@@ -212,7 +211,7 @@ class DrawerItem extends React.Component {
                 marginBottom: 10,
                 fontFamily: 'montserrat-regular',
                 fontWeight: '300',
-                fontSize: 12,
+                fontSize: 10,
               }}
             >
               {title}
@@ -223,7 +222,7 @@ class DrawerItem extends React.Component {
       default:
         return (
           <TouchableOpacity
-            style={{ height: 60 }}
+            style={{ height: 50 }}
             onPress={
               () => {
                 if (name == 'WEB') {

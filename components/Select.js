@@ -72,7 +72,7 @@ class Select extends React.Component {
         ref={this.dropdownRef}
       >
         <Block flex row middle space="between">
-          <Text size={12} style={textStyles}>
+          <Text size={14} style={textStyles}>
             {this.state.value}
           </Text>
           <Icon

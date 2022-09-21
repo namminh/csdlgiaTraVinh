@@ -45,6 +45,8 @@ function CustomDrawerContent({ drawerPosition, navigation, profile, focused, sta
       >
         <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
           {menu.map((item, index) => {
+            //console.log(`${state.index},${index}`);
+            console.log(state);
             return (
               <DrawerCustomItem
                 name={item.name}

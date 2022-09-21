@@ -370,27 +370,6 @@ function AppStack(props) {
         }}
       />
       <Drawer.Screen
-        name="KT_THEO_BIEU_MAU"
-        component={KT_THEO_BIEU_MAUStack}
-        options={{
-          headerShown: false,
-        }}
-      />
-      <Drawer.Screen
-        name="BaoCaoTongHopGiaDangKy"
-        component={BaoCaoTongHopGiaDangKyStack}
-        options={{
-          headerShown: false,
-        }}
-      />
-      <Drawer.Screen
-        name="BaoCaoTongHopGiaKeKhai"
-        component={BaoCaoTongHopGiaKeKhaiStack}
-        options={{
-          headerShown: false,
-        }}
-      />
-      <Drawer.Screen
         name="BaoCaoGiaThiTruong116"
         component={BaoCaoGiaThiTruong116Stack}
         options={{
@@ -405,12 +384,34 @@ function AppStack(props) {
         }}
       />
       <Drawer.Screen
+        name="BaoCaoTongHopGiaDangKy"
+        component={BaoCaoTongHopGiaDangKyStack}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Drawer.Screen
         name="BaoCaoGiaThiTruongLanhDaoUBND"
         component={BaoCaoGiaThiTruongLanhDaoUBNDStack}
         options={{
           headerShown: false,
         }}
       />
+      <Drawer.Screen
+        name="BaoCaoTongHopGiaKeKhai"
+        component={BaoCaoTongHopGiaKeKhaiStack}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Drawer.Screen
+        name="KT_THEO_BIEU_MAU"
+        component={KT_THEO_BIEU_MAUStack}
+        options={{
+          headerShown: false,
+        }}
+      />
+
       <Drawer.Screen
         name="Components"
         component={ComponentsStack}

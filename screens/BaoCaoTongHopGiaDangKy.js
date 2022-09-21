@@ -51,8 +51,8 @@ class BaoCaoTongHopGiaDangKy extends React.Component {
       lsTenHHDVDK: [],
       selectedHHDVDKId: -1,
       lsData: [],
-      startDate: new Date(),
-      endDate: new Date(),
+      startDate: Moment(new Date()).format('DD/MM/YYYY'),
+      endDate: Moment(new Date()).format('DD/MM/YYYY'),
       mode: 'date',
       isStartDatePickerVisible: false,
       isEndDatePickerVisible: false,
@@ -162,6 +162,14 @@ class BaoCaoTongHopGiaDangKy extends React.Component {
   componentDidMount() {
     this.fetDmDoanhNghiep();
     this.fetDmLoaiGia();
+    // this.setState({
+    //   startDate: Moment(this.state.startDate.toLocaleString()).format('DD/MM/YYYY'),
+    // });
+    // this.setState({
+    //   endDateDate: Moment(this.state.startDate.toLocaleString()).format('DD/MM/YYYY'),
+    // });
+    console.log(this.state.startDate);
+    console.log(this.state.endDate);
   }
 
   showStartDatePicker = () => {
@@ -177,7 +185,7 @@ class BaoCaoTongHopGiaDangKy extends React.Component {
   handleStartDateConfirm = (date) => {
     console.log('Start date picked: ', date);
     this.setState({ startDate: date });
-    hideStartDatePicker();
+    this.hideStartDatePicker();
   };
 
   showEndDatePicker = () => {
@@ -193,7 +201,7 @@ class BaoCaoTongHopGiaDangKy extends React.Component {
   handleEndDateConfirm = (date) => {
     console.log('End date picked: ', date);
     this.setState({ endDate: date });
-    hideEndDatePicker();
+    this.hideEndDatePicker();
   };
 
   showSearchResult = () => {
@@ -513,10 +521,10 @@ class BaoCaoTongHopGiaDangKy extends React.Component {
     return (
       <Block flex style={styles.group}>
         <Block style={{ paddingHorizontal: theme.SIZES.BASE }}>
-          <Text style={{ fontFamily: 'montserrat-regular' }} muted>
-            Doanh Nghiệp
-          </Text>
-          <Block style={{ marginTop: 8 }}>
+          <Block>
+            <Text style={styles.textLabel}>Doanh Nghiệp</Text>
+          </Block>
+          <Block style={{ paddingVertical: theme.SIZES.BASE }}>
             <Select
               defaultIndex={-1}
               defaultValue={'- Chọn -'}
@@ -528,44 +536,38 @@ class BaoCaoTongHopGiaDangKy extends React.Component {
           </Block>
         </Block>
         <Block row style={{ paddingHorizontal: theme.SIZES.BASE }}>
-          <Block flex style={{ marginTop: theme.SIZES.BASE }}>
-            <Text style={{ fontFamily: 'montserrat-regular' }} muted>
-              Từ ngày
-            </Text>
-            <Button
-              textStyle={{
-                fontFamily: 'montserrat-regular',
-                fontSize: 10,
-                color: nowTheme.COLORS.BLACK,
-              }}
-              small
-              center
-              color="border"
-              style={styles.optionsButton}
-              onPress={this.showStartDatePicker}
-              justifyContent="flex-end"
-            >
-              {Moment(this.state.startDate.toLocaleString()).format('DD/MM/YYYY')}
-            </Button>
+          <Block flex>
+            <Block>
+              <Text style={styles.textLabel}>Từ ngày</Text>
+            </Block>
+            <Block>
+              <Button
+                textStyle={styles.textButton}
+                small
+                center
+                color="border"
+                style={styles.optionsButton}
+                onPress={this.showStartDatePicker}
+                justifyContent="flex-end"
+              >
+                {this.state.startDate}
+              </Button>
+            </Block>
           </Block>
-          <Block flex style={{ marginTop: theme.SIZES.BASE }}>
-            <Text style={{ fontFamily: 'montserrat-regular' }} muted>
+          <Block flex>
+            <Text style={styles.textLabel} muted>
               Đến ngày
             </Text>
             <Block>
               <Button
-                textStyle={{
-                  fontFamily: 'montserrat-regular',
-                  fontSize: 10,
-                  color: nowTheme.COLORS.BLACK,
-                }}
+                textStyle={styles.textButton}
                 small
                 center
                 color="border"
                 style={styles.optionsButton}
                 onPress={this.showEndDatePicker}
               >
-                {Moment(this.state.endDate.toLocaleString()).format('DD/MM/YYYY')}
+                {this.state.startDate}
               </Button>
             </Block>
             <DateTimePickerModal
@@ -583,10 +585,12 @@ class BaoCaoTongHopGiaDangKy extends React.Component {
           </Block>
         </Block>
         <Block style={{ paddingHorizontal: theme.SIZES.BASE }}>
-          <Text style={{ fontFamily: 'montserrat-regular', marginTop: theme.SIZES.BASE }} muted>
-            Loại giá
-          </Text>
-          <Block style={{ flex: 1, marginTop: 8 }}>
+          <Block>
+            <Text style={styles.textLabel} muted>
+              Loại giá
+            </Text>
+          </Block>
+          <Block style={{ paddingVertical: theme.SIZES.BASE }}>
             <Select
               defaultIndex={-1}
               defaultValue={'- Chọn -'}
@@ -598,10 +602,10 @@ class BaoCaoTongHopGiaDangKy extends React.Component {
           </Block>
         </Block>
         <Block style={{ paddingHorizontal: theme.SIZES.BASE }}>
-          <Text style={{ fontFamily: 'montserrat-regular', marginTop: theme.SIZES.BASE }} muted>
-            Nhóm Hàng hóa dịch vụ
-          </Text>
-          <Block style={{ flex: 1, marginTop: 8 }}>
+          <Block>
+            <Text style={styles.textLabel}>Nhóm Hàng hóa dịch vụ</Text>
+          </Block>
+          <Block style={{ paddingVertical: theme.SIZES.BASE }}>
             <Select
               defaultIndex={-1}
               defaultValue={'- Chọn -'}
@@ -610,18 +614,18 @@ class BaoCaoTongHopGiaDangKy extends React.Component {
           </Block>
         </Block>
         <Block style={{ paddingHorizontal: theme.SIZES.BASE }}>
-          <Text style={{ fontFamily: 'montserrat-regular', marginTop: theme.SIZES.BASE }} muted>
-            Hàng hóa dịch vụ
-          </Text>
-          <Block style={{ flex: 1, marginTop: 8 }}>
+          <Block>
+            <Text style={styles.textLabel}>Hàng hóa dịch vụ</Text>
+          </Block>
+          <Block style={{ paddingVertical: theme.SIZES.BASE }}>
             <Select defaultIndex={-1} defaultValue={'- Chọn -'} options={this.state.lsTenHHDV} />
           </Block>
         </Block>
         <Block style={{ paddingHorizontal: theme.SIZES.BASE }}>
-          <Text style={{ fontFamily: 'montserrat-regular', marginTop: theme.SIZES.BASE }} muted>
-            Hàng hóa dịch vụ đăng ký
-          </Text>
-          <Block style={{ flex: 1, marginTop: 8 }}>
+          <Block>
+            <Text style={styles.textLabel}>Hàng hóa dịch vụ đăng ký</Text>
+          </Block>
+          <Block style={{ paddingVertical: theme.SIZES.BASE }}>
             <Select defaultIndex={-1} defaultValue={'- Chọn -'} options={this.state.lsTenHHDVDK} />
           </Block>
         </Block>
@@ -720,6 +724,16 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontFamily: 'montserrat-bold',
     fontSize: 18,
+  },
+  textLabel: {
+    color: nowTheme.COLORS.BLACK,
+    fontFamily: 'montserrat-bold',
+    fontSize: 14,
+  },
+  textButton: {
+    color: nowTheme.COLORS.BLACK,
+    fontFamily: 'montserrat-regular',
+    fontSize: 14,
   },
 });
 

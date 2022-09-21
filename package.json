@@ -1,7 +1,7 @@
 {
-  "name": "now-ui-react-native",
-  "version": "1.5.0",
-  "description": "Now UI React Native, based on Now UI Design System. Coded by Creative Tim",
+  "name": "csdlgia-ninh-thuan",
+  "version": "1.0.0",
+  "description": "Phan mem CSDL Gia Tinh Ninh Thuan",
   "scripts": {
     "start": "expo start --dev-client",
     "android": "expo run:android",
@@ -72,9 +72,9 @@
     "now expo react native",
     "react native ui template"
   ],
-  "author": "Creative Tim <hello@creative-tim.com> (https://www.creative-tim.com/)",
+  "author": "HiPT Group",
   "bugs": {
-    "url": "https://github.com/creativetimofficial/now-ui-react-native/issues"
+    "url": "https://hipt.vn"
   },
-  "homepage": "https://demos.creative-tim.com/now-ui-react-native"
+  "homepage": "https://hipt.vn"
 }
