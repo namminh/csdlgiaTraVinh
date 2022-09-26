@@ -51,8 +51,8 @@ class BaoCaoTongHopGiaKeKhai extends React.Component {
       lsTenHHDVDK: [],
       selectedHHDVDKId: -1,
       lsData: [],
-      startDate: new Date(),
-      endDate: new Date(),
+      startDate: Moment(new Date()).format('DD/MM/YYYY'),
+      endDate: Moment(new Date()).format('DD/MM/YYYY'),
       mode: 'date',
       isStartDatePickerVisible: false,
       isEndDatePickerVisible: false,
@@ -165,35 +165,29 @@ class BaoCaoTongHopGiaKeKhai extends React.Component {
   }
 
   showStartDatePicker = () => {
-    //setDatePickerVisibility(true);
     this.setState({ isStartDatePickerVisible: true });
   };
 
   hideStartDatePicker = () => {
-    //setDatePickerVisibility(false);
     this.setState({ isStartDatePickerVisible: false });
   };
 
   handleStartDateConfirm = (date) => {
-    console.log('Start date picked: ', date);
-    this.setState({ startDate: date });
-    hideStartDatePicker();
+    this.setState({ startDate: Moment(date).format('DD/MM/YYYY') });
+    this.hideStartDatePicker();
   };
 
   showEndDatePicker = () => {
-    //setDatePickerVisibility(true);
     this.setState({ isEndDatePickerVisible: true });
   };
 
   hideEndDatePicker = () => {
-    //setDatePickerVisibility(false);
     this.setState({ isEndDatePickerVisible: false });
   };
 
   handleEndDateConfirm = (date) => {
-    console.log('End date picked: ', date);
-    this.setState({ endDate: date });
-    hideEndDatePicker();
+    this.setState({ endDate: Moment(date).format('DD/MM/YYYY') });
+    this.hideEndDatePicker();
   };
 
   showSearchResult = () => {
@@ -484,44 +478,38 @@ class BaoCaoTongHopGiaKeKhai extends React.Component {
           </Block>
         </Block>
         <Block row style={{ paddingHorizontal: theme.SIZES.BASE }}>
-          <Block flex style={{ marginTop: theme.SIZES.BASE }}>
-            <Text style={{ fontFamily: 'montserrat-regular' }} muted>
-              Từ ngày
-            </Text>
-            <Button
-              textStyle={{
-                fontFamily: 'montserrat-regular',
-                fontSize: 10,
-                color: nowTheme.COLORS.BLACK,
-              }}
-              small
-              center
-              color="border"
-              style={styles.optionsButton}
-              onPress={this.showStartDatePicker}
-              justifyContent="flex-end"
-            >
-              {Moment(this.state.startDate.toLocaleString()).format('DD/MM/YYYY')}
-            </Button>
+          <Block flex>
+            <Block>
+              <Text style={styles.textLabel}>Từ ngày</Text>
+            </Block>
+            <Block>
+              <Button
+                textStyle={styles.textButton}
+                small
+                center
+                color="border"
+                style={styles.optionsButton}
+                onPress={this.showStartDatePicker}
+                justifyContent="flex-end"
+              >
+                {this.state.startDate}
+              </Button>
+            </Block>
           </Block>
-          <Block flex style={{ marginTop: theme.SIZES.BASE }}>
-            <Text style={{ fontFamily: 'montserrat-regular' }} muted>
+          <Block flex>
+            <Text style={styles.textLabel} muted>
               Đến ngày
             </Text>
             <Block>
               <Button
-                textStyle={{
-                  fontFamily: 'montserrat-regular',
-                  fontSize: 10,
-                  color: nowTheme.COLORS.BLACK,
-                }}
+                textStyle={styles.textButton}
                 small
                 center
                 color="border"
                 style={styles.optionsButton}
                 onPress={this.showEndDatePicker}
               >
-                {Moment(this.state.endDate.toLocaleString()).format('DD/MM/YYYY')}
+                {this.state.endDate}
               </Button>
             </Block>
             <DateTimePickerModal

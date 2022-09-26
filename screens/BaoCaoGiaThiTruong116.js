@@ -117,14 +117,14 @@ class BaoCaoGiaThiTruong116 extends React.Component {
   }
 
   async fetData() {
-   
     // let url = `http://113.160.48.98:8790/mwebapi/LayBaoCaoGiaThiTruong116`;
-    let url = `http://113.160.48.98:8790/mwebapi/GetBaoCaoGiaThiTruong116?DIA_BAN_ID=${this.state.selectedDiaBanId}&KY_DU_LIEU_ID=${this.state.selectedDinhKyId}&KY_DU_LIEU_CHI_TIET_1_ID=${
+    let url = `http://113.160.48.98:8790/mwebapi/GetBaoCaoGiaThiTruong116?DIA_BAN_ID=${
+      this.state.selectedDiaBanId
+    }&KY_DU_LIEU_ID=${this.state.selectedDinhKyId}&KY_DU_LIEU_CHI_TIET_1_ID=${
       this.state.selectedDinhKyChiTiet1Id ? this.state.selectedDinhKyChiTiet1Id : ''
     }&KY_DU_LIEU_CHI_TIET_2_ID=${
       this.state.selectedDinhKyChiTiet2Id ? this.state.selectedDinhKyChiTiet2Id : ' '
     }&NAM=${this.state.selectedNam}`;
-    
 
     console.log('NAMNM URL');
     console.log(url);
@@ -256,17 +256,13 @@ class BaoCaoGiaThiTruong116 extends React.Component {
       this.showToast('Bạn phải chọn Năm');
       return;
     }
-    console.log('truoc')
-    console.log(
-      `${this.state.isDataLoaded}`
-    );
+    console.log('truoc');
+    console.log(`${this.state.isDataLoaded}`);
     this.setState({ isDataLoaded: false });
     this.fetData();
     this.setState({ isDataLoaded: true });
-    console.log('sau')
-    console.log(
-      `${this.state.isDataLoaded}`
-    );
+    console.log('sau');
+    console.log(`${this.state.isDataLoaded}`);
     //console.log(this.state.lsData.slice(0, 10));
   };
 
@@ -312,19 +308,6 @@ class BaoCaoGiaThiTruong116 extends React.Component {
 
     return (
       <Block flex style={styles.group}>
-        <Block style={{ paddingHorizontal: theme.SIZES.BASE }}>
-          <Text style={{ fontFamily: 'montserrat-regular' }} muted>
-            Lấy dữ liệu
-          </Text>
-          <Block style={{ marginTop: 8 }}>
-            {/* <Select defaultIndex={1} options={['Tỉnh Nam Định', 'Huyện Hải Hậu']} /> */}
-            <Select
-              defaultIndex={-1}
-              defaultValue={'Dữ liệu hàng hóa dịch vụ'}
-              options={['Dữ liệu hàng hóa dịch vụ', 'Dữ liệu sản phẩm']}
-            />
-          </Block>
-        </Block>
         <Block style={{ paddingHorizontal: theme.SIZES.BASE }}>
           <Text style={{ fontFamily: 'montserrat-regular' }} muted>
             Quận/Huyện

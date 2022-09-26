@@ -21,8 +21,8 @@ function CustomDrawerContent({ drawerPosition, navigation, profile, focused, sta
     { name: 'BaoCaoGiaThiTruong142', title: 'Báo cáo trường TT142' },
     { name: 'BaoCaoTongHopGiaDangKy', title: 'Khai thác dữ liệu theo chỉ tiêu' },
     { name: 'BaoCaoGiaThiTruongLanhDaoUBND', title: 'Báo cáo phục vụ lãnh đạo' },
-    // { name: 'TraCuuGiaHHDVNhaNuocDinhGia', title: 'Báo cáo Giá hàng hóa định giá' },
     { name: 'BaoCaoTongHopGiaKeKhai', title: 'Báo cáo tổng hợp giá kê khai' },
+    { name: 'TraCuuGiaHHDVNhaNuocDinhGia', title: 'Báo cáo Giá hàng hóa định giá' },
     // { name: 'BaoCaoGiaThiThuongTongHop', title: 'Báo cáo tổng hợp giá thị trường' },
     // { name: 'KhaiThacGiaVLXD', title: 'Khai thác tổng hợp giá Vật liệu xây dựng' },
     // { name: 'BaoCaoTongHopGiaTaiSanTDG', title: 'Báo cáo Giá trị tài sản thẩm định giá' },
@@ -45,8 +45,6 @@ function CustomDrawerContent({ drawerPosition, navigation, profile, focused, sta
       >
         <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
           {menu.map((item, index) => {
-            //console.log(`${state.index},${index}`);
-            console.log(state);
             return (
               <DrawerCustomItem
                 name={item.name}
@@ -72,7 +70,7 @@ const styles = StyleSheet.create({
   header: {
     paddingHorizontal: 28,
     paddingBottom: theme.SIZES.BASE,
-    paddingTop: theme.SIZES.BASE * 3,
+    paddingTop: theme.SIZES.BASE * 2,
     justifyContent: 'center',
     backgroundColor: nowTheme.COLORS.PRIMARY,
   },
@@ -82,7 +80,7 @@ const styles = StyleSheet.create({
   logo: {
     height: 40,
     width: 37,
-    tintColor: 'black',
+    tintColor: 'white',
   },
   menuitem: {
     height: 40,

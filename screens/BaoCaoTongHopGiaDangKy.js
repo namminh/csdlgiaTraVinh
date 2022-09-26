@@ -141,10 +141,8 @@ class BaoCaoTongHopGiaDangKy extends React.Component {
   }
 
   fetData() {
-    let d1 = Moment(this.state.startDate.toLocaleString()).format('DD/MM/YYYY');
-    let d2 = Moment(this.state.endDate.toLocaleString()).format('DD/MM/YYYY');
     //let url = `http://113.160.48.98:8790/mwebapi/GetBaoCaoTongHopGiaDangKy?doanhNghiepId=263&ngayHieuLucTu=01/01/2021&ngayHieuLucDen=01/09/2022&loaiGiaIds=10`;
-    let url = `http://113.160.48.98:8790/mwebapi/GetBaoCaoTongHopGiaDangKy?doanhNghiepId=${this.state.selectedDoanhNghiepId}&ngayHieuLucTu=${d1}&ngayHieuLucDen=${d2}&loaiGiaIds=${this.state.selectedLoaiGiaId}`;
+    let url = `http://113.160.48.98:8790/mwebapi/GetBaoCaoTongHopGiaDangKy?doanhNghiepId=${this.state.selectedDoanhNghiepId}&ngayHieuLucTu=${this.state.startDate}&ngayHieuLucDen=${this.state.endDate}&loaiGiaIds=${this.state.selectedLoaiGiaId}`;
     console.log(url);
     axios.get(url).then((res) => {
       const ls = JSON.parse(JSON.stringify(res.data.Result));
@@ -173,34 +171,28 @@ class BaoCaoTongHopGiaDangKy extends React.Component {
   }
 
   showStartDatePicker = () => {
-    //setDatePickerVisibility(true);
     this.setState({ isStartDatePickerVisible: true });
   };
 
   hideStartDatePicker = () => {
-    //setDatePickerVisibility(false);
     this.setState({ isStartDatePickerVisible: false });
   };
 
   handleStartDateConfirm = (date) => {
-    console.log('Start date picked: ', date);
-    this.setState({ startDate: date });
+    this.setState({ startDate: Moment(date).format('DD/MM/YYYY') });
     this.hideStartDatePicker();
   };
 
   showEndDatePicker = () => {
-    //setDatePickerVisibility(true);
     this.setState({ isEndDatePickerVisible: true });
   };
 
   hideEndDatePicker = () => {
-    //setDatePickerVisibility(false);
     this.setState({ isEndDatePickerVisible: false });
   };
 
   handleEndDateConfirm = (date) => {
-    console.log('End date picked: ', date);
-    this.setState({ endDate: date });
+    this.setState({ endDate: Moment(date).format('DD/MM/YYYY') });
     this.hideEndDatePicker();
   };
 
@@ -258,53 +250,6 @@ class BaoCaoTongHopGiaDangKy extends React.Component {
 
   toggleSwitch = (switchId) => this.setState({ [switchId]: !this.state[switchId] });
 
-  renderCards = () => {
-    scrollX = new Animated.Value(0);
-    cards = [articles[5], articles[6]];
-    return (
-      <Block flex style={styles.group}>
-        <Articles />
-        <Block flex card center shadow style={styles.category}>
-          <ImageBackground
-            source={Images.Products['path']}
-            style={[styles.imageBlock, { width: width - theme.SIZES.BASE * 2, height: 252 }]}
-            imageStyle={{
-              width: width - theme.SIZES.BASE * 2,
-              height: 252,
-            }}
-          >
-            <Block style={styles.categoryTitle}>
-              <Text size={18} bold color={theme.COLORS.WHITE}>
-                View article
-              </Text>
-            </Block>
-          </ImageBackground>
-        </Block>
-        <ScrollView
-          horizontal={true}
-          style={styles.contentContainer}
-          showsHorizontalScrollIndicator={false}
-          showsVerticalScrollIndicator={false}
-          scrollEventThrottle={16}
-          contentContainerStyle={{
-            width: width * 2,
-          }}
-        >
-          {cards.map((item, index) => {
-            return (
-              <Card
-                key={index}
-                item={item}
-                full
-                titleStyle={styles.productTitle}
-                imageStyle={{ height: 300, width: '100%', resizeMode: 'contain' }}
-              />
-            );
-          })}
-        </ScrollView>
-      </Block>
-    );
-  };
   renderSearchResult = () => {
     return (
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.articles}>
@@ -325,6 +270,7 @@ class BaoCaoTongHopGiaDangKy extends React.Component {
       </ScrollView>
     );
   };
+
   renderForm = () => {
     // const onChange = (event, selectedDate) => {
     //   const currentDate = selectedDate;
@@ -567,7 +513,7 @@ class BaoCaoTongHopGiaDangKy extends React.Component {
                 style={styles.optionsButton}
                 onPress={this.showEndDatePicker}
               >
-                {this.state.startDate}
+                {this.state.endDate}
               </Button>
             </Block>
             <DateTimePickerModal

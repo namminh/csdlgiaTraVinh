@@ -37,337 +37,237 @@ class Card_142 extends React.Component {
           </Block>
         </TouchableWithoutFeedback> */}
         {/* <TouchableWithoutFeedback onPress={() => navigation.navigate('Pro')}> */}
-          <Block flex left style={styles.cardDescription}>
-            <Block flex left>
-             
-               {item.TEN_HANG_HOA_DICH_VU ? (
-                <Block flex left>
+        <Block flex left style={styles.cardDescription}>
+          <Block flex left>
+            {item.TEN_HANG_HOA_DICH_VU ? (
+              <Block flex left>
+                <Text size={5} style={titleStyles} color={nowTheme.COLORS.FACEBOOK}>
+                  Tên hàng hóa, dịch vụ:
                   <Text
                     style={{ fontFamily: 'montserrat-regular' }}
-                    size={5}
-                    style={titleStyles}
-                    color={nowTheme.COLORS.FACEBOOK}
-                  >
-                    Tên hàng hóa, dịch vụ:
-                    <Text style={{ fontFamily: 'montserrat-regular' }}
                     size={14}
                     // style={titleStyles}
                     color={nowTheme.COLORS.BLACK}
-                    >
-                      {' '} {item.TEN_HANG_HOA_DICH_VU}
-                    </Text>
-                    
-                  </Text>
-                </Block>
-              ) : (
-                <Block flex center>
-                  <Text
-                    style={{ fontFamily: 'montserrat-regular' }}
-                    size={5}
-                    style={titleStyles}
-                    color={nowTheme.COLORS.FACEBOOK}
                   >
-                    Tên hàng hóa, dịch vụ:
-                    
+                    {' '}
+                    {item.TEN_HANG_HOA_DICH_VU}
                   </Text>
-                </Block>
-              )}
-              
-              {item.MA_SAN_PHAM ? (
-                <Block flex left>
-                  <Text
-                    style={{ fontFamily: 'montserrat-regular' }}
-                    size={5}
-                    style={titleStyles}
-                    color={nowTheme.COLORS.FACEBOOK}
-                  >
-                    Mã sản phẩm:
-                    <Text style={{ fontFamily: 'montserrat-regular' }}
-                    size={14}
-                    // style={titleStyles}
-                    color={nowTheme.COLORS.BLACK}
-                    >
-                      {' '} {item.MA_SAN_PHAM}
-                    </Text>
-                  </Text>
-                </Block>
-              ) : (
-                <Block flex left>
-                  <Text
-                    style={{ fontFamily: 'montserrat-regular' }}
-                    size={5}
-                    style={titleStyles}
-                    color={nowTheme.COLORS.FACEBOOK}
-                  >
-                    Mã sản phẩm:
-                    
-                  </Text>
-                </Block>
-              )}
-              {item.MA_NHOM_HANG_HOA ? (
-                <Block flex left>
-                  <Text
-                    style={{ fontFamily: 'montserrat-regular' }}
-                    size={5}
-                    style={titleStyles}
-                    color={nowTheme.COLORS.FACEBOOK}
-                  >
-                    Mã hàng hóa: 
-                    <Text style={{ fontFamily: 'montserrat-regular' }}
-                    size={14}
-                    // style={titleStyles}
-                    color={nowTheme.COLORS.BLACK}
-                    >
-                      {' '} {item.MA_NHOM_HANG_HOA}
-                    </Text>
-                  </Text>
-                </Block>
-              ) : (
-                <Block flex left>
-                  <Text
-                    style={{ fontFamily: 'montserrat-regular' }}
-                    size={5}
-                    style={titleStyles}
-                    color={nowTheme.COLORS.FACEBOOK}
-                  >
-                    Mã hàng hóa: 
-                    <Text >
-                      {' '}
-                    </Text>
-                    
-                  </Text>
-                </Block>
-              )}
-              {item.TEN_HANG_HOA_DICH_VU ? (
-                <Block flex left>
-                  <Text
-                    style={{ fontFamily: 'montserrat-regular' }}
-                    size={5}
-                    style={titleStyles}
-                    color={nowTheme.COLORS.BLACK}
-                  >
-                    Loại hàng hóa, dịch vụ: 
-                    <Text style={{ fontFamily: 'montserrat-regular' }}
-                    size={14}
-                    // style={titleStyles}
-                    color={nowTheme.COLORS.BLACK}
-                    >
-                      {' '} {item.TEN_HANG_HOA_DICH_VU}
-                    </Text>
-                  </Text>
-                </Block>
-              ) : (
-                <Block flex left>
-                  <Text
-                    style={{ fontFamily: 'montserrat-regular' }}
-                    size={5}
-                    style={titleStyles}
-                    color={nowTheme.COLORS.BLACK}
-                  >
-                    Loại hàng hóa, dịch vụ: 
-                    
-                  </Text>
-                </Block>
-              )}
-              
-              {item.DAC_DIEM ? (
-                <Block flex left>
-                  <Text
-                    style={{ fontFamily: 'montserrat-regular' }}
-                    size={5}
-                    style={titleStyles}
-                    color={nowTheme.COLORS.BLACK}
-                  >
-                    Đặc điểm: 
-                    <Text style={{ fontFamily: 'montserrat-regular' }}
-                    size={14}
-                    // style={titleStyles}
-                    color={nowTheme.COLORS.BLACK}
-                    >
-                    {' '} {item.DAC_DIEM}
-                    </Text>
-                  </Text>
-                </Block>
-              ) : (
-                <Block flex left>
-                  <Text
-                    style={{ fontFamily: 'montserrat-regular' }}
-                    size={5}
-                    style={titleStyles}
-                    color={nowTheme.COLORS.BLACK}
-                  >
-                    Đặc điểm: 
-                    
-                  </Text>
-                </Block>
-              )}
-               {item.TEN_DON_VI_TINH ? (
-                <Block flex left>
-                  <Text
-                    style={{ fontFamily: 'montserrat-regular' }}
-                    size={5}
-                    style={titleStyles}
-                    color={nowTheme.COLORS.BLACK}
-                  >
-                    Đơn vị tính: 
-                    <Text style={{ fontFamily: 'montserrat-regular' }}
-                    size={14}
-                    // style={titleStyles}
-                    color={nowTheme.COLORS.BLACK}
-                    >
-                      {' '} {item.TEN_DON_VI_TINH}
-                    </Text>
-                  </Text>
-                </Block>
-              ) : (
-                <Block flex left>
-                  <Text
-                    style={{ fontFamily: 'montserrat-regular' }}
-                    size={5}
-                    style={titleStyles}
-                    color={nowTheme.COLORS.BLACK}
-                  >
-                    Đơn vị tính:
-                    <Text >
-                      {' '}
-                    </Text>
-                    
-                  </Text>
-                </Block>
-              )}
-              
-              {item.NGUON_THONG_TIN ? (
-                <Block flex left>
-                  <Text
-                    style={{ fontFamily: 'montserrat-regular' }}
-                    size={5}
-                    style={titleStyles}
-                    color={nowTheme.COLORS.BLACK}
-                  >
-                    Nguồn thông tin: 
-                    <Text style={{ fontFamily: 'montserrat-regular' }}
-                    size={14}
-                    // style={titleStyles}
-                    color={nowTheme.COLORS.BLACK}
-                    >
-                      {' '} {item.NGUON_THONG_TIN}
-                    </Text>
-                  </Text>
-                </Block>
-              ) : (
-                <Block flex left>
-                  <Text
-                    style={{ fontFamily: 'montserrat-regular' }}
-                    size={5}
-                    style={titleStyles}
-                    color={nowTheme.COLORS.BLACK}
-                  > 
-                    Nguồn thông tin: 
-                    <Text >
-                      {' '}
-                    </Text>
-                    
-                  </Text>
-                </Block>
-              )}
-              {item.TEN_LOAI_GIA ? (
-                <Block flex left>
-                  <Text
-                    style={{ fontFamily: 'montserrat-regular' }}
-                    size={5}
-                    style={titleStyles}
-                    color={nowTheme.COLORS.BLACK}
-                  >
-                    Loại giá: 
-                    <Text style={{ fontFamily: 'montserrat-regular' }}
-                    size={14}
-                    // style={titleStyles}
-                    color={nowTheme.COLORS.BLACK}
-                    >
-                      {' '} {item.TEN_LOAI_GIA}
-                    </Text>
-                  </Text>
-                </Block>
-              ) : (
-                <Block flex left>
-                  <Text
-                    style={{ fontFamily: 'montserrat-regular' }}
-                    size={5}
-                    style={titleStyles}
-                    color={nowTheme.COLORS.BLACK}
-                  > 
-                    Loại giá:  
-                    <Text >
-                      {' '}
-                    </Text>
-                    
-                  </Text>
-                </Block>
-              )}
+                </Text>
+              </Block>
+            ) : (
+              <Block flex center>
+                <Text size={5} style={titleStyles} color={nowTheme.COLORS.FACEBOOK}>
+                  Tên hàng hóa, dịch vụ:
+                </Text>
+              </Block>
+            )}
 
-               {item.MUC_TANG_GIAM ? (
-                <Block flex left>
+            {item.MA_SAN_PHAM ? (
+              <Block flex left>
+                <Text size={5} style={titleStyles} color={nowTheme.COLORS.FACEBOOK}>
+                  Mã sản phẩm:
                   <Text
                     style={{ fontFamily: 'montserrat-regular' }}
-                    size={5}
-                    style={titleStyles}
-                    color={nowTheme.COLORS.BLACK}
-                  >
-                    Mức tăng giảm: 
-                    <Text style={{ fontFamily: 'montserrat-regular' }}
                     size={14}
                     // style={titleStyles}
                     color={nowTheme.COLORS.BLACK}
-                    >
-                      {' '} {item.MUC_TANG_GIAM}
-                    </Text>
+                  >
+                    {' '}
+                    {item.MA_SAN_PHAM}
                   </Text>
-                </Block>
-              ) : (
-                <Block flex left>
+                </Text>
+              </Block>
+            ) : (
+              <Block flex left>
+                <Text size={5} style={titleStyles} color={nowTheme.COLORS.FACEBOOK}>
+                  Mã sản phẩm:
+                </Text>
+              </Block>
+            )}
+            {item.MA_NHOM_HANG_HOA ? (
+              <Block flex left>
+                <Text size={5} style={titleStyles} color={nowTheme.COLORS.FACEBOOK}>
+                  Mã hàng hóa:
                   <Text
                     style={{ fontFamily: 'montserrat-regular' }}
-                    size={5}
-                    style={titleStyles}
-                    color={nowTheme.COLORS.BLACK}
-                  >
-                    Mức tăng giảm: 
-                    
-                  </Text>
-                </Block>
-              )}
-              {item.TY_LE_TANG_GIAM ? (
-                <Block flex left>
-                  <Text
-                    style={{ fontFamily: 'montserrat-regular' }}
-                    size={5}
-                    style={titleStyles}
-                    color={nowTheme.COLORS.BLACK}
-                  >
-                    Tỷ lệ tăng giảm: 
-                    <Text style={{ fontFamily: 'montserrat-regular' }}
                     size={14}
                     // style={titleStyles}
                     color={nowTheme.COLORS.BLACK}
-                    >
-                      {' '} {item.TY_LE_TANG_GIAM}
-                    </Text>
+                  >
+                    {' '}
+                    {item.MA_NHOM_HANG_HOA}
                   </Text>
-                </Block>
-              ) : (
-                <Block flex left>
+                </Text>
+              </Block>
+            ) : (
+              <Block flex left>
+                <Text size={5} style={titleStyles} color={nowTheme.COLORS.FACEBOOK}>
+                  Mã hàng hóa:
+                  <Text> </Text>
+                </Text>
+              </Block>
+            )}
+            {item.TEN_HANG_HOA_DICH_VU ? (
+              <Block flex left>
+                <Text size={5} style={titleStyles} color={nowTheme.COLORS.BLACK}>
+                  Loại hàng hóa, dịch vụ:
                   <Text
                     style={{ fontFamily: 'montserrat-regular' }}
-                    size={5}
-                    style={titleStyles}
+                    size={14}
+                    // style={titleStyles}
                     color={nowTheme.COLORS.BLACK}
                   >
-                    Tỷ lệ tăng giảm: 
-                    
+                    {' '}
+                    {item.TEN_HANG_HOA_DICH_VU}
                   </Text>
-                </Block>
-              )}
-              {/* <Text
+                </Text>
+              </Block>
+            ) : (
+              <Block flex left>
+                <Text size={5} style={titleStyles} color={nowTheme.COLORS.BLACK}>
+                  Loại hàng hóa, dịch vụ:
+                </Text>
+              </Block>
+            )}
+
+            {item.DAC_DIEM ? (
+              <Block flex left>
+                <Text size={5} style={titleStyles} color={nowTheme.COLORS.BLACK}>
+                  Đặc điểm:
+                  <Text
+                    style={{ fontFamily: 'montserrat-regular' }}
+                    size={14}
+                    // style={titleStyles}
+                    color={nowTheme.COLORS.BLACK}
+                  >
+                    {' '}
+                    {item.DAC_DIEM}
+                  </Text>
+                </Text>
+              </Block>
+            ) : (
+              <Block flex left>
+                <Text size={5} style={titleStyles} color={nowTheme.COLORS.BLACK}>
+                  Đặc điểm:
+                </Text>
+              </Block>
+            )}
+            {item.TEN_DON_VI_TINH ? (
+              <Block flex left>
+                <Text size={5} style={titleStyles} color={nowTheme.COLORS.BLACK}>
+                  Đơn vị tính:
+                  <Text
+                    style={{ fontFamily: 'montserrat-regular' }}
+                    size={14}
+                    // style={titleStyles}
+                    color={nowTheme.COLORS.BLACK}
+                  >
+                    {' '}
+                    {item.TEN_DON_VI_TINH}
+                  </Text>
+                </Text>
+              </Block>
+            ) : (
+              <Block flex left>
+                <Text size={5} style={titleStyles} color={nowTheme.COLORS.BLACK}>
+                  Đơn vị tính:
+                  <Text> </Text>
+                </Text>
+              </Block>
+            )}
+
+            {item.NGUON_THONG_TIN ? (
+              <Block flex left>
+                <Text size={5} style={titleStyles} color={nowTheme.COLORS.BLACK}>
+                  Nguồn thông tin:
+                  <Text
+                    style={{ fontFamily: 'montserrat-regular' }}
+                    size={14}
+                    // style={titleStyles}
+                    color={nowTheme.COLORS.BLACK}
+                  >
+                    {' '}
+                    {item.NGUON_THONG_TIN}
+                  </Text>
+                </Text>
+              </Block>
+            ) : (
+              <Block flex left>
+                <Text size={5} style={titleStyles} color={nowTheme.COLORS.BLACK}>
+                  Nguồn thông tin:
+                  <Text> </Text>
+                </Text>
+              </Block>
+            )}
+            {item.TEN_LOAI_GIA ? (
+              <Block flex left>
+                <Text size={5} style={titleStyles} color={nowTheme.COLORS.BLACK}>
+                  Loại giá:
+                  <Text
+                    style={{ fontFamily: 'montserrat-regular' }}
+                    size={14}
+                    // style={titleStyles}
+                    color={nowTheme.COLORS.BLACK}
+                  >
+                    {' '}
+                    {item.TEN_LOAI_GIA}
+                  </Text>
+                </Text>
+              </Block>
+            ) : (
+              <Block flex left>
+                <Text size={5} style={titleStyles} color={nowTheme.COLORS.BLACK}>
+                  Loại giá:
+                  <Text> </Text>
+                </Text>
+              </Block>
+            )}
+
+            {item.MUC_TANG_GIAM ? (
+              <Block flex left>
+                <Text size={5} style={titleStyles} color={nowTheme.COLORS.BLACK}>
+                  Mức tăng giảm:
+                  <Text
+                    style={{ fontFamily: 'montserrat-regular' }}
+                    size={14}
+                    // style={titleStyles}
+                    color={nowTheme.COLORS.BLACK}
+                  >
+                    {' '}
+                    {item.MUC_TANG_GIAM}
+                  </Text>
+                </Text>
+              </Block>
+            ) : (
+              <Block flex left>
+                <Text size={5} style={titleStyles} color={nowTheme.COLORS.BLACK}>
+                  Mức tăng giảm:
+                </Text>
+              </Block>
+            )}
+            {item.TY_LE_TANG_GIAM ? (
+              <Block flex left>
+                <Text size={5} style={titleStyles} color={nowTheme.COLORS.BLACK}>
+                  Tỷ lệ tăng giảm:
+                  <Text
+                    style={{ fontFamily: 'montserrat-regular' }}
+                    size={14}
+                    // style={titleStyles}
+                    color={nowTheme.COLORS.BLACK}
+                  >
+                    {' '}
+                    {item.TY_LE_TANG_GIAM}
+                  </Text>
+                </Text>
+              </Block>
+            ) : (
+              <Block flex left>
+                <Text size={5} style={titleStyles} color={nowTheme.COLORS.BLACK}>
+                  Tỷ lệ tăng giảm:
+                </Text>
+              </Block>
+            )}
+            {/* <Text
                 style={{ fontFamily: 'montserrat-regular' }}
                 size={12}
                 color={nowTheme.COLORS.TEXT}
@@ -385,8 +285,8 @@ class Card_142 extends React.Component {
                 {item.TY_LE_TANG_GIAM}
                
               </Text> */}
-             
-              {/* {item.description ? (
+
+            {/* {item.description ? (
                 <Block flex center>
                   <Text
                     style={{ fontFamily: 'montserrat-regular', textAlign: 'center', padding: 15 }}
@@ -399,7 +299,7 @@ class Card_142 extends React.Component {
               ) : (
                 <Block />
               )} */}
-              {/* {item.body ? (
+            {/* {item.body ? (
                 <Block flex left>
                   <Text
                     style={{ fontFamily: 'montserrat-regular' }}
@@ -412,8 +312,8 @@ class Card_142 extends React.Component {
               ) : (
                 <Block />
               )} */}
-            </Block>
-            {/* <Block right={ctaRight ? true : false}>
+          </Block>
+          {/* <Block right={ctaRight ? true : false}>
               <Text
                 style={styles.articleButton}
                 size={12}
@@ -424,7 +324,7 @@ class Card_142 extends React.Component {
                 {item.cta}
               </Text>
             </Block> */}
-          </Block>
+        </Block>
         {/* </TouchableWithoutFeedback> */}
       </Block>
     );

@@ -24,6 +24,7 @@ import BaoCaoTongHopGiaKeKhai from '../screens/BaoCaoTongHopGiaKeKhai';
 import BaoCaoGiaThiTruong116 from '../screens/BaoCaoGiaThiTruong116';
 import BaoCaoGiaThiTruongLanhDaoUBND from '../screens/BaoCaoGiaThiTruongLanhDaoUBND';
 import BaoCaoGiaThiTruong142 from '../screens/BaoCaoGiaThiTruong142';
+import TraCuuGiaHHDVNhaNuocDinhGia from '../screens/TraCuuGiaHHDVNhaNuocDinhGia';
 
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -170,6 +171,30 @@ function BaoCaoGiaThiTruongLanhDaoUBNDStack(props) {
               navigation={navigation}
               scene={scene}
             />
+          ),
+          backgroundColor: '#FFFFFF',
+        }}
+      />
+      {/* <Stack.Screen name="Home" component={BottomNavigator} /> */}
+    </Stack.Navigator>
+  );
+}
+
+function TraCuuGiaHHDVNhaNuocDinhGiaStack(props) {
+  return (
+    <Stack.Navigator
+      initialRouteName="TraCuuGiaHHDVNhaNuocDinhGia"
+      screenOptions={{
+        mode: 'card',
+        headerShown: 'screen',
+      }}
+    >
+      <Stack.Screen
+        name="TraCuuGiaHHDVNhaNuocDinhGia"
+        component={TraCuuGiaHHDVNhaNuocDinhGia}
+        options={{
+          header: ({ navigation, scene }) => (
+            <Header title="Báo cáo Giá hàng hóa định giá" navigation={navigation} scene={scene} />
           ),
           backgroundColor: '#FFFFFF',
         }}
@@ -364,7 +389,7 @@ function AppStack(props) {
     >
       <Drawer.Screen
         name="TRANG_CHU"
-        component={TRANG_CHUStack}
+        component={BaoCaoGiaThiTruongLanhDaoUBNDStack}
         options={{
           headerShown: false,
         }}
@@ -400,6 +425,13 @@ function AppStack(props) {
       <Drawer.Screen
         name="BaoCaoTongHopGiaKeKhai"
         component={BaoCaoTongHopGiaKeKhaiStack}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Drawer.Screen
+        name="TraCuuGiaHHDVNhaNuocDinhGia"
+        component={TraCuuGiaHHDVNhaNuocDinhGiaStack}
         options={{
           headerShown: false,
         }}

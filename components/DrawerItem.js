@@ -185,7 +185,7 @@ class DrawerItem extends React.Component {
 
   render() {
     const { focused, name, title, type, navigation } = this.props;
-    console.log(`${this.props.name}:${this.props.focused}`);
+    //console.log(`${this.props.name}:${this.props.focused}`);
     const containerStyles = [
       styles.defaultStyle,
       focused ? [styles.activeStyle, styles.shadow] : null,
@@ -211,7 +211,7 @@ class DrawerItem extends React.Component {
                 marginBottom: 10,
                 fontFamily: 'montserrat-regular',
                 fontWeight: '300',
-                fontSize: 10,
+                fontSize: 12,
               }}
             >
               {title}
@@ -254,12 +254,8 @@ class DrawerItem extends React.Component {
               </Block>
               <Block row center flex={0.9}>
                 <Text
-                  style={{
-                    fontFamily: 'montserrat-regular',
-                    textTransform: 'uppercase',
-                    fontWeight: '300',
-                  }}
-                  size={12}
+                  style={styles.menuItemStyle}
+                  //size={10}
                   bold={focused ? true : false}
                   color={focused ? nowTheme.COLORS.PRIMARY : 'white'}
                 >
@@ -292,6 +288,12 @@ const styles = StyleSheet.create({
     },
     shadowRadius: 8,
     shadowOpacity: 0.1,
+  },
+  menuItemStyle: {
+    fontFamily: 'montserrat-regular',
+    textTransform: 'uppercase',
+    fontWeight: '300',
+    fontSize: 9,
   },
 });
 

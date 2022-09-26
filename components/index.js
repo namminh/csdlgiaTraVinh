@@ -13,6 +13,7 @@ import CardBaoCaoTongHopGiaDangKy from './CardBaoCaoTongHopGiaDangKy';
 import CardBaoCaoGiaThiTruongLanhDaoUBND from './CardBaoCaoGiaThiTruongLanhDaoUBND';
 import Card_116 from './Card_116';
 import Card_142 from './Card_142';
+import CardGiaHHDVNhaNuocDinhGia from './CardGiaHHDVNhaNuocDinhGia';
 
 export {
   Button,
@@ -30,4 +31,5 @@ export {
   CardBaoCaoGiaThiTruongLanhDaoUBND,
   Card_116,
   Card_142,
+  CardGiaHHDVNhaNuocDinhGia,
 };

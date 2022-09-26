@@ -8,7 +8,7 @@ import { BIcon } from '.';
 import { nowTheme } from '../constants';
 import { View } from 'react-native-web';
 
-class CardBaoCaoTongHopGiaDangKy extends React.Component {
+class CardGiaHHDVNhaNuocDinhGia extends React.Component {
   render() {
     const {
       navigation,
@@ -41,123 +41,89 @@ class CardBaoCaoTongHopGiaDangKy extends React.Component {
         <TouchableWithoutFeedback>
           <Block flex space="between" style={styles.cardDescription}>
             <Block flex left>
-              <Text size={14} style={titleStyles} color={nowTheme.COLORS.BLACK}>
-                {item.TEN_SAN_PHAM}
-              </Text>
-              {item.TEN_DON_VI_TINH ? (
-                <Block flex row left style={styles.cardDescription}>
-                  <Text style={styles.cardItemName}>Đơn vị tính:</Text>
-                  <Text style={styles.cardItemValue}>{item.TEN_DON_VI_TINH}</Text>
-                </Block>
-              ) : (
-                <Block />
-              )}
-              {item.TEN_HANG_HOA_DICH_VU ? (
-                <Block flex left style={styles.cardDescription}>
-                  <Text style={{ fontFamily: 'montserrat-regular' }} size={14} color={'#9A9A9A'}>
-                    {item.TEN_HANG_HOA_DICH_VU}
-                  </Text>
-                </Block>
-              ) : (
-                <Block />
-              )}
-
-              {item.GHI_CHU ? (
-                <Block flex left style={styles.cardDescription}>
-                  <Text
-                    style={{ fontFamily: 'montserrat-regular' }}
-                    size={12}
-                    color={nowTheme.COLORS.TEXT}
-                  >
-                    Ghi chú: {item.GHI_CHU}
-                  </Text>
-                </Block>
-              ) : (
-                <Block />
-              )}
-              <Block flex row style={styles.cardDescription}>
-                {item.MUC_GIA_HIEN_HANH ? (
-                  <Block flex left row>
-                    <Block>
-                      <BIcon
-                        //type={item.type}
-                        size={12}
-                        name="ios-pricetag"
-                        color={nowTheme.COLORS.PRIMARYDARK}
-                      />
-                    </Block>
-                    <Block flex row>
-                      <Text
-                        style={{ fontFamily: 'montserrat-regular', marginLeft: 10 }}
-                        size={12}
-                        color={nowTheme.COLORS.TEXT}
-                      >
-                        Giá: {item.MUC_GIA_HIEN_HANH}
-                      </Text>
-                    </Block>
-                  </Block>
-                ) : (
-                  <Block />
-                )}
-                {item.MUC_GIA_MOI ? (
-                  <Block flex left row>
-                    <BIcon
-                      //type={item.type}
-                      size={12}
-                      name="ios-pricetag"
-                      color={nowTheme.COLORS.PRIMARY}
-                    />
-                    <Text
-                      style={{ fontFamily: 'montserrat-regular', marginLeft: 10 }}
-                      size={12}
-                      color={nowTheme.COLORS.TEXT}
-                    >
-                      Giá mới: {item.MUC_GIA_MOI}
-                    </Text>
+              <Text style={titleStyles}>{item.TEN_MAU_BIEU}</Text>
+              <Block flex row>
+                {item.TEN_PHAN_LOAI ? (
+                  <Block flex row left style={styles.cardDescription}>
+                    <Text style={styles.cardItemName}>Phân loại:</Text>
+                    <Text style={styles.cardItemValue}>{item.TEN_PHAN_LOAI}</Text>
                   </Block>
                 ) : (
                   <Block />
                 )}
               </Block>
-              {item.MUC_DO_TANG_GIAM ? (
-                <Block flex left row style={styles.cardDescription}>
-                  <BIcon name="pulse" size={12} color={nowTheme.COLORS.ACTIVE} />
-                  <Text
-                    style={{ fontFamily: 'montserrat-regular', marginLeft: 10 }}
-                    size={12}
-                    color={nowTheme.COLORS.TEXT}
-                  >
-                    Tăng/Giảm: {item.MUC_DO_TANG_GIAM}
-                  </Text>
+
+              {item.TEN_DON_VI ? (
+                <Block flex row left style={styles.cardDescription}>
+                  <Text style={styles.cardItemName}>Đơn vị:</Text>
+                  <Text style={styles.cardItemValue}>{item.TEN_DON_VI}</Text>
                 </Block>
               ) : (
                 <Block />
               )}
-              {item.QUY_CACH ? (
-                <Block flex left style={styles.cardDescription}>
-                  <Text
-                    style={{ fontFamily: 'montserrat-regular', textAlign: 'center' }}
-                    size={14}
-                    color={'#9A9A9A'}
-                  >
-                    {item.QUY_CACH}
-                  </Text>
+              {item.SO_VAN_BAN ? (
+                <Block flex row left style={styles.cardDescription}>
+                  <Text style={styles.cardItemName}>Số văn bản:</Text>
+                  <Text style={styles.cardItemValue}>{item.SO_VAN_BAN}</Text>
                 </Block>
               ) : (
                 <Block />
               )}
+
+              <Block flex row style={styles.cardDescription}>
+                {item.NGAY_BAN_HANH_GRID ? (
+                  <Block flex left row>
+                    <Block>
+                      <BIcon
+                        //type={item.type}
+                        size={12}
+                        name="calendar-sharp"
+                        color={nowTheme.COLORS.PRIMARYDARK}
+                      />
+                    </Block>
+                    <Block flex row>
+                      <Text style={styles.cardItemName}>Ngày ban hành:</Text>
+                      <Text style={styles.cardItemValue}>{item.NGAY_BAN_HANH_GRID}</Text>
+                    </Block>
+                  </Block>
+                ) : (
+                  <Block />
+                )}
+              </Block>
+              <Block flex row style={styles.cardDescription}>
+                {item.THOI_HAN_HIEU_LUC ? (
+                  <Block flex left row>
+                    <BIcon
+                      //type={item.type}
+                      size={12}
+                      name="calendar-sharp"
+                      color={nowTheme.COLORS.PRIMARY}
+                    />
+                    <Block flex row>
+                      <Text style={styles.cardItemName}>Hiệu lực:</Text>
+                      <Text style={styles.cardItemValue}>{item.THOI_HAN_HIEU_LUC}</Text>
+                    </Block>
+                  </Block>
+                ) : (
+                  <Block />
+                )}
+              </Block>
             </Block>
-            <Block right={ctaRight ? true : false}>
-              <Text
-                style={styles.articleButton}
-                size={12}
-                muted={!ctaColor}
-                color={ctaColor || nowTheme.COLORS.ACTIVE}
-                bold
-              >
-                {item.cta}
-              </Text>
-            </Block>
+            {item.GHI_CHU ? (
+              <Block right={ctaRight ? true : false}>
+                <Text
+                  style={styles.articleButton}
+                  size={12}
+                  muted={!ctaColor}
+                  color={ctaColor || nowTheme.COLORS.DEFAULT}
+                  bold
+                >
+                  Ghi chú: {item.GHI_CHU}
+                </Text>
+              </Block>
+            ) : (
+              <Block />
+            )}
           </Block>
         </TouchableWithoutFeedback>
       </Block>
@@ -165,7 +131,7 @@ class CardBaoCaoTongHopGiaDangKy extends React.Component {
   }
 }
 
-CardBaoCaoTongHopGiaDangKy.propTypes = {
+CardGiaHHDVNhaNuocDinhGia.propTypes = {
   item: PropTypes.object,
   horizontal: PropTypes.bool,
   full: PropTypes.bool,
@@ -191,6 +157,18 @@ const styles = StyleSheet.create({
   },
   cardDescription: {
     padding: theme.SIZES.BASE / 2,
+  },
+  cardItemName: {
+    fontFamily: 'montserrat-regular',
+    fontSize: 12,
+    color: nowTheme.COLORS.BLACK,
+  },
+  cardItemValue: {
+    fontFamily: 'montserrat-regular',
+    fontSize: 12,
+    color: nowTheme.COLORS.BLACK,
+    fontWeight: 'bold',
+    marginLeft: 10,
   },
   imageContainer: {
     borderRadius: 3,
@@ -232,18 +210,6 @@ const styles = StyleSheet.create({
     marginRight: 10,
     alignItems: 'center',
   },
-  cardItemName: {
-    fontFamily: 'montserrat-regular',
-    fontSize: 12,
-    color: nowTheme.COLORS.BLACK,
-  },
-  cardItemValue: {
-    fontFamily: 'montserrat-regular',
-    fontSize: 12,
-    color: nowTheme.COLORS.BLACK,
-    fontWeight: 'bold',
-    marginLeft: 10,
-  },
 });
 
-export default withNavigation(CardBaoCaoTongHopGiaDangKy);
+export default withNavigation(CardGiaHHDVNhaNuocDinhGia);
