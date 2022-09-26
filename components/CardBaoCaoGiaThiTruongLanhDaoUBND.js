@@ -44,6 +44,16 @@ class CardBaoCaoGiaThiTruongLanhDaoUBND extends React.Component {
               <Text size={14} style={titleStyles}>
                 {item.TEN_HANG_HOA_DICH_VU}
               </Text>
+              <Block flex>
+                {item.TEN_NHOM_HANG_HOA ? (
+                  <Block flex left style={styles.cardDescription}>
+                    <Text style={styles.cardItemName}>Nhóm:</Text>
+                    <Text style={styles.cardItemValue}>{item.TEN_NHOM_HANG_HOA}</Text>
+                  </Block>
+                ) : (
+                  <Block />
+                )}
+              </Block>
               <Block flex row>
                 {item.TEN_DON_VI_TINH ? (
                   <Block flex row left style={styles.cardDescription}>
@@ -150,6 +160,36 @@ class CardBaoCaoGiaThiTruongLanhDaoUBND extends React.Component {
                 <Block />
               )}
             </Block>
+            {item.DAC_DIEM ? (
+              <Block right={ctaRight ? true : false}>
+                <Text
+                  style={styles.articleButton}
+                  size={12}
+                  muted={!ctaColor}
+                  color={ctaColor || nowTheme.COLORS.DEFAULT}
+                  bold
+                >
+                  Đặc điểm: {item.DAC_DIEM}
+                </Text>
+              </Block>
+            ) : (
+              <Block />
+            )}
+            {item.NGUON_THONG_TIN ? (
+              <Block right={ctaRight ? true : false}>
+                <Text
+                  style={styles.articleButton}
+                  size={12}
+                  muted={!ctaColor}
+                  color={ctaColor || nowTheme.COLORS.DEFAULT}
+                  bold
+                >
+                  Nguồn: {item.NGUON_THONG_TIN}
+                </Text>
+              </Block>
+            ) : (
+              <Block />
+            )}
             {item.GHI_CHU ? (
               <Block right={ctaRight ? true : false}>
                 <Text
