@@ -285,8 +285,12 @@ class BaoCaoGiaThiTruong116 extends React.Component {
   };
   renderSearchResult = () => {
     return (
-      <ScrollView showsVerticalScrollIndicator={true} contentContainerStyle={styles.articles}>
-        <Block flex>
+      <ScrollView
+        showsVerticalScrollIndicator={true}
+        contentContainerStyle={styles.articles}
+        nestedScrollEnabled={true}
+      >
+        <Block flex style={{ paddingHorizontal: theme.SIZES.BASE }}>
           {this.state.lsData.slice(0, 100).map((item, index) => {
             //console.log(this.state.lsData.slice(0, 2));
             return (
@@ -408,8 +412,11 @@ class BaoCaoGiaThiTruong116 extends React.Component {
     return (
       <Block flex center>
         <ScrollView
+          style={{ flex: 1 }}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ paddingBottom: 30, width }}
+          nestedScrollEnabled={true}
+          scrollEnabled={true}
         >
           {this.renderForm()}
           {this.state.isDataLoaded && this.renderSearchResult()}
@@ -483,6 +490,9 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontFamily: 'montserrat-bold',
     fontSize: 18,
+  },
+  scrollView: {
+    flexGrow: 1,
   },
 });
 

@@ -51,7 +51,8 @@ class BaoCaoTongHopGiaDangKy extends React.Component {
       lsTenHHDVDK: [],
       selectedHHDVDKId: -1,
       lsData: [],
-      startDate: Moment(new Date()).format('DD/MM/YYYY'),
+      //startDate: Moment(new Date()).format('DD/MM/YYYY'),
+      startDate: '01/01/2019',
       endDate: Moment(new Date()).format('DD/MM/YYYY'),
       mode: 'date',
       isStartDatePickerVisible: false,
@@ -233,6 +234,7 @@ class BaoCaoTongHopGiaDangKy extends React.Component {
   showToastWithGravityAndOffset = (message) => {
     ToastAndroid.showWithGravityAndOffset(message, ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50);
   };
+
   onSelectedDoanhNghiep(index) {
     if (index >= 0) {
       let selected = this.state.lsDoanhNghiep[index];
@@ -248,12 +250,20 @@ class BaoCaoTongHopGiaDangKy extends React.Component {
     }
   }
 
+  onSelectedNhomHHDV(index) {
+    if (index >= 0) {
+      let selected = this.state.lsNhomHHDV[index];
+
+      if (selected) this.setState({ selectedNhomHHDVId: selected.NHOM_HHDV_ID });
+    }
+  }
+
   toggleSwitch = (switchId) => this.setState({ [switchId]: !this.state[switchId] });
 
   renderSearchResult = () => {
     return (
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.articles}>
-        <Block flex>
+        <Block flex style={styles.container}>
           {this.state.lsData.map((item, index) => {
             //console.log(this.state.lsData.slice(0, 2));
             return (
@@ -556,6 +566,9 @@ class BaoCaoTongHopGiaDangKy extends React.Component {
               defaultIndex={-1}
               defaultValue={'- Chọn -'}
               options={this.state.lsTenNhomHHDV}
+              onSelect={(index, value) => {
+                this.onSelectedNhomHHDV(index);
+              }}
             />
           </Block>
         </Block>
@@ -680,6 +693,9 @@ const styles = StyleSheet.create({
     color: nowTheme.COLORS.BLACK,
     fontFamily: 'montserrat-regular',
     fontSize: 14,
+  },
+  container: {
+    paddingHorizontal: theme.SIZES.BASE,
   },
 });
 

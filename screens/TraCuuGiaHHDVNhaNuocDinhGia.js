@@ -456,7 +456,7 @@ class TraCuuGiaHHDVNhaNuocDinhGia extends React.Component {
   renderSearchResult = () => {
     return (
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.articles}>
-        <Block flex>
+        <Block flex style={{ paddingHorizontal: theme.SIZES.BASE }}>
           {this.state.lsData.map((item, index) => {
             //console.log(this.state.lsData.slice(0, 2));
             return (

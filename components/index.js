@@ -14,6 +14,7 @@ import CardBaoCaoGiaThiTruongLanhDaoUBND from './CardBaoCaoGiaThiTruongLanhDaoUB
 import Card_116 from './Card_116';
 import Card_142 from './Card_142';
 import CardGiaHHDVNhaNuocDinhGia from './CardGiaHHDVNhaNuocDinhGia';
+import CardBaoCaoGiaThiThuongTongHop from './CardBaoCaoGiaThiThuongTongHop';
 
 export {
   Button,
@@ -32,4 +33,5 @@ export {
   Card_116,
   Card_142,
   CardGiaHHDVNhaNuocDinhGia,
+  CardBaoCaoGiaThiThuongTongHop,
 };

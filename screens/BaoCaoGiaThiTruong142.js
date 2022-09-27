@@ -73,7 +73,7 @@ class BaoCaoGiaThiTruong142 extends React.Component {
         lsdanhmuchanghoa: json,
       });
       let arr = [];
-      
+
       json.map((item) => {
         arr.push(item.TEN_NHOM_HANG_HOA);
       });
@@ -81,8 +81,6 @@ class BaoCaoGiaThiTruong142 extends React.Component {
       this.setState({
         lsTenhanghoa: arr,
       });
-
-      
     });
   }
 
@@ -101,7 +99,6 @@ class BaoCaoGiaThiTruong142 extends React.Component {
       this.setState({
         lsTenDiaBan: arr,
       });
-      
     });
   }
 
@@ -142,14 +139,15 @@ class BaoCaoGiaThiTruong142 extends React.Component {
   }
 
   async fetData() {
-   
-    let url = `http://113.160.48.98:8790/mwebapi/GetBaoCaoGiaThiTruong142?SAN_PHAM_ID=HHDV&NHOM_HANG_HOA_ID=${this.state.selectedhanghoaId}&DIA_BAN_ID=${this.state.selectedDiaBanId}&KY_DU_LIEU_ID=${this.state.selectedDinhKyId}&KY_DU_LIEU_CHI_TIET_1_ID=${
+    let url = `http://113.160.48.98:8790/mwebapi/GetBaoCaoGiaThiTruong142?SAN_PHAM_ID=HHDV&NHOM_HANG_HOA_ID=${
+      this.state.selectedhanghoaId
+    }&DIA_BAN_ID=${this.state.selectedDiaBanId}&KY_DU_LIEU_ID=${
+      this.state.selectedDinhKyId
+    }&KY_DU_LIEU_CHI_TIET_1_ID=${
       this.state.selectedDinhKyChiTiet1Id ? this.state.selectedDinhKyChiTiet1Id : ''
     }&KY_DU_LIEU_CHI_TIET_2_ID=${
       this.state.selectedDinhKyChiTiet2Id ? this.state.selectedDinhKyChiTiet2Id : ' '
     }&NAM=${this.state.selectedNam}`;
-    
-    
 
     console.log('NAMNM URL');
     console.log(url);
@@ -169,7 +167,6 @@ class BaoCaoGiaThiTruong142 extends React.Component {
     if (index >= 0) {
       let selected = this.state.lsdanhmuchanghoa[index];
       selected && this.setState({ selectedhanghoaId: selected.NHOM_HANG_HOA_ID });
-     
     }
   }
 
@@ -177,7 +174,6 @@ class BaoCaoGiaThiTruong142 extends React.Component {
     if (index >= 0) {
       let selected = this.state.lsDiaBan[index];
       selected && this.setState({ selectedDiaBanId: selected.DIA_BAN_ID });
-      
     }
   }
   onSelectedKyDuLieu(index) {
@@ -276,7 +272,6 @@ class BaoCaoGiaThiTruong142 extends React.Component {
       `${NHOM_HANG_HOA_ID},${DIA_BAN_ID},${KY_DU_LIEU_ID},${KY_DU_LIEU_CHI_TIET_1_ID},${KY_DU_LIEU_CHI_TIET_2_ID},${NAM}`
     );
     if (!NHOM_HANG_HOA_ID) {
-      
       this.showToast('Bạn phải chọn Nhóm hàng hóa');
       return;
     }
@@ -321,7 +316,7 @@ class BaoCaoGiaThiTruong142 extends React.Component {
   renderSearchResult = () => {
     return (
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.articles}>
-        <Block flex>
+        <Block flex style={{ paddingHorizontal: theme.SIZES.BASE }}>
           {this.state.lsData.slice(0, 100).map((item, index) => {
             //console.log(this.state.lsData.slice(0, 2));
             return (
@@ -345,7 +340,6 @@ class BaoCaoGiaThiTruong142 extends React.Component {
 
     return (
       <Block flex style={styles.group}>
-        
         <Block style={{ paddingHorizontal: theme.SIZES.BASE }}>
           <Text style={{ fontFamily: 'montserrat-regular' }} muted>
             Lấy dữ liệu
