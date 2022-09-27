@@ -21,6 +21,7 @@ import TRANG_CHU from '../screens/TRANG_CHU';
 import KT_THEO_BIEU_MAU from '../screens/KT_THEO_BIEU_MAU';
 import BaoCaoTongHopGiaDangKy from '../screens/BaoCaoTongHopGiaDangKy';
 import BaoCaoTongHopGiaKeKhai from '../screens/BaoCaoTongHopGiaKeKhai';
+import KhaiThacGiaVLXD from '../screens/KhaiThacGiaVLXD';
 import BaoCaoGiaThiTruong116 from '../screens/BaoCaoGiaThiTruong116';
 import BaoCaoGiaThiTruongLanhDaoUBND from '../screens/BaoCaoGiaThiTruongLanhDaoUBND';
 
@@ -145,6 +146,30 @@ function BaoCaoTongHopGiaKeKhaiStack(props) {
         options={{
           header: ({ navigation, scene }) => (
             <Header title="Báo cáo Tổng hợp giá kê khai" navigation={navigation} scene={scene} />
+          ),
+          backgroundColor: '#FFFFFF',
+        }}
+      />
+      {/* <Stack.Screen name="Home" component={BottomNavigator} /> */}
+    </Stack.Navigator>
+  );
+}
+
+function KhaiThacGiaVLXDStack(props) {
+  return (
+    <Stack.Navigator
+      initialRouteName="KhaiThacGiaVLXD"
+      screenOptions={{
+        mode: 'card',
+        headerShown: 'screen',
+      }}
+    >
+      <Stack.Screen
+        name="KhaiThacGiaVLXD"
+        component={KhaiThacGiaVLXD}
+        options={{
+          header: ({ navigation, scene }) => (
+            <Header title="Khai Thác Giá Vật Liệu Xây Dựng" navigation={navigation} scene={scene} />
           ),
           backgroundColor: '#FFFFFF',
         }}
@@ -397,6 +422,13 @@ function AppStack(props) {
       <Drawer.Screen
         name="BaoCaoTongHopGiaKeKhai"
         component={BaoCaoTongHopGiaKeKhaiStack}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Drawer.Screen
+        name="KhaiThacGiaVLXD"
+        component={KhaiThacGiaVLXDStack}
         options={{
           headerShown: false,
         }}

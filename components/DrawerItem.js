@@ -52,6 +52,7 @@ class DrawerItem extends React.Component {
             style={{ opacity: 0.5 }}
           />
         );
+      
       case 'BaoCaoGiaThiTruong142':
         return (
           <BIcon
