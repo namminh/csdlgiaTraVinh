@@ -18,7 +18,7 @@ function CustomDrawerContent({ drawerPosition, navigation, profile, focused, sta
     // { name: '', title: 'Báo cáo', type: 'line' },
     // { name: 'KT_THEO_BIEU_MAU', title: 'Biểu mẫu' },
     { name: 'BaoCaoGiaThiTruong116', title: 'Báo cáo Giá thị trường TT116' },
-    { name: 'BaoCaoGiaThiTruong142', title: 'Báo cáo trường TT142' },
+    { name: 'BaoCaoGiaThiTruong142', title: 'Báo cáo giá trị trường TT142' },
     { name: 'BaoCaoTongHopGiaDangKy', title: 'Khai thác dữ liệu theo chỉ tiêu' },
     { name: 'BaoCaoGiaThiTruongLanhDaoUBND', title: 'Báo cáo phục vụ lãnh đạo' },
     { name: 'BaoCaoTongHopGiaKeKhai', title: 'Báo cáo tổng hợp giá kê khai' },

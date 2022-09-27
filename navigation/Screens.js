@@ -389,7 +389,7 @@ function AppStack(props) {
     >
       <Drawer.Screen
         name="TRANG_CHU"
-        component={BaoCaoGiaThiTruongLanhDaoUBNDStack}
+        component={TRANG_CHUStack}
         options={{
           headerShown: false,
         }}

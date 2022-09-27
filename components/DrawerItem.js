@@ -211,7 +211,7 @@ class DrawerItem extends React.Component {
                 marginBottom: 10,
                 fontFamily: 'montserrat-regular',
                 fontWeight: '300',
-                fontSize: 12,
+                fontSize: 14,
               }}
             >
               {title}
@@ -293,7 +293,7 @@ const styles = StyleSheet.create({
     fontFamily: 'montserrat-regular',
     textTransform: 'uppercase',
     fontWeight: '300',
-    fontSize: 9,
+    fontSize: 12,
   },
 });
 

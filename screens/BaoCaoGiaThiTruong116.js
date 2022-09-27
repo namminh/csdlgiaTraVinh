@@ -23,6 +23,7 @@ import { Card } from '../components';
 import { Card_116 } from '../components';
 
 import axios from 'axios';
+import { View } from 'react-native-web';
 
 const { width } = Dimensions.get('screen');
 
@@ -126,8 +127,8 @@ class BaoCaoGiaThiTruong116 extends React.Component {
       this.state.selectedDinhKyChiTiet2Id ? this.state.selectedDinhKyChiTiet2Id : ' '
     }&NAM=${this.state.selectedNam}`;
 
-    console.log('NAMNM URL');
-    console.log(url);
+    // console.log('NAMNM URL');
+    // console.log(url);
     axios.get(url).then((res) => {
       const ls = JSON.parse(JSON.stringify(res.data.Result));
       var count = Object.keys(ls).length;
@@ -146,6 +147,7 @@ class BaoCaoGiaThiTruong116 extends React.Component {
       selected && this.setState({ selectedDiaBanId: selected.DIA_BAN_ID });
     }
   }
+
   onSelectedKyDuLieu(index) {
     if (index >= 0) {
       let dinhKyId = this.state.lsKyDuLieu[index].DINH_KY_ID;
@@ -256,13 +258,13 @@ class BaoCaoGiaThiTruong116 extends React.Component {
       this.showToast('Bạn phải chọn Năm');
       return;
     }
-    console.log('truoc');
-    console.log(`${this.state.isDataLoaded}`);
+    // console.log('truoc');
+    // console.log(`${this.state.isDataLoaded}`);
     this.setState({ isDataLoaded: false });
     this.fetData();
     this.setState({ isDataLoaded: true });
-    console.log('sau');
-    console.log(`${this.state.isDataLoaded}`);
+    // console.log('sau');
+    // console.log(`${this.state.isDataLoaded}`);
     //console.log(this.state.lsData.slice(0, 10));
   };
 
@@ -272,7 +274,7 @@ class BaoCaoGiaThiTruong116 extends React.Component {
     this.fetDmKyDuLieuChiTiet();
   }
   showToast = (message) => {
-    console.log(message);
+    //console.log(message);
     ToastAndroid.show(message, ToastAndroid.SHORT);
   };
   showToastWithGravity = (message) => {
@@ -283,7 +285,7 @@ class BaoCaoGiaThiTruong116 extends React.Component {
   };
   renderSearchResult = () => {
     return (
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.articles}>
+      <ScrollView showsVerticalScrollIndicator={true} contentContainerStyle={styles.articles}>
         <Block flex>
           {this.state.lsData.slice(0, 100).map((item, index) => {
             //console.log(this.state.lsData.slice(0, 2));
