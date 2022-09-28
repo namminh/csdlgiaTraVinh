@@ -61,16 +61,6 @@ class CardBaoCaoGiaThiThuongTongHop extends React.Component {
                 ) : (
                   <Block />
                 )}
-              </Block>
-              {item.TEN_DON_VI_TINH ? (
-                <Block flex row left style={styles.cardDescription}>
-                  <Text style={styles.cardItemName}>Đơn vị:</Text>
-                  <Text style={styles.cardItemValue}>{item.TEN_DON_VI_TINH}</Text>
-                </Block>
-              ) : (
-                <Block />
-              )}
-              <Block flex row>
                 {item.TEN_LOAI_GIA ? (
                   <Block flex row left style={styles.cardDescription}>
                     <Text style={styles.cardItemName}>Loại giá:</Text>
@@ -80,6 +70,14 @@ class CardBaoCaoGiaThiThuongTongHop extends React.Component {
                   <Block />
                 )}
               </Block>
+              {item.TEN_DON_VI_TINH ? (
+                <Block flex row left style={styles.cardDescription}>
+                  <Text style={styles.cardItemName}>Đơn vị tính:</Text>
+                  <Text style={styles.cardItemValue}>{item.TEN_DON_VI_TINH}</Text>
+                </Block>
+              ) : (
+                <Block />
+              )}
               <Block flex row style={styles.cardDescription}>
                 {item.GIA_KY_NAY ? (
                   <Block flex left row>

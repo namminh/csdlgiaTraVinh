@@ -26,6 +26,7 @@ import BaoCaoGiaThiTruongLanhDaoUBND from '../screens/BaoCaoGiaThiTruongLanhDaoU
 import BaoCaoGiaThiTruong142 from '../screens/BaoCaoGiaThiTruong142';
 import TraCuuGiaHHDVNhaNuocDinhGia from '../screens/TraCuuGiaHHDVNhaNuocDinhGia';
 import BaoCaoGiaThiThuongTongHop from '../screens/BaoCaoGiaThiThuongTongHop';
+import BaoCaoTongHopGiaTaiSanTDG from '../screens/BaoCaoTongHopGiaTaiSanTDG';
 
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -219,6 +220,34 @@ function BaoCaoGiaThiThuongTongHopStack(props) {
         options={{
           header: ({ navigation, scene }) => (
             <Header title="Báo cáo tổng hợp giá thị trường" navigation={navigation} scene={scene} />
+          ),
+          backgroundColor: '#FFFFFF',
+        }}
+      />
+      {/* <Stack.Screen name="Home" component={BottomNavigator} /> */}
+    </Stack.Navigator>
+  );
+}
+
+function BaoCaoTongHopGiaTaiSanTDGStack(props) {
+  return (
+    <Stack.Navigator
+      initialRouteName="BaoCaoGiaThiThuongTongHop"
+      screenOptions={{
+        mode: 'card',
+        headerShown: 'screen',
+      }}
+    >
+      <Stack.Screen
+        name="BaoCaoTongHopGiaTaiSanTDG"
+        component={BaoCaoTongHopGiaTaiSanTDG}
+        options={{
+          header: ({ navigation, scene }) => (
+            <Header
+              title="Báo cáo tổng hợp giá trị tài sản TĐG"
+              navigation={navigation}
+              scene={scene}
+            />
           ),
           backgroundColor: '#FFFFFF',
         }}
@@ -463,6 +492,13 @@ function AppStack(props) {
       <Drawer.Screen
         name="BaoCaoGiaThiThuongTongHop"
         component={BaoCaoGiaThiThuongTongHopStack}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Drawer.Screen
+        name="BaoCaoTongHopGiaTaiSanTDG"
+        component={BaoCaoTongHopGiaTaiSanTDGStack}
         options={{
           headerShown: false,
         }}

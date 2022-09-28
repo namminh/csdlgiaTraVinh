@@ -1,6 +1,7 @@
 export default [
   {
-    title: 'Giá hàng hóa thị trường',
+    title:
+      '+ Dự báo được CPI trong 12 tháng tiếp theo của các chỉ tiêu: CPI so với cùng kỳ năm trước, CPI so với tháng trước, CPI so với kỳ gốc, CPI so với tháng 12 năm trước, CPI bình quân',
     image: require('../assets/imgs/project13.jpg'),
     cta: 'Chi tiết',
     horizontal: true,
