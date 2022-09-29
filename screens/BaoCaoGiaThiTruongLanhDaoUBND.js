@@ -281,7 +281,7 @@ class BaoCaoGiaThiTruongLanhDaoUBND extends React.Component {
     return (
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.articles}>
         <Block flex style={{ paddingHorizontal: theme.SIZES.BASE }}>
-          {this.state.lsData.slice(0, 10).map((item, index) => {
+          {this.state.lsData.map((item, index) => {
             //console.log(this.state.lsData.slice(0, 2));
             return (
               <CardBaoCaoGiaThiTruongLanhDaoUBND

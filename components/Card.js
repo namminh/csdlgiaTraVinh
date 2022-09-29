@@ -39,12 +39,7 @@ class Card extends React.Component {
         <TouchableWithoutFeedback onPress={() => navigation.navigate('Pro')}>
           <Block flex space="between" style={styles.cardDescription}>
             <Block flex>
-              <Text
-                style={{ fontFamily: 'montserrat-regular' }}
-                size={14}
-                style={titleStyles}
-                color={nowTheme.COLORS.SECONDARY}
-              >
+              <Text size={14} style={titleStyles} color={nowTheme.COLORS.SECONDARY}>
                 {item.title}
               </Text>
               {item.subtitle ? (
