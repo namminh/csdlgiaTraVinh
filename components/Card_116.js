@@ -1,5 +1,4 @@
 import React from 'react';
-import { withNavigation } from '@react-navigation/compat';
 import PropTypes from 'prop-types';
 import { StyleSheet, Image, TouchableWithoutFeedback } from 'react-native';
 import { Block, Text, theme } from 'galio-framework';
@@ -457,4 +456,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default withNavigation(Card_116);
+export default Card_116;

@@ -25,6 +25,7 @@ import axios from 'axios';
 //import DateTimePicker from '@react-native-community/datetimepicker';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import Moment from 'moment';
+import { appConfig } from "../constants";
 
 const { width } = Dimensions.get('screen');
 
@@ -50,8 +51,8 @@ class KhaiThacGiaVLXD extends React.Component {
   fetData() {
     let d1 = Moment(this.state.startDate.toLocaleString()).format('DD/MM/YYYY');
     let d2 = Moment(this.state.endDate.toLocaleString()).format('DD/MM/YYYY');
-    //let url = `http://113.160.48.98:8790/mwebapi/GetBaoCaoTongHopGiaKeKhai?doanhNghiepId=263&ngayHieuLucTu=01/01/2021&ngayHieuLucDen=01/09/2022&loaiGiaIds=10`;
-    let url = `http://113.160.48.98:8790/mwebapi/GetKhaiThacGiaVLXD?ten=${this.state.productname}&ngayHieuLucTu=${d1}&ngayHieuLucDen=${d2}`;
+    //let url = `${appConfig.BASE_URL}/GetBaoCaoTongHopGiaKeKhai?doanhNghiepId=263&ngayHieuLucTu=01/01/2021&ngayHieuLucDen=01/09/2022&loaiGiaIds=10`;
+    let url = `${appConfig.BASE_URL}/GetKhaiThacGiaVLXD?ten=${this.state.productname}&ngayHieuLucTu=${d1}&ngayHieuLucDen=${d2}`;
     console.log(url);
     axios.get(url).then((res) => {
       const ls = JSON.parse(JSON.stringify(res.data.Result));

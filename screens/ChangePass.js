@@ -17,12 +17,8 @@ import {
 } from "galio-framework";
 
 import { Button, Icon, Input } from "../components";
-import { COLORS, Images, nowTheme } from "../constants";
+import { Images, nowTheme } from "../constants";
 import { AuthContext } from "../context/AuthContext";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-
-import Spinner from "react-native-loading-spinner-overlay";
-import { color, measure } from "react-native-reanimated";
 
 const { width, height } = Dimensions.get("screen");
 
@@ -32,17 +28,45 @@ const DismissKeyboard = ({ children }) => (
   </TouchableWithoutFeedback>
 );
 
-const Login = ({ navigation }) => {
-  const [username, setUsername] = useState(null);
-  const [password, setPassword] = useState(null);
-  const { isLoading, login } = useContext(AuthContext);
+const ChangePass = () => {
+  // const [user, setUser] = useState({
+  //   currentPassword: "",
+  //   newPassword: "",
+  //   retypePassword: ""
+  // });
+  const [password, setPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [retypePassword, setRetypePassword] = useState("");
+  const { userInfo, changepass } = useContext(AuthContext);
   const [isShow, setShow] = useState(false);
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState("");
+
+  const validatePassword = (pw) => {
+    var ret = true;
+    var minNumberofChars = 8;
+    var maxNumberofChars = 16;
+    var regularExpression = new RegExp(
+      "^(?=.*[0-9])(?=.*[A-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,16}$"
+    );
+
+    var l = pw.length;
+
+    if (l < minNumberofChars || l > maxNumberofChars) {
+      ret = false;
+    }
+    if (!regularExpression.test(pw)) {
+      ret = false;
+    }
+    if (!ret) {
+      //ShowError("Mật khẩu phải từ 8-16 ký tự, bao gồm ít nhất 1 chữ thường, 1 chữ hoa, 1 ký tự đặc biệt!");
+      return false;
+    }
+    return ret;
+  };
 
   return (
     <DismissKeyboard>
       <Block flex middle>
-        <Spinner visible={isLoading} />
         <ImageBackground
           source={Images.RegisterBackground}
           style={styles.imageBackgroundContainer}
@@ -52,7 +76,7 @@ const Login = ({ navigation }) => {
             <Block style={styles.registerContainer}>
               <Block flex space="evenly">
                 <Block flex={0.4} middle style={styles.socialConnect}>
-                  <Block flex={0.5} middle>
+                  {/* <Block flex={0.5} middle>
                     <Text
                       style={{
                         fontFamily: "montserrat-regular",
@@ -61,52 +85,11 @@ const Login = ({ navigation }) => {
                       color="#333"
                       size={24}
                     >
-                      Đăng nhập
+                      Đổi mật khẩu
                     </Text>
-                  </Block>
+                  </Block> */}
 
-                  <Block
-                    flex={0.5}
-                    row
-                    middle
-                    space="between"
-                    style={{ marginBottom: 18 }}
-                  >
-                    <GaButton
-                      round
-                      onlyIcon
-                      shadowless
-                      icon="twitter"
-                      iconFamily="Font-Awesome"
-                      iconColor={theme.COLORS.WHITE}
-                      iconSize={theme.SIZES.BASE * 1.625}
-                      color={nowTheme.COLORS.TWITTER}
-                      style={[styles.social, styles.shadow]}
-                    />
-
-                    <GaButton
-                      round
-                      onlyIcon
-                      shadowless
-                      icon="dribbble"
-                      iconFamily="Font-Awesome"
-                      iconColor={theme.COLORS.WHITE}
-                      iconSize={theme.SIZES.BASE * 1.625}
-                      color={nowTheme.COLORS.DRIBBBLE}
-                      style={[styles.social, styles.shadow]}
-                    />
-                    <GaButton
-                      round
-                      onlyIcon
-                      shadowless
-                      icon="facebook"
-                      iconFamily="Font-Awesome"
-                      iconColor={theme.COLORS.WHITE}
-                      iconSize={theme.SIZES.BASE * 1.625}
-                      color={nowTheme.COLORS.FACEBOOK}
-                      style={[styles.social, styles.shadow]}
-                    />
-                  </Block>
+                  
                 </Block>
                 {/* <Block flex={0.1} middle>
                     <Text
@@ -121,12 +104,12 @@ const Login = ({ navigation }) => {
                     </Text>
                   </Block> */}
                 <Block flex={1} middle space="between">
-                  <Block center flex={0.9}>
+                  <Block center flex={0.5}>
                     <Block flex space="between">
                       <Block>
                         <Block width={width * 0.8} style={{ marginBottom: 5 }}>
                           <Input
-                            placeholder="Tên đăng nhập"
+                            placeholder="Mật khẩu"
                             style={styles.inputs}
                             iconContent={
                               <Icon
@@ -134,17 +117,20 @@ const Login = ({ navigation }) => {
                                 color="#ADB5BD"
                                 //name="profile-circle"
                                 //family="NowExtra"
-                                name="user-o"
+                                name="key"
                                 family="Font-Awesome"
                                 style={styles.inputIcons}
                               />
                             }
-                            onChangeText={(text) => setUsername(text)}
+                            password
+                            viewPass
+                            name="txtPassword"
+                            onChangeText={(text) => setPassword(text)}
                           />
                         </Block>
                         <Block width={width * 0.8} style={{ marginBottom: 5 }}>
                           <Input
-                            placeholder="Mật khẩu"
+                            placeholder="Mật khẩu mới"
                             style={styles.inputs}
                             iconContent={
                               <Icon
@@ -157,7 +143,27 @@ const Login = ({ navigation }) => {
                             }
                             password
                             viewPass
-                            onChangeText={(text) => setPassword(text)}
+                            name="txtNewPassword"
+                            onChangeText={(text) => setNewPassword(text)}
+                          />
+                        </Block>
+                        <Block width={width * 0.8} style={{ marginBottom: 5 }}>
+                          <Input
+                            placeholder="Nhập lại mật khẩu mới"
+                            style={styles.inputs}
+                            iconContent={
+                              <Icon
+                                size={16}
+                                color="#ADB5BD"
+                                name="key"
+                                family="Font-Awesome"
+                                style={styles.inputIcons}
+                              />
+                            }
+                            password
+                            viewPass
+                            name="txtRetypePassword"
+                            onChangeText={(text) => setRetypePassword(text)}
                           />
                         </Block>
                         <Block width={width * 0.8} style={{ marginBottom: 5 }}>
@@ -180,15 +186,17 @@ const Login = ({ navigation }) => {
                           style={styles.createButton}
                           onPress={async () => {
                             let msg = "";
-                            if (!username || !password) {
+                            if (!validatePassword(newPassword)) {
                               msg =
-                                "Tên đăng nhập hoặc mật khẩu không được để trống";
-                              setMessage(msg);
+                                "Mật khẩu phải từ 8-16 ký tự, bao gồm ít nhất 1 chữ thường, 1 chữ hoa, 1 ký tự đặc biệt!";
                             } else {
-                              msg = await login(username, password);
+                              msg = await changepass(
+                                userInfo.TEN_DANG_NHAP,
+                                password,
+                                newPassword
+                              );
                             }
                             setMessage(msg);
-                            console.log(`Msg:${message}`);
                             setShow(true);
                             setTimeout(() => {
                               setShow(false);
@@ -201,7 +209,7 @@ const Login = ({ navigation }) => {
                             size={14}
                             color={nowTheme.COLORS.WHITE}
                           >
-                            Đăng nhập
+                            Đồng ý
                           </Text>
                         </Button>
                       </Block>
@@ -229,9 +237,11 @@ const styles = StyleSheet.create({
     height: height,
   },
   registerContainer: {
-    marginTop: 55,
-    width: width * 0.9,
-    height: height < 812 ? height * 0.8 : height * 0.8,
+    marginTop: 80,
+    width: width,
+    //width: width * 0.9,
+    //height: height < 812 ? height * 0.8 : height * 0.8,
+    height: height,
     backgroundColor: nowTheme.COLORS.WHITE,
     borderRadius: 4,
     shadowColor: nowTheme.COLORS.BLACK,
@@ -283,8 +293,8 @@ const styles = StyleSheet.create({
   },
   createButton: {
     width: width * 0.5,
-    //marginTop: 25,
-    marginBottom: 200,
+    marginTop: 25,
+    marginBottom: 40,
   },
   social: {
     width: theme.SIZES.BASE * 3.5,
@@ -292,11 +302,6 @@ const styles = StyleSheet.create({
     borderRadius: theme.SIZES.BASE * 1.75,
     justifyContent: "center",
     marginHorizontal: 10,
-  },
-  toast: {
-    //marginLeft: -70,
-    width: width - theme.SIZES.BASE * 5,
-    //borderRadius: theme.SIZES.BASE * 1.75,
   },
   toastTextStyle: {
     fontFamily: "montserrat-regular",
@@ -307,4 +312,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Login;
+export default ChangePass;

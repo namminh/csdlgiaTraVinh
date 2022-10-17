@@ -1,38 +1,43 @@
-import { Animated, Dimensions, Easing } from 'react-native';
+import { Animated, Dimensions, Easing } from "react-native";
 // header for screens
-import { Header, Icon } from '../components';
-import { nowTheme, tabs } from '../constants';
-import Tabs from '../components/Tabs';
-import BottomNavigator from '../navigation/BottomNavigator';
+import { Header, Icon } from "../components";
+import { nowTheme, tabs } from "../constants";
+//import Tabs from '../components/Tabs';
+//import BottomNavigator from '../navigation/BottomNavigator';
 
-import Articles from '../screens/Articles';
-import { Block } from 'galio-framework';
-import Components from '../screens/Components';
+import Articles from "../screens/Articles";
+//import { Block } from 'galio-framework';
+import Components from "../screens/Components";
 // drawer
-import CustomDrawerContent from './Menu';
+import CustomDrawerContent from "./Menu";
 // screens
-import Onboarding from '../screens/Onboarding';
-import Pro from '../screens/Pro';
-import Profile from '../screens/Profile';
-import React from 'react';
-import Register from '../screens/Register';
-import Login from '../screens/Login';
-import TRANG_CHU from '../screens/TRANG_CHU';
-import KT_THEO_BIEU_MAU from '../screens/KT_THEO_BIEU_MAU';
-import BaoCaoTongHopGiaDangKy from '../screens/BaoCaoTongHopGiaDangKy';
-import BaoCaoTongHopGiaKeKhai from '../screens/BaoCaoTongHopGiaKeKhai';
-import KhaiThacGiaVLXD from '../screens/KhaiThacGiaVLXD';
-import BaoCaoGiaThiTruong116 from '../screens/BaoCaoGiaThiTruong116';
-import BaoCaoGiaThiTruongLanhDaoUBND from '../screens/BaoCaoGiaThiTruongLanhDaoUBND';
-import BaoCaoGiaThiTruong142 from '../screens/BaoCaoGiaThiTruong142';
-import TraCuuGiaHHDVNhaNuocDinhGia from '../screens/TraCuuGiaHHDVNhaNuocDinhGia';
-import BaoCaoGiaThiThuongTongHop from '../screens/BaoCaoGiaThiThuongTongHop';
-import BaoCaoTongHopGiaTaiSanTDG from '../screens/BaoCaoTongHopGiaTaiSanTDG';
 
-import { createDrawerNavigator } from '@react-navigation/drawer';
-import { createStackNavigator } from '@react-navigation/stack';
+import Onboarding from "../screens/Onboarding";
+import Pro from "../screens/Pro";
+import Profile from "../screens/Profile";
+import React, { useContext } from "react";
+import ChangePass from "../screens/ChangePass";
+import Login from "../screens/Login";
+import TRANG_CHU from "../screens/TRANG_CHU";
+import KT_THEO_BIEU_MAU from "../screens/KT_THEO_BIEU_MAU";
+import BaoCaoTongHopGiaDangKy from "../screens/BaoCaoTongHopGiaDangKy";
+import BaoCaoTongHopGiaKeKhai from "../screens/BaoCaoTongHopGiaKeKhai";
+import KhaiThacGiaVLXD from "../screens/KhaiThacGiaVLXD";
+import BaoCaoGiaThiTruong116 from "../screens/BaoCaoGiaThiTruong116";
+import BaoCaoGiaThiTruongLanhDaoUBND from "../screens/BaoCaoGiaThiTruongLanhDaoUBND";
+import BaoCaoGiaThiTruong142 from "../screens/BaoCaoGiaThiTruong142";
+import TraCuuGiaHHDVNhaNuocDinhGia from "../screens/TraCuuGiaHHDVNhaNuocDinhGia";
+import BaoCaoGiaThiThuongTongHop from "../screens/BaoCaoGiaThiThuongTongHop";
+import BaoCaoTongHopGiaTaiSanTDG from "../screens/BaoCaoTongHopGiaTaiSanTDG";
 
-const { width } = Dimensions.get('screen');
+import AuthStack from "../navigation/AuthStack";
+import { AuthContext, AuthProvider } from "../context/AuthContext";
+
+import { createDrawerNavigator } from "@react-navigation/drawer";
+import { createStackNavigator } from "@react-navigation/stack";
+import BottomNavigator from "./BottomNavigator";
+
+const { width } = Dimensions.get("screen");
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -42,8 +47,8 @@ function TRANG_CHUStack(props) {
     <Stack.Navigator
       initialRouteName="TRANG_CHU"
       screenOptions={{
-        mode: 'card',
-        headerShown: 'screen',
+        mode: "card",
+        headerShown: "screen",
       }}
     >
       <Stack.Screen
@@ -51,9 +56,15 @@ function TRANG_CHUStack(props) {
         component={TRANG_CHU}
         options={{
           header: ({ navigation, scene }) => (
-            <Header title="Trang chủ" search options navigation={navigation} scene={scene} />
+            <Header
+              title="Trang chủ"
+              search
+              options
+              navigation={navigation}
+              scene={scene}
+            />
           ),
-          cardStyle: { backgroundColor: '#FFFFFF' },
+          cardStyle: { backgroundColor: "#FFFFFF" },
         }}
       />
     </Stack.Navigator>
@@ -65,8 +76,8 @@ function BaoCaoGiaThiTruong116Stack(props) {
     <Stack.Navigator
       initialRouteName="BaoCaoGiaThiTruong116"
       screenOptions={{
-        mode: 'card',
-        headerShown: 'screen',
+        mode: "card",
+        headerShown: "screen",
       }}
     >
       <Stack.Screen
@@ -74,9 +85,13 @@ function BaoCaoGiaThiTruong116Stack(props) {
         component={BaoCaoGiaThiTruong116}
         options={{
           header: ({ navigation, scene }) => (
-            <Header title="Báo cáo giá thị trường TT116" navigation={navigation} scene={scene} />
+            <Header
+              title="Báo cáo theo biểu mẫu"
+              navigation={navigation}
+              scene={scene}
+            />
           ),
-          backgroundColor: '#FFFFFF',
+          backgroundColor: "#FFFFFF",
         }}
       />
       {/* <Stack.Screen name="Home" component={BottomNavigator} /> */}
@@ -89,8 +104,8 @@ function BaoCaoGiaThiTruong142Stack(props) {
     <Stack.Navigator
       initialRouteName="BaoCaoGiaThiTruong142"
       screenOptions={{
-        mode: 'card',
-        headerShown: 'screen',
+        mode: "card",
+        headerShown: "screen",
       }}
     >
       <Stack.Screen
@@ -98,9 +113,13 @@ function BaoCaoGiaThiTruong142Stack(props) {
         component={BaoCaoGiaThiTruong142}
         options={{
           header: ({ navigation, scene }) => (
-            <Header title="Báo cáo giá thị trường TT142" navigation={navigation} scene={scene} />
+            <Header
+              title="Báo cáo giá thị trường TT142"
+              navigation={navigation}
+              scene={scene}
+            />
           ),
-          backgroundColor: '#FFFFFF',
+          backgroundColor: "#FFFFFF",
         }}
       />
       {/* <Stack.Screen name="Home" component={BottomNavigator} /> */}
@@ -113,8 +132,8 @@ function BaoCaoTongHopGiaDangKyStack(props) {
     <Stack.Navigator
       initialRouteName="BaoCaoTongHopGiaDangKy"
       screenOptions={{
-        mode: 'card',
-        headerShown: 'screen',
+        mode: "card",
+        headerShown: "screen",
       }}
     >
       <Stack.Screen
@@ -122,9 +141,13 @@ function BaoCaoTongHopGiaDangKyStack(props) {
         component={BaoCaoTongHopGiaDangKy}
         options={{
           header: ({ navigation, scene }) => (
-            <Header title="Khai thác dữ liệu theo chỉ tiêu" navigation={navigation} scene={scene} />
+            <Header
+              title="Khai thác dữ liệu theo chỉ tiêu"
+              navigation={navigation}
+              scene={scene}
+            />
           ),
-          backgroundColor: '#FFFFFF',
+          backgroundColor: "#FFFFFF",
         }}
       />
       {/* <Stack.Screen name="Home" component={BottomNavigator} /> */}
@@ -136,8 +159,8 @@ function BaoCaoTongHopGiaKeKhaiStack(props) {
     <Stack.Navigator
       initialRouteName="BaoCaoTongHopGiaKeKhai"
       screenOptions={{
-        mode: 'card',
-        headerShown: 'screen',
+        mode: "card",
+        headerShown: "screen",
       }}
     >
       <Stack.Screen
@@ -145,9 +168,13 @@ function BaoCaoTongHopGiaKeKhaiStack(props) {
         component={BaoCaoTongHopGiaKeKhai}
         options={{
           header: ({ navigation, scene }) => (
-            <Header title="Báo cáo Tổng hợp giá kê khai" navigation={navigation} scene={scene} />
+            <Header
+              title="Báo cáo Tổng hợp giá kê khai"
+              navigation={navigation}
+              scene={scene}
+            />
           ),
-          backgroundColor: '#FFFFFF',
+          backgroundColor: "#FFFFFF",
         }}
       />
       {/* <Stack.Screen name="Home" component={BottomNavigator} /> */}
@@ -160,8 +187,8 @@ function KhaiThacGiaVLXDStack(props) {
     <Stack.Navigator
       initialRouteName="KhaiThacGiaVLXD"
       screenOptions={{
-        mode: 'card',
-        headerShown: 'screen',
+        mode: "card",
+        headerShown: "screen",
       }}
     >
       <Stack.Screen
@@ -169,9 +196,13 @@ function KhaiThacGiaVLXDStack(props) {
         component={KhaiThacGiaVLXD}
         options={{
           header: ({ navigation, scene }) => (
-            <Header title="Khai Thác Giá Vật Liệu Xây Dựng" navigation={navigation} scene={scene} />
+            <Header
+              title="Khai Thác Giá Vật Liệu Xây Dựng"
+              navigation={navigation}
+              scene={scene}
+            />
           ),
-          backgroundColor: '#FFFFFF',
+          backgroundColor: "#FFFFFF",
         }}
       />
       {/* <Stack.Screen name="Home" component={BottomNavigator} /> */}
@@ -184,8 +215,8 @@ function BaoCaoGiaThiTruongLanhDaoUBNDStack(props) {
     <Stack.Navigator
       initialRouteName="BaoCaoGiaThiTruongLanhDaoUBND"
       screenOptions={{
-        mode: 'card',
-        headerShown: 'screen',
+        mode: "card",
+        headerShown: "screen",
       }}
     >
       <Stack.Screen
@@ -199,7 +230,7 @@ function BaoCaoGiaThiTruongLanhDaoUBNDStack(props) {
               scene={scene}
             />
           ),
-          backgroundColor: '#FFFFFF',
+          backgroundColor: "#FFFFFF",
         }}
       />
       {/* <Stack.Screen name="Home" component={BottomNavigator} /> */}
@@ -212,8 +243,8 @@ function TraCuuGiaHHDVNhaNuocDinhGiaStack(props) {
     <Stack.Navigator
       initialRouteName="TraCuuGiaHHDVNhaNuocDinhGia"
       screenOptions={{
-        mode: 'card',
-        headerShown: 'screen',
+        mode: "card",
+        headerShown: "screen",
       }}
     >
       <Stack.Screen
@@ -221,9 +252,13 @@ function TraCuuGiaHHDVNhaNuocDinhGiaStack(props) {
         component={TraCuuGiaHHDVNhaNuocDinhGia}
         options={{
           header: ({ navigation, scene }) => (
-            <Header title="Báo cáo Giá hàng hóa định giá" navigation={navigation} scene={scene} />
+            <Header
+              title="Báo cáo Giá hàng hóa định giá"
+              navigation={navigation}
+              scene={scene}
+            />
           ),
-          backgroundColor: '#FFFFFF',
+          backgroundColor: "#FFFFFF",
         }}
       />
       {/* <Stack.Screen name="Home" component={BottomNavigator} /> */}
@@ -235,8 +270,8 @@ function BaoCaoGiaThiThuongTongHopStack(props) {
     <Stack.Navigator
       initialRouteName="BaoCaoGiaThiThuongTongHop"
       screenOptions={{
-        mode: 'card',
-        headerShown: 'screen',
+        mode: "card",
+        headerShown: "screen",
       }}
     >
       <Stack.Screen
@@ -244,9 +279,13 @@ function BaoCaoGiaThiThuongTongHopStack(props) {
         component={BaoCaoGiaThiThuongTongHop}
         options={{
           header: ({ navigation, scene }) => (
-            <Header title="Báo cáo tổng hợp giá thị trường" navigation={navigation} scene={scene} />
+            <Header
+              title="Báo cáo tổng hợp giá thị trường"
+              navigation={navigation}
+              scene={scene}
+            />
           ),
-          backgroundColor: '#FFFFFF',
+          backgroundColor: "#FFFFFF",
         }}
       />
       {/* <Stack.Screen name="Home" component={BottomNavigator} /> */}
@@ -259,8 +298,8 @@ function BaoCaoTongHopGiaTaiSanTDGStack(props) {
     <Stack.Navigator
       initialRouteName="BaoCaoGiaThiThuongTongHop"
       screenOptions={{
-        mode: 'card',
-        headerShown: 'screen',
+        mode: "card",
+        headerShown: "screen",
       }}
     >
       <Stack.Screen
@@ -274,7 +313,7 @@ function BaoCaoTongHopGiaTaiSanTDGStack(props) {
               scene={scene}
             />
           ),
-          backgroundColor: '#FFFFFF',
+          backgroundColor: "#FFFFFF",
         }}
       />
       {/* <Stack.Screen name="Home" component={BottomNavigator} /> */}
@@ -287,8 +326,8 @@ function KT_THEO_BIEU_MAUStack(props) {
     <Stack.Navigator
       initialRouteName="KT_THEO_BIEU_MAU"
       screenOptions={{
-        mode: 'card',
-        headerShown: 'screen',
+        mode: "card",
+        headerShown: "screen",
       }}
     >
       <Stack.Screen
@@ -296,9 +335,13 @@ function KT_THEO_BIEU_MAUStack(props) {
         component={KT_THEO_BIEU_MAU}
         options={{
           header: ({ navigation, scene }) => (
-            <Header title="Khai thác theo biểu mẫu" navigation={navigation} scene={scene} />
+            <Header
+              title="Khai thác theo biểu mẫu"
+              navigation={navigation}
+              scene={scene}
+            />
           ),
-          backgroundColor: '#FFFFFF',
+          backgroundColor: "#FFFFFF",
         }}
       />
     </Stack.Navigator>
@@ -310,8 +353,8 @@ function ComponentsStack(props) {
     <Stack.Navigator
       initialRouteName="Components"
       screenOptions={{
-        mode: 'card',
-        headerShown: 'screen',
+        mode: "card",
+        headerShown: "screen",
       }}
     >
       <Stack.Screen
@@ -321,7 +364,7 @@ function ComponentsStack(props) {
           header: ({ navigation, scene }) => (
             <Header title="Components" navigation={navigation} scene={scene} />
           ),
-          backgroundColor: '#FFFFFF',
+          backgroundColor: "#FFFFFF",
         }}
       />
       {/* <Stack.Screen name="Home" component={BottomNavigator} /> */}
@@ -334,8 +377,8 @@ function ArticlesStack(props) {
     <Stack.Navigator
       initialRouteName="Articles"
       screenOptions={{
-        mode: 'card',
-        headerShown: 'screen',
+        mode: "card",
+        headerShown: "screen",
       }}
     >
       <Stack.Screen
@@ -345,28 +388,33 @@ function ArticlesStack(props) {
           header: ({ navigation, scene }) => (
             <Header title="Articles" navigation={navigation} scene={scene} />
           ),
-          backgroundColor: '#FFFFFF',
+          backgroundColor: "#FFFFFF",
         }}
       />
     </Stack.Navigator>
   );
 }
 
-function AccountStack(props) {
+function ChangePassStack(props) {
   return (
     <Stack.Navigator
-      initialRouteName="Account"
+      initialRouteName="ChangePass"
       screenOptions={{
-        mode: 'card',
-        headerShown: 'screen',
+        mode: "card",
+        headerShown: "screen",
       }}
     >
       <Stack.Screen
-        name="Account"
-        component={Register}
+        name="ChangePass"
+        component={ChangePass}
         options={{
           header: ({ navigation, scene }) => (
-            <Header transparent title="Create Account" navigation={navigation} scene={scene} />
+            <Header
+              transparent
+              title="Đổi mật khẩu"
+              navigation={navigation}
+              scene={scene}
+            />
           ),
           headerTransparent: true,
         }}
@@ -374,12 +422,13 @@ function AccountStack(props) {
     </Stack.Navigator>
   );
 }
+
 function LoginStack(props) {
   return (
     <Stack.Navigator
       initialRouteName="Login"
       screenOptions={{
-        mode: 'card',
+        mode: "card",
         headerShown: false,
       }}
     >
@@ -388,7 +437,12 @@ function LoginStack(props) {
         component={Login}
         options={{
           header: ({ navigation, scene }) => (
-            <Header transparent title="Đăng nhập" navigation={navigation} scene={scene} />
+            <Header
+              transparent
+              title="Đăng nhập"
+              navigation={navigation}
+              scene={scene}
+            />
           ),
           headerTransparent: true,
         }}
@@ -402,8 +456,8 @@ function ProfileStack(props) {
     <Stack.Navigator
       initialRouteName="Profile"
       screenOptions={{
-        mode: 'card',
-        headerShown: 'screen',
+        mode: "card",
+        headerShown: "screen",
       }}
     >
       <Stack.Screen
@@ -411,10 +465,16 @@ function ProfileStack(props) {
         component={Profile}
         options={{
           header: ({ navigation, scene }) => (
-            <Header transparent white title="Profile" navigation={navigation} scene={scene} />
+            <Header
+              //transparent
+              //white
+              title="Thông tin tài khoản"
+              navigation={navigation}
+              scene={scene}
+            />
           ),
-          cardStyle: { backgroundColor: '#FFFFFF' },
-          headerTransparent: true,
+          cardStyle: { backgroundColor: "#FFFFFF" },
+          //headerTransparent: true,
         }}
       />
       <Stack.Screen
@@ -422,7 +482,14 @@ function ProfileStack(props) {
         component={Pro}
         options={{
           header: ({ navigation, scene }) => (
-            <Header title="" back white transparent navigation={navigation} scene={scene} />
+            <Header
+              title=""
+              back
+              white
+              transparent
+              navigation={navigation}
+              scene={scene}
+            />
           ),
           headerTransparent: true,
         }}
@@ -445,22 +512,22 @@ function AppStack(props) {
         //drawerContentOptions={{
         activeTintcolor: nowTheme.COLORS.WHITE,
         inactiveTintColor: nowTheme.COLORS.WHITE,
-        activeBackgroundColor: 'transparent',
+        activeBackgroundColor: "transparent",
         itemStyle: {
           width: width * 0.75,
-          backgroundColor: 'transparent',
+          backgroundColor: "transparent",
           //backgroundColor: nowTheme.COLORS.PRIMARY,
           paddingVertical: 16,
           paddingHorizonal: 12,
-          justifyContent: 'center',
-          alignContent: 'center',
-          alignItems: 'center',
-          overflow: 'hidden',
+          justifyContent: "center",
+          alignContent: "center",
+          alignItems: "center",
+          overflow: "hidden",
         },
         labelStyle: {
           fontSize: 18,
           marginLeft: 12,
-          fontWeight: 'normal',
+          fontWeight: "normal",
         },
       }}
       initialRouteName="TRANG_CHU"
@@ -543,17 +610,16 @@ function AppStack(props) {
           headerShown: false,
         }}
       />
-
-      <Drawer.Screen
+      {/* <Drawer.Screen
         name="Components"
         component={ComponentsStack}
         options={{
           headerShown: false,
         }}
-      />
+      /> */}
       <Drawer.Screen
-        name="Articles"
-        component={ArticlesStack}
+        name="Login"
+        component={LoginStack}
         options={{
           headerShown: false,
         }}
@@ -566,15 +632,8 @@ function AppStack(props) {
         }}
       />
       <Drawer.Screen
-        name="Account"
-        component={AccountStack}
-        options={{
-          headerShown: false,
-        }}
-      />
-      <Drawer.Screen
-        name="Login"
-        component={LoginStack}
+        name="ChangePass"
+        component={ChangePassStack}
         options={{
           headerShown: false,
         }}
@@ -591,21 +650,42 @@ function AppStack(props) {
 }
 
 export default function OnboardingStack(props) {
+  const { userInfo, splashLoading } = useContext(AuthContext);
   return (
     <Stack.Navigator
       screenOptions={{
-        mode: 'card',
+        mode: "card",
         headerShown: false,
       }}
     >
-      <Stack.Screen
-        name="Onboarding"
-        component={Onboarding}
-        option={{
-          headerTransparent: true,
-        }}
-      />
-      <Stack.Screen name="App" component={AppStack} />
+      {splashLoading ? (
+        <Stack.Screen name="Onboarding" component={Onboarding}></Stack.Screen>
+      ) : userInfo && userInfo.access_token ? (
+        <>
+          <Stack.Screen name="App" component={AppStack}></Stack.Screen>
+        </>
+      ) : (
+        <>
+          <Stack.Screen name="Auth" component={AuthStack}></Stack.Screen>
+        </>
+      )}
     </Stack.Navigator>
+
+    // <Stack.Navigator
+    //   screenOptions={{
+    //     mode: 'card',
+    //     headerShown: false,
+    //   }}
+    // >
+    //   <Stack.Screen
+    //     name="Onboarding"
+    //     component={Onboarding}
+    //     option={{
+    //       headerTransparent: true,
+    //     }}
+    //   />
+    //   <Stack.Screen name="App" component={AuthStack} />
+    //   {/* <Stack.Screen name="App" component={AuthStack} /> */}
+    // </Stack.Navigator>
   );
 }

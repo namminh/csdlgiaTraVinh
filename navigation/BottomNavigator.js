@@ -11,17 +11,16 @@ import KT_THEO_BIEU_MAU from '../screens/KT_THEO_BIEU_MAU';
 import BaoCaoTongHopGiaDangKy from '../screens/BaoCaoTongHopGiaDangKy';
 import Login from '../screens/Login';
 import Profile from '../screens/Profile';
-import TRANG_CHUStack from '../navigation/Screens';
 import BaoCaoGiaThiTruong116 from '../screens/BaoCaoGiaThiTruong116';
 
 const TabArr = [
   {
-    route: 'TRANG_CHU',
+    route: 'TRANG_CHU2',
     label: 'Trang chủ',
     type: BIcons.Ionicons,
     activeIcon: 'home',
     inActiveIcon: 'home-outline',
-    component: BaoCaoTongHopGiaDangKy,
+    component: TRANG_CHU,
   },
   {
     route: 'KT_THEO_BIEU_MAU',
@@ -32,12 +31,12 @@ const TabArr = [
     component: KT_THEO_BIEU_MAU,
   },
   {
-    route: 'Login',
-    label: 'Đăng nhập',
+    route: 'Profile',
+    label: 'Thông tin tài khoản',
     type: BIcons.Ionicons,
-    activeIcon: 'log-in',
-    inActiveIcon: 'log-in-outline',
-    component: Login,
+    activeIcon: 'person',
+    inActiveIcon: 'person-outline',
+    component: Profile,
   },
   //{ route: 'Account', label: 'Account', type: Icons.FontAwesome, activeIcon: 'user-circle', inActiveIcon: 'user-circle-o', component: ColorScreen },
 ];

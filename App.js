@@ -1,16 +1,17 @@
-import React from 'react';
-import { Image } from 'react-native';
-import AppLoading from 'expo-app-loading';
-import * as Font from 'expo-font';
-import { Asset } from 'expo-asset';
-import { Block, GalioProvider } from 'galio-framework';
-import { NavigationContainer } from '@react-navigation/native';
+import React from "react";
+import { Image } from "react-native";
+import AppLoading from "expo-app-loading";
+import * as Font from "expo-font";
+import { Asset } from "expo-asset";
+import { Block, GalioProvider } from "galio-framework";
+import { NavigationContainer } from "@react-navigation/native";
 
-import Screens from './navigation/Screens';
-import { Images, articles, nowTheme } from './constants';
+import Screens from "./navigation/Screens";
+import { Images, articles, nowTheme } from "./constants";
 
-import Home from './screens/Home';
-import { createStackNavigator } from '@react-navigation/stack';
+import { AuthProvider } from "./context/AuthContext";
+
+import { createStackNavigator } from "@react-navigation/stack";
 const Stack = createStackNavigator();
 
 // cache app images
@@ -33,7 +34,7 @@ articles.map((item) => assetImages.push(item.image));
 
 function cacheImages(images) {
   return images.map((image) => {
-    if (typeof image === 'string') {
+    if (typeof image === "string") {
       return Image.prefetch(image);
     } else {
       return Asset.fromModule(image).downloadAsync();
@@ -67,13 +68,15 @@ export default class App extends React.Component {
       );
     } else {
       return (
-        <NavigationContainer>
-          <GalioProvider theme={nowTheme}>
-            <Block flex>
-              <Screens />
-            </Block>
-          </GalioProvider>
-        </NavigationContainer>
+        <AuthProvider>
+          <NavigationContainer>
+            <GalioProvider theme={nowTheme}>
+              <Block flex>
+                <Screens />
+              </Block>
+            </GalioProvider>
+          </NavigationContainer>
+        </AuthProvider>
 
         // <NavigationContainer>
         //   {/* <StatusBar backgroundColor={COLORS.white} barStyle="dark-content" /> */}
@@ -89,8 +92,8 @@ export default class App extends React.Component {
 
   _loadResourcesAsync = async () => {
     await Font.loadAsync({
-      'montserrat-regular': require('./assets/font/Montserrat-Regular.ttf'),
-      'montserrat-bold': require('./assets/font/Montserrat-Bold.ttf'),
+      "montserrat-regular": require("./assets/font/Montserrat-Regular.ttf"),
+      "montserrat-bold": require("./assets/font/Montserrat-Bold.ttf"),
     });
 
     this.setState({ fontLoaded: true });

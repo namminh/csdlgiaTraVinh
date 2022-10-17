@@ -1,13 +1,13 @@
 // local imgs
 const Onboarding = require('../assets/imgs/onBoardNT1.png');
 const Logo = require('../assets/imgs/now-logo.png');
-const ProfileBackground = require('../assets/imgs/bg5.png');
+const ProfileBackground = require('../assets/imgs/onBoardNT.png');
 const RegisterBackground = require('../assets/imgs/register-bg.png');
 const Pro = require('../assets/imgs/bg.png');
 const NowLogo = require('../assets/imgs/logoNT.png');
 const iOSLogo = require('../assets/imgs/ios.png');
 const androidLogo = require('../assets/imgs/android.png');
-const ProfilePicture = require('../assets/imgs/profile-img.jpg');
+const ProfilePicture = require('../assets/imgs/profile.png');
 const CreativeTimLogo = require('../assets/imgs/logohipt.png');
 const InvisionLogo = require('../assets/imgs/logoNT.png');
 

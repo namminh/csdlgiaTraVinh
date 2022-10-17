@@ -9,7 +9,7 @@ import { HeaderHeight } from '../constants/utils';
 export default class Onboarding extends React.Component {
   render() {
     const { navigation } = this.props;
-
+    //console.log(this.props);
     return (
       <Block flex style={styles.container}>
         <StatusBar barStyle="light-content" />
@@ -86,7 +86,7 @@ export default class Onboarding extends React.Component {
                   shadowless
                   style={styles.button}
                   color={nowTheme.COLORS.PRIMARY}
-                  onPress={() => navigation.navigate('App')}
+                  onPress={() => navigation.navigate('Login')}
                 >
                   <Text
                     style={{ fontFamily: 'montserrat-bold', fontSize: 14 }}

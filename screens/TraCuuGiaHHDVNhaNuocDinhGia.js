@@ -25,6 +25,7 @@ import axios from 'axios';
 //import DateTimePicker from '@react-native-community/datetimepicker';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import Moment from 'moment';
+import { appConfig } from "../constants";
 
 const { width } = Dimensions.get('screen');
 
@@ -60,7 +61,7 @@ class TraCuuGiaHHDVNhaNuocDinhGia extends React.Component {
   }
 
   fetDmLoaiHHDV() {
-    axios.get(`http://113.160.48.98:8790/mwebapi/GetDmLoaiHHDV`).then((res) => {
+    axios.get(`${appConfig.BASE_URL}/GetDmLoaiHHDV`).then((res) => {
       const ls = JSON.parse(JSON.stringify(res.data.Result));
       this.setState({
         lsLoaiHHDV: ls,
@@ -76,7 +77,7 @@ class TraCuuGiaHHDVNhaNuocDinhGia extends React.Component {
   }
 
   fetDsMauBieu() {
-    axios.get(`http://113.160.48.98:8790/mwebapi/GetDsMauBieu`).then((res) => {
+    axios.get(`${appConfig.BASE_URL}/GetDsMauBieu`).then((res) => {
       const ls = JSON.parse(JSON.stringify(res.data.Result));
       this.setState({
         lsMauBieu: ls,
@@ -92,7 +93,7 @@ class TraCuuGiaHHDVNhaNuocDinhGia extends React.Component {
   }
 
   fetDmDonVi() {
-    axios.get(`http://113.160.48.98:8790/mwebapi/GetDmDonVi`).then((res) => {
+    axios.get(`${appConfig.BASE_URL}/GetDmDonVi`).then((res) => {
       const ls = JSON.parse(JSON.stringify(res.data.Result));
       this.setState({
         lsDonVi: ls,
@@ -108,7 +109,7 @@ class TraCuuGiaHHDVNhaNuocDinhGia extends React.Component {
   }
 
   fetData() {
-    let url = `http://113.160.48.98:8790/mwebapi/GetBaoCaoTraCuuGiaHHDVNhaNuocDinhGia?congkhai=&loaiHHDV=${this.state.selectedLoaiHHDVId}&ngayBanHanhTu=${this.state.ngayBanHanhTu}&ngayBanHanhDen=${this.state.ngayBanHanhDen}&mauBieuId=${this.state.selectedMauBieuId}&thoiHanHieuLucTu=${this.state.ngayHieuLucTu}&thoiHanHieuLucDen=${this.state.ngayHieuLucDen}&soVanBan=${this.state.soVanBan}&coQuanBanHanhId=${this.state.selectedDonViId}`;
+    let url = `${appConfig.BASE_URL}/GetBaoCaoTraCuuGiaHHDVNhaNuocDinhGia?congkhai=&loaiHHDV=${this.state.selectedLoaiHHDVId}&ngayBanHanhTu=${this.state.ngayBanHanhTu}&ngayBanHanhDen=${this.state.ngayBanHanhDen}&mauBieuId=${this.state.selectedMauBieuId}&thoiHanHieuLucTu=${this.state.ngayHieuLucTu}&thoiHanHieuLucDen=${this.state.ngayHieuLucDen}&soVanBan=${this.state.soVanBan}&coQuanBanHanhId=${this.state.selectedDonViId}`;
     console.log(url);
     axios.get(url).then((res) => {
       const ls = JSON.parse(JSON.stringify(res.data.Result));

@@ -13,7 +13,7 @@ function CustomDrawerContent({ drawerPosition, navigation, profile, focused, sta
   const insets = useSafeArea();
   const menu = [
     { name: 'TRANG_CHU', title: 'Trang chủ' },
-    { name: 'BaoCaoGiaThiTruong116', title: 'Báo cáo Giá thị trường TT116' },
+    { name: 'BaoCaoGiaThiTruong116', title: 'Báo cáo theo biểu mẫu' },
     { name: 'BaoCaoGiaThiTruong142', title: 'Báo cáo Giá thị trường TT142' },
     { name: 'BaoCaoTongHopGiaDangKy', title: 'Khai thác dữ liệu theo chỉ tiêu' },
     { name: 'BaoCaoGiaThiTruongLanhDaoUBND', title: 'Báo cáo phục vụ lãnh đạo' },
@@ -23,8 +23,9 @@ function CustomDrawerContent({ drawerPosition, navigation, profile, focused, sta
     { name: 'KhaiThacGiaVLXD', title: 'Khai thác giá vật liệu xây dựng' },
     { name: 'BaoCaoTongHopGiaTaiSanTDG', title: 'Báo cáo tổng hợp giá trị tài sản TĐG' },
     // { name: 'Components', title: 'Components' },
-    { name: '', title: 'Hệ thống', type: 'line' },
+    { name: '', title: '', type: 'line' },
     { name: 'WEB', title: 'Truy cập Website' },
+    { name: 'Profile', title: 'Thông tin tài khoản' },
     { name: 'LOG_OUT', title: 'Thoát' },
   ];
 

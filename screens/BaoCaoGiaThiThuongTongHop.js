@@ -22,9 +22,8 @@ import Img from '../components/Img';
 import { CardBaoCaoGiaThiThuongTongHop } from '../components';
 
 import axios from 'axios';
-//import DateTimePicker from '@react-native-community/datetimepicker';
-import DateTimePickerModal from 'react-native-modal-datetime-picker';
-import Moment from 'moment';
+
+import { appConfig } from "../constants";
 
 const { width } = Dimensions.get('screen');
 
@@ -59,7 +58,7 @@ class BaoCaoGiaThiThuongTongHop extends React.Component {
   }
 
   fetNhomHHDV() {
-    axios.get(`http://113.160.48.98:8790/mwebapi/GetDmNhomHangHoa142`).then((res) => {
+    axios.get(`${appConfig.BASE_URL}/GetDmNhomHangHoa142`).then((res) => {
       const ls = JSON.parse(JSON.stringify(res.data.Result));
       this.setState({
         lsNhomHHDV: ls,
@@ -75,7 +74,7 @@ class BaoCaoGiaThiThuongTongHop extends React.Component {
   }
 
   fetDmDiaBan() {
-    axios.get(`http://113.160.48.98:8790/mwebapi/getdmdiaban`).then((res) => {
+    axios.get(`${appConfig.BASE_URL}/getdmdiaban`).then((res) => {
       const json = JSON.parse(JSON.stringify(res.data.Result));
       this.setState({
         lsDiaBan: json,
@@ -93,7 +92,7 @@ class BaoCaoGiaThiThuongTongHop extends React.Component {
   }
 
   fetDmLoaiGia() {
-    axios.get(`http://113.160.48.98:8790/mwebapi/GetDmLoaiGia`).then((res) => {
+    axios.get(`${appConfig.BASE_URL}/GetDmLoaiGia`).then((res) => {
       const ls = JSON.parse(JSON.stringify(res.data.Result));
       this.setState({
         lsLoaiGia: ls,
@@ -109,7 +108,7 @@ class BaoCaoGiaThiThuongTongHop extends React.Component {
   }
 
   fetDmKyDuLieu() {
-    // axios.get(`http://113.160.48.98:8790/mwebapi/GetDmKyDuLieu`).then((res) => {
+    // axios.get(`${appConfig.BASE_URL}/GetDmKyDuLieu`).then((res) => {
     //   const json = JSON.parse(JSON.stringify(res.data.Result));
 
     //   this.setState({
@@ -140,7 +139,7 @@ class BaoCaoGiaThiThuongTongHop extends React.Component {
   }
 
   fetData() {
-    let url = `http://113.160.48.98:8790/mwebapi/GetBaoCaoGiaThiTruongTongHop?LOAI_GIA_ID=${this.state.selectedLoaiGiaId}&SAN_PHAM_ID=&NHOM_HANG_HOA_ID=${this.state.selectedNhomHHDVId}&DIA_BAN_ID=${this.state.selectedDiaBanId}&KY_DU_LIEU_ID=&KY_DU_LIEU_CHI_TIET_1_ID=${this.state.selectedKyDuLieuId}&KY_DU_LIEU_CHI_TIET_2_ID=&NAM=${this.state.selectedNam}&MaHHDV=${this.state.maHHDV}`;
+    let url = `${appConfig.BASE_URL}/GetBaoCaoGiaThiTruongTongHop?LOAI_GIA_ID=${this.state.selectedLoaiGiaId}&SAN_PHAM_ID=&NHOM_HANG_HOA_ID=${this.state.selectedNhomHHDVId}&DIA_BAN_ID=${this.state.selectedDiaBanId}&KY_DU_LIEU_ID=&KY_DU_LIEU_CHI_TIET_1_ID=${this.state.selectedKyDuLieuId}&KY_DU_LIEU_CHI_TIET_2_ID=&NAM=${this.state.selectedNam}&MaHHDV=${this.state.maHHDV}`;
     console.log(url);
     axios.get(url).then((res) => {
       const ls = JSON.parse(JSON.stringify(res.data.Result));

@@ -1,13 +1,20 @@
-import React from 'react';
-import { withNavigation } from '@react-navigation/compat';
-import PropTypes from 'prop-types';
-import { StyleSheet, Image, TouchableWithoutFeedback } from 'react-native';
-import { Block, Text, theme } from 'galio-framework';
-import { BIcon } from '.';
+import React from "react";
+import PropTypes from "prop-types";
+import { StyleSheet, Image, TouchableWithoutFeedback } from "react-native";
+import { Block, Text, theme } from "galio-framework";
+import { BIcon } from ".";
 
-import { nowTheme } from '../constants';
-import { View } from 'react-native-web';
+import { nowTheme } from "../constants";
+import { View } from "react-native-web";
+import numbro from "numbro";
+import languages from "numbro/dist/languages.min";
 
+// switch between languages
+Object.getOwnPropertyNames(languages).forEach((lang) => {
+  numbro.registerLanguage(languages[lang], true);
+});
+
+numbro.setLanguage("it-IT");
 class CardBaoCaoGiaThiTruongLanhDaoUBND extends React.Component {
   render() {
     const {
@@ -22,7 +29,10 @@ class CardBaoCaoGiaThiTruongLanhDaoUBND extends React.Component {
       titleStyle,
     } = this.props;
 
-    const imageStyles = [full ? styles.fullImage : styles.horizontalImage, imageStyle];
+    const imageStyles = [
+      full ? styles.fullImage : styles.horizontalImage,
+      imageStyle,
+    ];
     const titleStyles = [styles.cardTitle, titleStyle];
     const cardContainer = [styles.card, styles.shadow, style];
     const imgContainer = [
@@ -48,7 +58,9 @@ class CardBaoCaoGiaThiTruongLanhDaoUBND extends React.Component {
                 {item.TEN_NHOM_HANG_HOA ? (
                   <Block flex left style={styles.cardDescription}>
                     <Text style={styles.cardItemName}>Nhóm:</Text>
-                    <Text style={styles.cardItemValue}>{item.TEN_NHOM_HANG_HOA}</Text>
+                    <Text style={styles.cardItemValue}>
+                      {item.TEN_NHOM_HANG_HOA}
+                    </Text>
                   </Block>
                 ) : (
                   <Block />
@@ -58,7 +70,9 @@ class CardBaoCaoGiaThiTruongLanhDaoUBND extends React.Component {
                 {item.TEN_DON_VI_TINH ? (
                   <Block flex row left style={styles.cardDescription}>
                     <Text style={styles.cardItemName}>Đơn vị tính:</Text>
-                    <Text style={styles.cardItemValue}>{item.TEN_DON_VI_TINH}</Text>
+                    <Text style={styles.cardItemValue}>
+                      {item.TEN_DON_VI_TINH}
+                    </Text>
                   </Block>
                 ) : (
                   <Block />
@@ -67,7 +81,9 @@ class CardBaoCaoGiaThiTruongLanhDaoUBND extends React.Component {
                 {item.MA_HANG_HOA_DICH_VU ? (
                   <Block flex row left style={styles.cardDescription}>
                     <Text style={styles.cardItemName}>Mã:</Text>
-                    <Text style={styles.cardItemValue}>{item.MA_HANG_HOA_DICH_VU}</Text>
+                    <Text style={styles.cardItemValue}>
+                      {item.MA_HANG_HOA_DICH_VU}
+                    </Text>
                   </Block>
                 ) : (
                   <Block />
@@ -95,7 +111,11 @@ class CardBaoCaoGiaThiTruongLanhDaoUBND extends React.Component {
                     </Block>
                     <Block flex row>
                       <Text style={styles.cardItemName}>Giá kỳ này:</Text>
-                      <Text style={styles.cardItemValue}>{item.GIA_KY_NAY}</Text>
+                      <Text style={styles.cardItemValue}>
+                        {numbro(item.GIA_KY_NAY).format({
+                          thousandSeparated: true,
+                        })}
+                      </Text>
                     </Block>
                   </Block>
                 ) : (
@@ -103,19 +123,22 @@ class CardBaoCaoGiaThiTruongLanhDaoUBND extends React.Component {
                 )}
                 {item.GIA_KY_TRUOC ? (
                   <Block flex left row>
-                    <BIcon
-                      //type={item.type}
-                      size={12}
-                      name="ios-pricetag"
-                      color={nowTheme.COLORS.PRIMARY}
-                    />
-                    <Text
-                      style={{ fontFamily: 'montserrat-regular', marginLeft: 10 }}
-                      size={12}
-                      color={nowTheme.COLORS.TEXT}
-                    >
-                      Giá kỳ trước: {item.GIA_KY_TRUOC}
-                    </Text>
+                    <Block>
+                      <BIcon
+                        //type={item.type}
+                        size={12}
+                        name="ios-pricetag"
+                        color={nowTheme.COLORS.PRIMARY}
+                      />
+                    </Block>
+                    <Block flex row>
+                      <Text style={styles.cardItemName}>Giá kỳ trước:</Text>
+                      <Text style={styles.cardItemValue}>
+                        {numbro(item.GIA_KY_TRUOC).format({
+                          thousandSeparated: true,
+                        })}
+                      </Text>
+                    </Block>
                   </Block>
                 ) : (
                   <Block />
@@ -123,16 +146,20 @@ class CardBaoCaoGiaThiTruongLanhDaoUBND extends React.Component {
               </Block>
               {item.MUC_TANG_GIAM ? (
                 <Block flex left row style={styles.cardDescription}>
-                  <BIcon name="pulse" size={12} color={nowTheme.COLORS.ACTIVE} />
+                  <BIcon
+                    name="pulse"
+                    size={12}
+                    color={nowTheme.COLORS.ACTIVE}
+                  />
                   <Text
-                    style={{ fontFamily: 'montserrat-regular', marginLeft: 10 }}
+                    style={{ fontFamily: "montserrat-regular", marginLeft: 10 }}
                     size={12}
                     color={nowTheme.COLORS.TEXT}
                   >
                     Tăng/Giảm:
                   </Text>
                   <Text
-                    style={{ fontFamily: 'montserrat-regular', marginLeft: 10 }}
+                    style={{ fontFamily: "montserrat-regular", marginLeft: 10 }}
                     size={12}
                     color={
                       Math.sign(item.MUC_TANG_GIAM) === -1
@@ -140,7 +167,9 @@ class CardBaoCaoGiaThiTruongLanhDaoUBND extends React.Component {
                         : nowTheme.COLORS.INPUT_SUCCESS
                     }
                   >
-                    {item.MUC_TANG_GIAM}
+                    {numbro(item.MUC_TANG_GIAM).format({
+                      thousandSeparated: true,
+                    })}
                   </Text>
                 </Block>
               ) : (
@@ -149,7 +178,7 @@ class CardBaoCaoGiaThiTruongLanhDaoUBND extends React.Component {
               {item.TEN_LOAI_GIA ? (
                 <Block flex left style={styles.cardDescription}>
                   <Text
-                    style={{ fontFamily: 'montserrat-regular' }}
+                    style={{ fontFamily: "montserrat-regular" }}
                     size={14}
                     color={nowTheme.COLORS.BLACK}
                   >
@@ -240,28 +269,28 @@ const styles = StyleSheet.create({
     padding: theme.SIZES.BASE / 2,
   },
   cardItemName: {
-    fontFamily: 'montserrat-regular',
+    fontFamily: "montserrat-regular",
     fontSize: 12,
     color: nowTheme.COLORS.BLACK,
   },
   cardItemValue: {
-    fontFamily: 'montserrat-regular',
+    fontFamily: "montserrat-regular",
     fontSize: 12,
     color: nowTheme.COLORS.BLACK,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginLeft: 10,
   },
   imageContainer: {
     borderRadius: 3,
     elevation: 1,
-    overflow: 'hidden',
+    overflow: "hidden",
   },
   image: {
     // borderRadius: 3,
   },
   horizontalImage: {
     height: 122,
-    width: 'auto',
+    width: "auto",
   },
   horizontalStyles: {
     borderTopRightRadius: 0,
@@ -275,22 +304,22 @@ const styles = StyleSheet.create({
     height: 215,
   },
   shadow: {
-    shadowColor: '#8898AA',
+    shadowColor: "#8898AA",
     shadowOffset: { width: 0, height: 1 },
     shadowRadius: 6,
     shadowOpacity: 0.1,
     elevation: 2,
   },
   articleButton: {
-    fontFamily: 'montserrat-bold',
+    fontFamily: "montserrat-bold",
     paddingHorizontal: 9,
     paddingVertical: 7,
   },
   container: {
-    flexDirection: 'row',
+    flexDirection: "row",
     marginRight: 10,
-    alignItems: 'center',
+    alignItems: "center",
   },
 });
 
-export default withNavigation(CardBaoCaoGiaThiTruongLanhDaoUBND);
+export default CardBaoCaoGiaThiTruongLanhDaoUBND;

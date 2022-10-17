@@ -24,6 +24,7 @@ import { Card_116 } from '../components';
 import { Card_142 } from '../components';
 
 import axios from 'axios';
+import { appConfig } from "../constants";
 
 const { width } = Dimensions.get('screen');
 
@@ -67,7 +68,7 @@ class BaoCaoGiaThiTruong142 extends React.Component {
   toggleSwitch = (switchId) => this.setState({ [switchId]: !this.state[switchId] });
 
   fetDmhanghoa() {
-    axios.get(`http://113.160.48.98:8790/mwebapi/GetDmNhomHangHoa142`).then((res) => {
+    axios.get(`${appConfig.BASE_URL}/GetDmNhomHangHoa142`).then((res) => {
       const json = JSON.parse(JSON.stringify(res.data.Result));
       this.setState({
         lsdanhmuchanghoa: json,
@@ -85,7 +86,7 @@ class BaoCaoGiaThiTruong142 extends React.Component {
   }
 
   fetDmDiaBan() {
-    axios.get(`http://113.160.48.98:8790/mwebapi/getdmdiaban`).then((res) => {
+    axios.get(`${appConfig.BASE_URL}/getdmdiaban`).then((res) => {
       const json = JSON.parse(JSON.stringify(res.data.Result));
       this.setState({
         lsDiaBan: json,
@@ -103,7 +104,7 @@ class BaoCaoGiaThiTruong142 extends React.Component {
   }
 
   fetDmKyDuLieu() {
-    axios.get(`http://113.160.48.98:8790/mwebapi/GetDmKyDuLieu`).then((res) => {
+    axios.get(`${appConfig.BASE_URL}/GetDmKyDuLieu`).then((res) => {
       const json = JSON.parse(JSON.stringify(res.data.Result));
 
       this.setState({
@@ -121,7 +122,7 @@ class BaoCaoGiaThiTruong142 extends React.Component {
     });
   }
   fetDmKyDuLieuChiTiet() {
-    axios.get(`http://113.160.48.98:8790/mwebapi/GetDmKyDuLieuChiTiet`).then((res) => {
+    axios.get(`${appConfig.BASE_URL}/GetDmKyDuLieuChiTiet`).then((res) => {
       const json = JSON.parse(JSON.stringify(res.data.Result));
       this.setState({
         lsKyDuLieuChiTiet: json,
@@ -139,7 +140,7 @@ class BaoCaoGiaThiTruong142 extends React.Component {
   }
 
   async fetData() {
-    let url = `http://113.160.48.98:8790/mwebapi/GetBaoCaoGiaThiTruong142?SAN_PHAM_ID=HHDV&NHOM_HANG_HOA_ID=${
+    let url = `${appConfig.BASE_URL}/GetBaoCaoGiaThiTruong142?SAN_PHAM_ID=HHDV&NHOM_HANG_HOA_ID=${
       this.state.selectedhanghoaId
     }&DIA_BAN_ID=${this.state.selectedDiaBanId}&KY_DU_LIEU_ID=${
       this.state.selectedDinhKyId

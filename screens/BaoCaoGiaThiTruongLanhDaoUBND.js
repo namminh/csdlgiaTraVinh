@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import {
   ScrollView,
   StyleSheet,
@@ -8,164 +8,221 @@ import {
   Animated,
   ImageBackground,
   ToastAndroid,
-} from 'react-native';
+  ActivityIndicator,
+} from "react-native";
 
-import Articles from './Articles';
+import Articles from "./Articles";
 // Galio components
-import { Block, Text, Button as GaButton, theme } from 'galio-framework';
+import { Block, Text, Button as GaButton, theme, Toast } from "galio-framework";
 
 // Now UI themed components
-import { Images, nowTheme, articles, tabs } from '../constants';
-import { Button, Select, Icon, Input, Header, Switch } from '../components';
+import { Images, nowTheme, articles, tabs } from "../constants";
+import { Button, Select, Icon, Input, Header, Switch } from "../components";
 
-import Img from '../components/Img';
-import { Card, CardBaoCaoGiaThiTruongLanhDaoUBND } from '../components';
+import Img from "../components/Img";
+import { Card, CardBaoCaoGiaThiTruongLanhDaoUBND } from "../components";
 
-import axios from 'axios';
+import axios from "axios";
+import { appConfig } from "../constants";
+import Spinner from "react-native-loading-spinner-overlay";
+import { View } from "react-native-web";
 
-const { width } = Dimensions.get('screen');
+const { width } = Dimensions.get("screen");
 
 const thumbMeasure = (width - 48 - 32) / 3;
 
-class BaoCaoGiaThiTruongLanhDaoUBND extends React.Component {
-  constructor(props) {
-    super(props);
-    const year = new Date().getFullYear();
-    this.years = Array.from(new Array(20), (val, index) => year - index);
-    this.state = {
-      checkSelected: [],
-      lsDiaBan: [],
-      lsTenDiaBan: [],
-      selectedDiaBanId: null,
-      lsKyDuLieu: [],
-      lsTenKyDuLieu: [],
-      lsKyDuLieuChiTiet: [],
-      lsTenKyDuLieuChiTiet: [],
-      lsChiTiet1: [],
-      lsTenChiTiet1: [],
-      lsChiTiet2: [],
-      lsTenChiTiet2: [],
-      lsNam: this.years,
-      isSelectedKyDuLieu: false,
-      isShowChiTiet1: false,
-      isShowChiTiet2: false,
-      kyDuLieuSel: 0,
-      selectedDinhKyId: null,
-      selectedDinhKyChiTiet1Id: null,
-      selectedDinhKyChiTiet2Id: null,
-      selectedNam: null,
-      isDataLoaded: false,
-      lsData: [],
-    };
-  }
+const isCloseToBottom = ({ layoutMeasurement, contentOffset, contentSize }) => {
+  const paddingToBottom = 20;
+  return (
+    layoutMeasurement.height + contentOffset.y >=
+    contentSize.height - paddingToBottom
+  );
+};
 
-  toggleSwitch = (switchId) => this.setState({ [switchId]: !this.state[switchId] });
+const BaoCaoGiaThiTruongLanhDaoUBND = (props) => {
+  const years = Array.from(
+    new Array(20),
+    (val, index) => new Date().getFullYear() - index
+  );
 
-  fetDmDiaBan() {
-    axios.get(`http://113.160.48.98:8790/mwebapi/getdmdiaban`).then((res) => {
+  const [checkSelected, setcheckSelected] = useState([]);
+  const [lsDiaBan, setlsDiaBan] = useState([]);
+  const [lsTenDiaBan, setlsTenDiaBan] = useState([]);
+  const [selectedDiaBanId, setselectedDiaBanId] = useState(null);
+  const [lsKyDuLieu, setlsKyDuLieu] = useState([]);
+  const [lsTenKyDuLieu, setlsTenKyDuLieu] = useState([]);
+  const [lsKyDuLieuChiTiet, setlsKyDuLieuChiTiet] = useState([]);
+  const [lsTenKyDuLieuChiTiet, setlsTenKyDuLieuChiTiet] = useState([]);
+  const [lsChiTiet1, setlsChiTiet1] = useState([]);
+  const [lsTenChiTiet1, setlsTenChiTiet1] = useState([]);
+  const [lsChiTiet2, setlsChiTiet2] = useState([]);
+  const [lsTenChiTiet2, setlsTenChiTiet2] = useState([]);
+  const [lsNam, setlsNam] = useState(years);
+  const [isSelectedKyDuLieu, setisSelectedKyDuLieu] = useState(false);
+  const [isShowChiTiet1, setisShowChiTiet1] = useState(false);
+  const [isShowChiTiet2, setisShowChiTiet2] = useState(false);
+  const [kyDuLieuSel, setkyDuLieuSel] = useState(0);
+  const [selectedDinhKyId, setselectedDinhKyId] = useState(null);
+  const [selectedDinhKyChiTiet1Id, setselectedDinhKyChiTiet1Id] =
+    useState(null);
+  const [selectedDinhKyChiTiet2Id, setselectedDinhKyChiTiet2Id] =
+    useState(null);
+  const [selectedNam, setselectedNam] = useState(null);
+  const [isDataLoaded, setisDataLoaded] = useState(false);
+  const [lsData, setlsData] = useState([]);
+  const [isToastShow, setisToastShow] = useState(false);
+  const [toastMessage, settoastMessage] = useState("");
+  const [isLoading, setisLoading] = useState(false);
+  const [filter, setFilter] = useState("");
+  const [isInfiLoading, setInfiLoading] = useState(false);
+  const [pageIndex, setPageIndex] = useState(1);
+
+  // toggleSwitch = (switchId) =>
+  //   setState({ [switchId]: !state[switchId] });
+
+  const fetDmDiaBan = () => {
+    axios.get(`${appConfig.BASE_URL}/getdmdiaban`).then((res) => {
       const json = JSON.parse(JSON.stringify(res.data.Result));
-      this.setState({
-        lsDiaBan: json,
-      });
+      setlsDiaBan(json);
       let arr = [];
 
       json.map((item) => {
         arr.push(item.TEN_DIA_BAN);
       });
 
-      this.setState({
-        lsTenDiaBan: arr,
-      });
+      setlsTenDiaBan(arr);
     });
-  }
+  };
 
-  fetDmKyDuLieu() {
-    axios.get(`http://113.160.48.98:8790/mwebapi/GetDmKyDuLieu`).then((res) => {
+  const fetDmKyDuLieu = () => {
+    axios.get(`${appConfig.BASE_URL}/GetDmKyDuLieu`).then((res) => {
       const json = JSON.parse(JSON.stringify(res.data.Result));
-
-      this.setState({
-        lsKyDuLieu: json,
-      });
+      setlsKyDuLieu(json);
       let arr = [];
 
       json.map((item) => {
         arr.push(item.TEN_DINH_KY);
       });
-
-      this.setState({
-        lsTenKyDuLieu: arr,
-      });
+      setlsTenKyDuLieu(arr);
     });
-  }
-  fetDmKyDuLieuChiTiet() {
-    axios.get(`http://113.160.48.98:8790/mwebapi/GetDmKyDuLieuChiTiet`).then((res) => {
+  };
+
+  const fetDmKyDuLieuChiTiet = () => {
+    axios.get(`${appConfig.BASE_URL}/GetDmKyDuLieuChiTiet`).then((res) => {
       const json = JSON.parse(JSON.stringify(res.data.Result));
-      this.setState({
-        lsKyDuLieuChiTiet: json,
-      });
+      setlsKyDuLieuChiTiet(json);
+
       let arr = [];
 
       json.map((item) => {
         arr.push(item.TEN_DINH_KY_CHI_TIET);
       });
-
-      this.setState({
-        lsTenKyDuLieuChiTiet: arr,
-      });
+      setlsTenKyDuLieuChiTiet(arr);
     });
-  }
+  };
 
-  async fetData() {
-    //let url = `http://113.160.48.98:8790/mwebapi/GetBaoCaoGiaThiTruongLanhDaoUBND?DIA_BAN_ID=10843&KY_DU_LIEU_ID=24&KY_DU_LIEU_CHI_TIET_1_ID=37&KY_DU_LIEU_CHI_TIET_2_ID=&NAM=2022`;
-    let url = `http://113.160.48.98:8790/mwebapi/GetBaoCaoGiaThiTruongLanhDaoUBND?DIA_BAN_ID=${
-      this.state.selectedDiaBanId ?? ''
-    }&KY_DU_LIEU_ID=${this.state.selectedDinhKyId ?? ''}&KY_DU_LIEU_CHI_TIET_1_ID=${
-      this.state.selectedDinhKyChiTiet1Id ?? ''
-    }&KY_DU_LIEU_CHI_TIET_2_ID=${this.state.selectedDinhKyChiTiet2Id ?? ''}&NAM=${
-      this.state.selectedNam ?? ''
-    }`;
+  async function fetData() {
+    setisLoading(true);
+    setisDataLoaded(false);
+    setPageIndex(1);
+    setFilter('');
+    //let url = `${appConfig.BASE_URL}/GetBaoCaoGiaThiTruongLanhDaoUBND?DIA_BAN_ID=10843&KY_DU_LIEU_ID=24&KY_DU_LIEU_CHI_TIET_1_ID=37&KY_DU_LIEU_CHI_TIET_2_ID=&NAM=2022`;
+    let url = `${
+      appConfig.BASE_URL
+    }/GetBaoCaoGiaThiTruongLanhDaoUBND?DIA_BAN_ID=${
+      selectedDiaBanId ?? ""
+    }&KY_DU_LIEU_ID=${selectedDinhKyId ?? ""}&KY_DU_LIEU_CHI_TIET_1_ID=${
+      selectedDinhKyChiTiet1Id ?? ""
+    }&KY_DU_LIEU_CHI_TIET_2_ID=${selectedDinhKyChiTiet2Id ?? ""}&NAM=${
+      selectedNam ?? ""
+    }&pageIndex=${pageIndex}&pageSize=20`;
     console.log(url);
-    axios.get(url).then((res) => {
-      const ls = JSON.parse(JSON.stringify(res.data.Result));
-      var count = Object.keys(ls).length;
-      if (count === 0) this.showToast('Không tìm thấy dữ liệu phù hợp');
-      setTimeout(() => {
-        this.setState({
-          lsData: ls,
-        });
-      }, 2000);
-    });
+
+    await axios
+      .get(url)
+      .then((res) => {
+        let ret = JSON.parse(JSON.stringify(res.data.Result));
+        console.log(ret);
+        //var count = Object.keys(ls).length;
+        setlsData(ret.Data.Data);
+        setisLoading(false);
+        setisDataLoaded(true);
+      })
+      .catch((e) => {
+        setisLoading(false);
+        setisDataLoaded(true);
+        settoastMessage(`Có lỗ xảy ra: ${e}`);
+      });
   }
 
-  onSelectedDiaBan(index) {
-    if (index >= 0) {
-      let selected = this.state.lsDiaBan[index];
-      selected && this.setState({ selectedDiaBanId: selected.DIA_BAN_ID });
+  async function fetMoreData() {
+    if (isInfiLoading) return;
+    setInfiLoading(true);
+
+    //let url = `${appConfig.BASE_URL}/GetBaoCaoGiaThiTruongLanhDaoUBND?DIA_BAN_ID=8328&KY_DU_LIEU_ID=24&KY_DU_LIEU_CHI_TIET_1_ID=36&KY_DU_LIEU_CHI_TIET_2_ID=&NAM=2022`;
+    let url = `${
+      appConfig.BASE_URL
+    }/GetBaoCaoGiaThiTruongLanhDaoUBND?DIA_BAN_ID=${
+      selectedDiaBanId ?? ""
+    }&KY_DU_LIEU_ID=${selectedDinhKyId ?? ""}&KY_DU_LIEU_CHI_TIET_1_ID=${
+      selectedDinhKyChiTiet1Id ?? ""
+    }&KY_DU_LIEU_CHI_TIET_2_ID=${selectedDinhKyChiTiet2Id ?? ""}&NAM=${
+      selectedNam ?? ""
     }
+    &keyword=${filter}
+    &pageIndex=${pageIndex}&pageSize=20
+    `;
+    // console.log(url);
+
+    await axios
+      .get(url)
+      .then((res) => {
+        let ls = JSON.parse(JSON.stringify(res.data.Result));
+        setlsData((lsData) => [...lsData, ...ls.Data.Data]);
+        setPageIndex((prev) => prev + 1);
+        setInfiLoading(false);
+      })
+      .catch((e) => {
+        setInfiLoading(false);
+        settoastMessage(`Có lỗ xảy ra: ${e}`);
+      });
   }
-  onSelectedKyDuLieu(index) {
+
+  const onSelectedDiaBan = (index) => {
     if (index >= 0) {
-      let dinhKyId = this.state.lsKyDuLieu[index].DINH_KY_ID;
+      let selected = lsDiaBan[index];
+      selected && setselectedDiaBanId(selected.DIA_BAN_ID);
+    }
+  };
+
+  const onSelectedKyDuLieu = (index) => {
+    if (index >= 0) {
+      let dinhKyId = lsKyDuLieu[index].DINH_KY_ID;
       //console.log(dinhKyId);
-      this.setState({ selectedDinhKyId: dinhKyId });
+      setselectedDinhKyId(dinhKyId);
       if (dinhKyId === 27) {
-        this.setState({ isShowChiTiet1: false });
+        setisShowChiTiet1(false);
       } else {
-        this.setState({ isShowChiTiet1: true });
+        setisShowChiTiet1(true);
       }
       if (dinhKyId === 19 || dinhKyId === 22 || dinhKyId === 26) {
-        this.setState({ isShowChiTiet2: true });
+        setisShowChiTiet2(true);
       } else {
-        this.setState({ isShowChiTiet2: false });
+        setisShowChiTiet2(false);
       }
-      //console.log(this.state.lsKyDuLieuChiTiet);
+      //console.log(lsKyDuLieuChiTiet);
       let name1 = [],
         ls1 = [];
-      if (dinhKyId === 19 || dinhKyId === 22 || dinhKyId === 24 || dinhKyId === 26) {
-        this.setState({ lsChiTiet1: [] });
-        this.setState({ lsTenChiTiet1: [] });
+      if (
+        dinhKyId === 19 ||
+        dinhKyId === 22 ||
+        dinhKyId === 24 ||
+        dinhKyId === 26
+      ) {
+        setlsChiTiet1([]);
+        setlsTenChiTiet1([]);
 
-        this.state.lsKyDuLieuChiTiet.map(function (item) {
+        lsKyDuLieuChiTiet.map(function (item) {
           //console.log(item);
           if (item.DINH_KY_ID === 24) {
             name1.push(item.TEN_DINH_KY_CHI_TIET);
@@ -173,10 +230,10 @@ class BaoCaoGiaThiTruongLanhDaoUBND extends React.Component {
           }
         });
       } else {
-        this.setState({ lsChiTiet1: [] });
-        this.setState({ lsTenChiTiet1: [] });
+        setlsChiTiet1([]);
+        setlsTenChiTiet1([]);
 
-        this.state.lsKyDuLieuChiTiet.map(function (item) {
+        lsKyDuLieuChiTiet.map(function (item) {
           //console.log(item);
           if (item.DINH_KY_ID === dinhKyId) {
             //console.log(item);
@@ -187,197 +244,314 @@ class BaoCaoGiaThiTruongLanhDaoUBND extends React.Component {
       }
       //console.log(name1);
 
-      this.setState({ lsChiTiet1: ls1 });
-      this.setState({ lsTenChiTiet1: name1 });
+      setlsChiTiet1(ls1);
+      setlsTenChiTiet1(name1);
 
-      this.setState({ isSelectedKyDuLieu: true });
-      let selected = this.state.lsKyDuLieu[index];
-      selected && this.setState({ selectedDinhKyId: selected.DINH_KY_ID });
+      setisSelectedKyDuLieu(true);
+      let selected = lsKyDuLieu[index];
+      selected && setselectedDinhKyId(selected.DINH_KY_ID);
     } else {
-      this.setState({ isSelectedKyDuLieu: false });
-      this.setState({ selectedDinhKyId: -1 });
+      setisSelectedKyDuLieu(false);
+      setselectedDinhKyId(-1);
     }
-  }
+  };
 
-  onSelectedKyChiTiet1(index) {
-    let sel = this.state.lsChiTiet1[index];
+  const onSelectedKyChiTiet1 = (index) => {
+    let sel = lsChiTiet1[index];
     //console.log(sel);
     let dinhKyChiTiet1Id = sel.DINH_KY_CHI_TIET_ID;
     //console.log(dinhKyChiTiet1Id);
-    this.setState({ selectedDinhKyChiTiet1Id: dinhKyChiTiet1Id });
-    //console.log(this.state.selectedDinhKyId);
-    let dinhKyId = this.state.selectedDinhKyId;
+    setselectedDinhKyChiTiet1Id(dinhKyChiTiet1Id);
+    //console.log(selectedDinhKyId);
+    let dinhKyId = selectedDinhKyId;
     //console.log(dinhKyId);
     let name2 = [],
       ls2 = [];
-    //var count = Object.keys(this.state.lsKyDuLieuChiTiet).length;
+    //var count = Object.keys(lsKyDuLieuChiTiet).length;
     //console.log(count);
-    this.state.lsKyDuLieuChiTiet.map(function (item) {
+    lsKyDuLieuChiTiet.map(function (item) {
       if (item.DINH_KY_ID === dinhKyId && item.CHA_ID === dinhKyChiTiet1Id) {
         name2.push(item.TEN_DINH_KY_CHI_TIET);
         ls2.push(item);
       }
     });
     //console.log(ls2);
-    this.setState({ lsChiTiet2: ls2 });
-    this.setState({ lsTenChiTiet2: name2 });
-  }
+    setlsChiTiet2(ls2);
+    setlsTenChiTiet2(name2);
+  };
 
-  onSelectedNam(value) {
-    this.setState({ selectedNam: value });
-  }
+  const onSelectedNam = (value) => {
+    setselectedNam(value);
+  };
 
-  showSearchResult = () => {
+  async function showSearchResult() {
     //console.log('Xem bao cao');
-    let DIA_BAN_ID = this.state.selectedDiaBanId;
-    let KY_DU_LIEU_ID = this.state.selectedDinhKyId;
-    let KY_DU_LIEU_CHI_TIET_1_ID = this.state.selectedDinhKyChiTiet1Id;
-    let KY_DU_LIEU_CHI_TIET_2_ID = this.state.selectedDinhKyChiTiet2Id;
-    let NAM = this.state.selectedNam;
+    let DIA_BAN_ID = selectedDiaBanId;
+    let KY_DU_LIEU_ID = selectedDinhKyId;
+    let KY_DU_LIEU_CHI_TIET_1_ID = selectedDinhKyChiTiet1Id;
+    let KY_DU_LIEU_CHI_TIET_2_ID = selectedDinhKyChiTiet2Id;
+    let NAM = selectedNam;
     console.log(
       `${DIA_BAN_ID},${KY_DU_LIEU_ID},${KY_DU_LIEU_CHI_TIET_1_ID},${KY_DU_LIEU_CHI_TIET_2_ID},${NAM}`
     );
     if (!DIA_BAN_ID) {
-      this.showToast('Bạn phải chọn Quận/Huyện');
+      //showToast("Bạn phải chọn Quận/Huyện");
+      settoastMessage("Bạn phải chọn Quận/Huyện");
+      setisToastShow(true);
+      setTimeout(() => {
+        setisToastShow(false);
+      }, 3000);
       return;
     }
     if (!KY_DU_LIEU_ID) {
-      this.showToast('Bạn phải chọn Kỳ dữ liệu');
+      // showToast("Bạn phải chọn Kỳ dữ liệu");
+      settoastMessage("Bạn phải chọn Kỳ dữ liệu");
+      setisToastShow(true);
+      setTimeout(() => {
+        setisToastShow(false);
+      }, 3000);
       return;
     }
     if (KY_DU_LIEU_ID && !KY_DU_LIEU_CHI_TIET_1_ID) {
-      this.showToast('Bạn phải chọn Kỳ dữ liệu chi tiết');
+      //showToast("Bạn phải chọn Kỳ dữ liệu chi tiết");
+      settoastMessage("Bạn phải chọn Kỳ dữ liệu chi tiết");
+      setisToastShow(true);
+      setTimeout(() => {
+        setisToastShow(false);
+      }, 3000);
       return;
     }
     if (!NAM) {
-      this.showToast('Bạn phải chọn Năm');
+      //showToast("Bạn phải chọn Năm");
+      settoastMessage("Bạn phải chọn Năm");
+      setisToastShow(true);
+      setTimeout(() => {
+        setisToastShow(false);
+      }, 3000);
       return;
     }
-    this.setState({ isDataLoaded: false });
-    this.fetData();
-    this.setState({ isDataLoaded: true });
-    var ret = this.state.lsData;
-    if (!ret || Object.keys(ret).length <= 0) {
-      this.showToast('Không tìm thấy dữ liệu phù hợp');
-    } //console.log(this.state.lsData.slice(0, 10));
-  };
 
-  componentDidMount() {
-    this.fetDmDiaBan();
-    this.fetDmKyDuLieu();
-    this.fetDmKyDuLieuChiTiet();
+    setisDataLoaded(false);
+    await fetData();
+    setisDataLoaded(true);
+    var len = Object.keys(lsData).length;
+    //console.log(`ket qua:${lsData}`);
+    if (!lsData || len <= 0) {
+      //showToast("Không tìm thấy dữ liệu phù hợp");
+      settoastMessage("Không tìm thấy dữ liệu phù hợp");
+      setisToastShow(true);
+      setTimeout(() => {
+        console.log("Hide toast");
+        setisToastShow(false);
+      }, 3000);
+    } //console.log(lsData.slice(0, 10));
   }
-  showToast = (message) => {
+
+  useEffect(() => {
+    fetDmDiaBan();
+    fetDmKyDuLieu();
+    fetDmKyDuLieuChiTiet();
+    //console.log("rerender");
+  }, []);
+
+  const showToast = (message) => {
     console.log(message);
     ToastAndroid.show(message, ToastAndroid.SHORT);
   };
-  showToastWithGravity = (message) => {
-    ToastAndroid.showWithGravity(message, ToastAndroid.SHORT, ToastAndroid.CENTER);
-  };
-  showToastWithGravityAndOffset = (message) => {
-    ToastAndroid.showWithGravityAndOffset(message, ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50);
-  };
-  renderSearchResult = () => {
+
+  const renderSearchResult = () => {
     return (
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.articles}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.articles}
+      >
+        <Block style={{ paddingHorizontal: theme.SIZES.BASE }}>
+          <Input
+            //primary={this.state.primaryFocus}
+            right
+            placeholder="Từ khóa"
+            icon="search1"
+            family="antdesign"
+            iconSize={14}
+            iconColor="red"
+            //onFocus={() => this.setState({ primaryFocus: true })}
+            //onBlur={() => this.setState({ primaryFocus: false })}
+            //iconContent={<Block />}
+            shadowless
+            onChangeText={(text) => setFilter(text)}
+          />
+        </Block>
         <Block flex style={{ paddingHorizontal: theme.SIZES.BASE }}>
-          {this.state.lsData.map((item, index) => {
-            //console.log(this.state.lsData.slice(0, 2));
-            return (
-              <CardBaoCaoGiaThiTruongLanhDaoUBND
-                key={index}
-                item={item}
-                horizontal
-                titleStyle={styles.productTitle}
-                imageStyle={{ height: 300, width: '100%', resizeMode: 'contain' }}
-              />
-            );
-          })}
+          {lsData &&
+            lsData
+              .filter((i) => i.TEN_HANG_HOA_DICH_VU.includes(filter))
+              .map((item, index) => {
+                //console.log(lsData.slice(0, 2));
+                return (
+                  <CardBaoCaoGiaThiTruongLanhDaoUBND
+                    key={index}
+                    item={item}
+                    horizontal
+                    titleStyle={styles.productTitle}
+                    imageStyle={{
+                      height: 300,
+                      width: "100%",
+                      resizeMode: "contain",
+                    }}
+                  />
+                );
+              })}
         </Block>
       </ScrollView>
     );
   };
 
-  renderForm = () => {
-    //var headers = new Headers();
-    //headers.append('X-CSCAPI-KEY', 'API_KEY');
-
+  const renderForm = () => {
+    //console.log(selectedDiaBanId);
     return (
       <Block flex style={styles.group}>
         <Block style={{ paddingHorizontal: theme.SIZES.BASE }}>
-          <Text style={{ fontFamily: 'montserrat-regular' }} muted>
+          <Text style={{ fontFamily: "montserrat-regular" }} muted>
             Quận/Huyện
           </Text>
           <Block style={{ marginTop: 8 }}>
             {/* <Select defaultIndex={1} options={['Tỉnh Nam Định', 'Huyện Hải Hậu']} /> */}
             <Select
               defaultIndex={-1}
-              defaultValue={'- Chọn -'}
-              options={this.state.lsTenDiaBan}
+              defaultValue={"- Chọn -"}
+              options={lsTenDiaBan}
               onSelect={(index, value) => {
-                this.onSelectedDiaBan(index);
+                onSelectedDiaBan(index);
+              }}
+              style={{
+                borderWidth: 1,
+                borderColor: !selectedDiaBanId
+                  ? nowTheme.COLORS.BORDER
+                  : selectedDiaBanId > 0
+                  ? nowTheme.COLORS.SUCCESS
+                  : nowTheme.COLORS.ERROR,
+                backgroundColor: nowTheme.COLORS.WHITE,
               }}
             />
           </Block>
         </Block>
         <Block style={{ paddingHorizontal: theme.SIZES.BASE }}>
-          <Text style={{ fontFamily: 'montserrat-regular', marginTop: theme.SIZES.BASE }} muted>
+          <Text
+            style={{
+              fontFamily: "montserrat-regular",
+              marginTop: theme.SIZES.BASE,
+            }}
+            muted
+          >
             Kỳ dữ liệu
           </Text>
           <Block style={{ flex: 1, marginTop: 8 }}>
             <Select
               defaultIndex={-1}
-              defaultValue={'- Chọn -'}
-              options={this.state.lsTenKyDuLieu}
+              defaultValue={"- Chọn -"}
+              options={lsTenKyDuLieu}
               onSelect={(index, value) => {
-                this.onSelectedKyDuLieu(index);
+                onSelectedKyDuLieu(index);
+              }}
+              style={{
+                borderWidth: 1,
+                borderColor: !isSelectedKyDuLieu
+                  ? nowTheme.COLORS.BORDER
+                  : isSelectedKyDuLieu > 0
+                  ? nowTheme.COLORS.SUCCESS
+                  : nowTheme.COLORS.ERROR,
+                backgroundColor: nowTheme.COLORS.WHITE,
               }}
             />
           </Block>
         </Block>
-        {this.state.isShowChiTiet1 && (
+        {isShowChiTiet1 && (
           <Block style={{ paddingHorizontal: theme.SIZES.BASE }}>
-            <Text style={{ fontFamily: 'montserrat-regular', marginTop: theme.SIZES.BASE }} muted>
+            <Text
+              style={{
+                fontFamily: "montserrat-regular",
+                marginTop: theme.SIZES.BASE,
+              }}
+              muted
+            >
               Tháng
             </Text>
             <Block style={{ flex: 1, marginTop: 8 }}>
               <Select
                 defaultIndex={-1}
-                defaultValue={'- Chọn -'}
-                options={this.state.lsTenChiTiet1}
+                defaultValue={"- Chọn -"}
+                options={lsTenChiTiet1}
                 onSelect={(index, value) => {
-                  this.onSelectedKyChiTiet1(index);
+                  onSelectedKyChiTiet1(index);
                 }}
-                ref="selKyChiTiet1"
+                style={{
+                  borderWidth: 1,
+                  borderColor: !selectedDinhKyChiTiet1Id
+                    ? nowTheme.COLORS.BORDER
+                    : selectedDinhKyChiTiet1Id > 0
+                    ? nowTheme.COLORS.SUCCESS
+                    : nowTheme.COLORS.ERROR,
+                  backgroundColor: nowTheme.COLORS.WHITE,
+                }}
               />
             </Block>
           </Block>
         )}
-        {this.state.isShowChiTiet2 && (
+        {isShowChiTiet2 && (
           <Block style={{ paddingHorizontal: theme.SIZES.BASE }}>
-            <Text style={{ fontFamily: 'montserrat-regular', marginTop: theme.SIZES.BASE }} muted>
+            <Text
+              style={{
+                fontFamily: "montserrat-regular",
+                marginTop: theme.SIZES.BASE,
+              }}
+              muted
+            >
               Ngày
             </Text>
             <Block style={{ flex: 1, marginTop: 8 }}>
               <Select
-                defaultValue={'- Chọn -'}
+                defaultValue={"- Chọn -"}
                 defaultIndex={-1}
-                options={this.state.lsTenChiTiet2}
+                options={lsTenChiTiet2}
+                style={{
+                  borderWidth: 1,
+                  borderColor: !selectedDinhKyChiTiet2Id
+                    ? nowTheme.COLORS.BORDER
+                    : selectedDiaBanId > 0
+                    ? nowTheme.COLORS.SUCCESS
+                    : nowTheme.COLORS.ERROR,
+                  backgroundColor: nowTheme.COLORS.WHITE,
+                }}
               />
             </Block>
           </Block>
         )}
         <Block style={{ paddingHorizontal: theme.SIZES.BASE }}>
-          <Text style={{ fontFamily: 'montserrat-regular', marginTop: theme.SIZES.BASE }} muted>
+          <Text
+            style={{
+              fontFamily: "montserrat-regular",
+              marginTop: theme.SIZES.BASE,
+            }}
+            muted
+          >
             Năm
           </Text>
           <Block style={{ flex: 1, marginTop: 8 }}>
             <Select
               defaultIndex={-1}
-              defaultValue={'- Chọn -'}
-              options={this.years}
+              defaultValue={"- Chọn -"}
+              options={years}
               onSelect={(index, value) => {
-                this.setState({ selectedNam: value });
+                setselectedNam(value);
+              }}
+              style={{
+                borderWidth: 1,
+                borderColor: !selectedNam
+                  ? nowTheme.COLORS.BORDER
+                  : selectedNam > 0
+                  ? nowTheme.COLORS.SUCCESS
+                  : nowTheme.COLORS.ERROR,
+                backgroundColor: nowTheme.COLORS.WHITE,
               }}
             />
           </Block>
@@ -385,10 +559,10 @@ class BaoCaoGiaThiTruongLanhDaoUBND extends React.Component {
         <Block style={{ paddingHorizontal: theme.SIZES.BASE, marginTop: 10 }}>
           <Block center>
             <Button
-              textStyle={{ fontFamily: 'montserrat-regular', fontSize: 16 }}
+              textStyle={{ fontFamily: "montserrat-regular", fontSize: 16 }}
               color="active"
               style={styles.button}
-              onPress={this.showSearchResult}
+              onPress={showSearchResult}
             >
               Xem báo cáo
             </Button>
@@ -398,25 +572,56 @@ class BaoCaoGiaThiTruongLanhDaoUBND extends React.Component {
     );
   };
 
-  render() {
-    return (
-      <Block flex center>
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={{ paddingBottom: 30, width }}
+  return (
+    <Block flex center>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ paddingBottom: 30, width }}
+        // onMomentumScrollEnd={(e) => {
+        //   const scrollPosition = e.nativeEvent.contentOffset.y;
+        //   const scrolViewHeight = e.nativeEvent.layoutMeasurement.height;
+        //   const contentHeight = e.nativeEvent.contentSize.height;
+        //   const isScrolledToBottom = scrolViewHeight + scrollPosition;
+        //   //console.log('scroll end?:', e);
+        //   // check if scrollView is scrolled to bottom and limit itemToRender to data length
+        //   if (isScrolledToBottom >= contentHeight - 50) {
+        //     //this.setState({ itemToRender: this.state.itemToRender + 20 })
+        //     console.log("scroll to bottom?:", isScrolledToBottom);
+        //   }
+        // }}
+        onScroll={({ nativeEvent }) => {
+          if (isCloseToBottom(nativeEvent)) {
+            fetMoreData();
+          }
+        }}
+        scrollEventThrottle={400}
+      >
+        <Toast
+          isShow={isToastShow}
+          positionIndicator="top"
+          color="warning"
+          style={{ top: 0 }}
+          textStyle={styles.toastTextStyle}
         >
-          {this.renderForm()}
-          {this.state.isDataLoaded && this.renderSearchResult()}
-          {/* {this.renderCards()} */}
-        </ScrollView>
-      </Block>
-    );
-  }
-}
+          {toastMessage}
+        </Toast>
+        <Spinner visible={isLoading} />
+        {renderForm()}
+        {isDataLoaded && renderSearchResult()}
+        {/* {renderCards()} */}
+        <ActivityIndicator
+          size={25}
+          animating={isInfiLoading}
+          color="#0000ff"
+        />
+      </ScrollView>
+    </Block>
+  );
+};
 
 const styles = StyleSheet.create({
   title: {
-    fontFamily: 'montserrat-bold',
+    fontFamily: "montserrat-bold",
     paddingBottom: theme.SIZES.BASE,
     paddingHorizontal: theme.SIZES.BASE * 2,
     marginTop: 44,
@@ -426,13 +631,13 @@ const styles = StyleSheet.create({
     width: theme.SIZES.BASE * 3.5,
     height: theme.SIZES.BASE * 3.5,
     borderRadius: theme.SIZES.BASE * 1.75,
-    justifyContent: 'center',
+    justifyContent: "center",
   },
   group: {
     paddingTop: theme.SIZES.BASE * 2,
   },
   shadow: {
-    shadowColor: 'black',
+    shadowColor: "black",
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 4,
     shadowOpacity: 0.2,
@@ -443,7 +648,7 @@ const styles = StyleSheet.create({
     width: width - theme.SIZES.BASE * 2,
   },
   optionsButton: {
-    width: 'auto',
+    width: "auto",
     height: 34,
     paddingHorizontal: 10,
     paddingVertical: 10,
@@ -454,29 +659,36 @@ const styles = StyleSheet.create({
     borderWidth: 0,
   },
   categoryTitle: {
-    height: '100%',
+    height: "100%",
     paddingHorizontal: theme.SIZES.BASE,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    justifyContent: "center",
+    alignItems: "center",
   },
   imageBlock: {
-    overflow: 'hidden',
+    overflow: "hidden",
     borderRadius: 4,
     marginHorizontal: 10,
   },
   albumThumb: {
     borderRadius: 4,
     marginVertical: 4,
-    alignSelf: 'center',
+    alignSelf: "center",
     width: thumbMeasure,
     height: thumbMeasure,
   },
   productTitle: {
     color: nowTheme.COLORS.PRIMARY,
-    textAlign: 'center',
-    fontFamily: 'montserrat-bold',
+    textAlign: "center",
+    fontFamily: "montserrat-bold",
     fontSize: 18,
+  },
+  toastTextStyle: {
+    fontFamily: "montserrat-regular",
+    textTransform: "uppercase",
+    fontWeight: "300",
+    fontSize: 14,
+    color: "white",
   },
 });
 

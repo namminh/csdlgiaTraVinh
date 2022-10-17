@@ -23,7 +23,7 @@ import { Card } from '../components';
 import { Card_116 } from '../components';
 
 import axios from 'axios';
-import { View } from 'react-native-web';
+import { appConfig } from "../constants";
 
 const { width } = Dimensions.get('screen');
 
@@ -64,7 +64,7 @@ class BaoCaoGiaThiTruong116 extends React.Component {
   toggleSwitch = (switchId) => this.setState({ [switchId]: !this.state[switchId] });
 
   fetDmDiaBan() {
-    axios.get(`http://113.160.48.98:8790/mwebapi/getdmdiaban`).then((res) => {
+    axios.get(`${appConfig.BASE_URL}/getdmdiaban`).then((res) => {
       const json = JSON.parse(JSON.stringify(res.data.Result));
       this.setState({
         lsDiaBan: json,
@@ -82,7 +82,7 @@ class BaoCaoGiaThiTruong116 extends React.Component {
   }
 
   fetDmKyDuLieu() {
-    axios.get(`http://113.160.48.98:8790/mwebapi/GetDmKyDuLieu`).then((res) => {
+    axios.get(`${appConfig.BASE_URL}/GetDmKyDuLieu`).then((res) => {
       const json = JSON.parse(JSON.stringify(res.data.Result));
 
       this.setState({
@@ -100,7 +100,7 @@ class BaoCaoGiaThiTruong116 extends React.Component {
     });
   }
   fetDmKyDuLieuChiTiet() {
-    axios.get(`http://113.160.48.98:8790/mwebapi/GetDmKyDuLieuChiTiet`).then((res) => {
+    axios.get(`${appConfig.BASE_URL}/GetDmKyDuLieuChiTiet`).then((res) => {
       const json = JSON.parse(JSON.stringify(res.data.Result));
       this.setState({
         lsKyDuLieuChiTiet: json,
@@ -118,8 +118,8 @@ class BaoCaoGiaThiTruong116 extends React.Component {
   }
 
   async fetData() {
-    // let url = `http://113.160.48.98:8790/mwebapi/LayBaoCaoGiaThiTruong116`;
-    let url = `http://113.160.48.98:8790/mwebapi/GetBaoCaoGiaThiTruong116?DIA_BAN_ID=${
+    // let url = `${appConfig.BASE_URL}/LayBaoCaoGiaThiTruong116`;
+    let url = `${appConfig.BASE_URL}/GetBaoCaoGiaThiTruong116?DIA_BAN_ID=${
       this.state.selectedDiaBanId
     }&KY_DU_LIEU_ID=${this.state.selectedDinhKyId}&KY_DU_LIEU_CHI_TIET_1_ID=${
       this.state.selectedDinhKyChiTiet1Id ? this.state.selectedDinhKyChiTiet1Id : ''

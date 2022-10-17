@@ -1,46 +1,73 @@
-import React from 'react';
-import { withNavigation } from '@react-navigation/compat';
-import { TouchableOpacity, StyleSheet, Platform, Dimensions, Keyboard } from 'react-native';
-import { Button, Block, NavBar, Text, theme, Button as GaButton } from 'galio-framework';
+import React from "react";
+import {
+  TouchableOpacity,
+  StyleSheet,
+  Platform,
+  Dimensions,
+  Keyboard,
+} from "react-native";
+import {
+  Button,
+  Block,
+  NavBar,
+  Text,
+  theme,
+  Button as GaButton,
+} from "galio-framework";
 
-import Icon from './Icon';
-import Input from './Input';
-import Tabs from './Tabs';
+import Icon from "./Icon";
+import Input from "./Input";
+import Tabs from "./Tabs";
+import nowTheme from "../constants/Theme";
 
-import nowTheme, { COLORS } from '../constants/Theme';
-import { color } from 'react-native-reanimated';
-
-const { height, width } = Dimensions.get('window');
+const { height, width } = Dimensions.get("window");
 const iPhoneX = () =>
-  Platform.OS === 'ios' && (height === 812 || width === 812 || height === 896 || width === 896);
+  Platform.OS === "ios" &&
+  (height === 812 || width === 812 || height === 896 || width === 896);
 
 const BellButton = ({ isWhite, style, navigation }) => (
-  <TouchableOpacity style={[styles.button, style]} onPress={() => navigation.navigate('Pro')}>
+  <TouchableOpacity
+    style={[styles.button, style]}
+    onPress={() => navigation.navigate("Pro")}
+  >
     <Icon
       family="NowExtra"
       size={16}
       name="bulb"
-      color={nowTheme.COLORS[isWhite ? 'WHITE' : 'ICON']}
+      color={nowTheme.COLORS[isWhite ? "WHITE" : "ICON"]}
     />
     <Block
       middle
-      style={[styles.notify, { backgroundColor: nowTheme.COLORS[isWhite ? 'WHITE' : 'PRIMARY'] }]}
+      style={[
+        styles.notify,
+        { backgroundColor: nowTheme.COLORS[isWhite ? "WHITE" : "PRIMARY"] },
+      ]}
     />
   </TouchableOpacity>
 );
 
 const BasketButton = ({ isWhite, style, navigation }) => (
-  <TouchableOpacity style={[styles.button, style]} onPress={() => navigation.navigate('Pro')}>
+  <TouchableOpacity
+    style={[styles.button, style]}
+    onPress={() => navigation.navigate("Pro")}
+  >
     <Icon
       family="NowExtra"
       size={16}
       name="basket2x"
-      color={nowTheme.COLORS[isWhite ? 'WHITE' : 'ICON']}
+      color={nowTheme.COLORS[isWhite ? "WHITE" : "ICON"]}
     />
   </TouchableOpacity>
 );
 
 class Header extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      keyword: "",
+    };
+  }
+
   handleLeftPress = () => {
     const { back, navigation } = this.props;
     return back ? navigation.goBack() : navigation.openDrawer();
@@ -48,58 +75,118 @@ class Header extends React.Component {
   renderRight = () => {
     const { white, title, navigation } = this.props;
 
-    if (title === 'Title') {
+    if (title === "Title") {
       return [
         <BellButton key="chat-title" navigation={navigation} isWhite={white} />,
-        <BasketButton key="basket-title" navigation={navigation} isWhite={white} />,
+        <BasketButton
+          key="basket-title"
+          navigation={navigation}
+          isWhite={white}
+        />,
       ];
     }
 
     switch (title) {
-      case 'Home':
+      case "Home":
         return [
-          <BellButton key="chat-home" navigation={navigation} isWhite={white} />,
-          <BasketButton key="basket-home" navigation={navigation} isWhite={white} />,
+          <BellButton
+            key="chat-home"
+            navigation={navigation}
+            isWhite={white}
+          />,
+          <BasketButton
+            key="basket-home"
+            navigation={navigation}
+            isWhite={white}
+          />,
         ];
-      case 'Deals':
+      case "Deals":
         return [
           <BellButton key="chat-categories" navigation={navigation} />,
           <BasketButton key="basket-categories" navigation={navigation} />,
         ];
-      case 'Categories':
+      case "Categories":
         return [
-          <BellButton key="chat-categories" navigation={navigation} isWhite={white} />,
-          <BasketButton key="basket-categories" navigation={navigation} isWhite={white} />,
+          <BellButton
+            key="chat-categories"
+            navigation={navigation}
+            isWhite={white}
+          />,
+          <BasketButton
+            key="basket-categories"
+            navigation={navigation}
+            isWhite={white}
+          />,
         ];
-      case 'Category':
+      case "Category":
         return [
-          <BellButton key="chat-deals" navigation={navigation} isWhite={white} />,
-          <BasketButton key="basket-deals" navigation={navigation} isWhite={white} />,
+          <BellButton
+            key="chat-deals"
+            navigation={navigation}
+            isWhite={white}
+          />,
+          <BasketButton
+            key="basket-deals"
+            navigation={navigation}
+            isWhite={white}
+          />,
         ];
-      case 'Profile':
+      case "Profile":
         return [
-          <BellButton key="chat-profile" navigation={navigation} isWhite={white} />,
-          <BasketButton key="basket-deals" navigation={navigation} isWhite={white} />,
+          <BellButton
+            key="chat-profile"
+            navigation={navigation}
+            isWhite={white}
+          />,
+          <BasketButton
+            key="basket-deals"
+            navigation={navigation}
+            isWhite={white}
+          />,
         ];
-      case 'Account':
+      case "Account":
         return [
           <BellButton key="chat-profile" navigation={navigation} />,
           <BasketButton key="basket-deals" navigation={navigation} />,
         ];
-      case 'Product':
+      case "Product":
         return [
-          <BellButton key="chat-profile" navigation={navigation} isWhite={white} />,
-          <BasketButton key="basket-product" navigation={navigation} isWhite={white} />,
+          <BellButton
+            key="chat-profile"
+            navigation={navigation}
+            isWhite={white}
+          />,
+          <BasketButton
+            key="basket-product"
+            navigation={navigation}
+            isWhite={white}
+          />,
         ];
-      case 'Search':
+      case "Search":
         return [
-          <BellButton key="chat-search" navigation={navigation} isWhite={white} />,
-          <BasketButton key="basket-search" navigation={navigation} isWhite={white} />,
+          <BellButton
+            key="chat-search"
+            navigation={navigation}
+            isWhite={white}
+          />,
+          <BasketButton
+            key="basket-search"
+            navigation={navigation}
+            isWhite={white}
+          />,
         ];
-      case 'Settings':
+      case "Settings":
         return [
-          <BellButton key="chat-search" navigation={navigation} isWhite={white} />,
-          <BasketButton key="basket-search" navigation={navigation} isWhite={white} />,
+          <BellButton
+            key="chat-search"
+            navigation={navigation}
+            isWhite={white}
+          />,
+          <BasketButton
+            key="basket-search"
+            navigation={navigation}
+            isWhite={white}
+          />,
         ];
       default:
         break;
@@ -112,19 +199,24 @@ class Header extends React.Component {
         right
         color="black"
         style={styles.search}
-        placeholder="Tìm kiếm?"
-        placeholderTextColor={COLORS.gray}
+        placeholder="Tên hàng hóa dịch vụ"
+        placeholderTextColor={"#8898AA"}
+        onTextChange={(text) => this.setState({ keyword: text })}
         onFocus={() => {
-          Keyboard.dismiss();
-          navigation.navigate('Pro');
+          //Keyboard.dismiss();
+          //navigation.navigate("Profile");
         }}
         iconContent={
-          <Icon size={16} color={theme.COLORS.MUTED} name="zoom-bold2x" family="NowExtra" />
+          <Icon
+            size={16}
+            color={theme.COLORS.MUTED}
+            name="zoom-bold2x"
+            family="NowExtra"
+          />
         }
       />
     );
   };
-
   renderOptions = () => {
     const { navigation, optionLeft, optionRight } = this.props;
 
@@ -133,7 +225,7 @@ class Header extends React.Component {
         <Button
           shadowless
           style={[styles.tab, styles.divider]}
-          onPress={() => console.log(navigation.navigate('Pro'))}
+          onPress={() => console.log(navigation.navigate("Pro"))}
         >
           <Block row middle>
             <Icon
@@ -143,12 +235,20 @@ class Header extends React.Component {
               style={{ paddingRight: 8 }}
               color={nowTheme.COLORS.HEADER}
             />
-            <Text size={16} style={styles.tabTitle}>
-              {optionLeft || 'Beauty'}
+            <Text
+              style={{ fontFamily: "montserrat-regular" }}
+              size={16}
+              style={styles.tabTitle}
+            >
+              {optionLeft || "Beauty"}
             </Text>
           </Block>
         </Button>
-        <Button shadowless style={styles.tab} onPress={() => navigation.navigate('Pro')}>
+        <Button
+          shadowless
+          style={styles.tab}
+          onPress={() => navigation.navigate("Pro")}
+        >
           <Block row middle>
             <Icon
               size={18}
@@ -157,8 +257,12 @@ class Header extends React.Component {
               style={{ paddingRight: 8 }}
               color={nowTheme.COLORS.HEADER}
             />
-            <Text size={16} style={styles.tabTitle}>
-              {optionRight || 'Fashion'}
+            <Text
+              style={{ fontFamily: "montserrat-regular" }}
+              size={16}
+              style={styles.tabTitle}
+            >
+              {optionRight || "Fashion"}
             </Text>
           </Block>
         </Button>
@@ -180,10 +284,8 @@ class Header extends React.Component {
       />
     );
   };
-
   renderHeader = () => {
     const { search, options, tabs } = this.props;
-
     if (search || tabs || options) {
       return (
         <Block center>
@@ -206,13 +308,23 @@ class Header extends React.Component {
       navigation,
       ...props
     } = this.props;
-    const noShadow = ['Search', 'Categories', 'Deals', 'Pro', 'Profile'].includes(title);
+
+    const noShadow = [
+      "Search",
+      "Categories",
+      "Deals",
+      "Pro",
+      "Profile",
+    ].includes(title);
     const headerStyles = [
       !noShadow ? styles.shadow : null,
-      transparent ? { backgroundColor: 'rgba(0,0,0,0)' } : null,
+      transparent ? { backgroundColor: "rgba(0,0,0,0)" } : null,
     ];
 
-    const navbarStyles = [styles.navbar, bgColor && { backgroundColor: bgColor }];
+    const navbarStyles = [
+      styles.navbar,
+      bgColor && { backgroundColor: bgColor },
+    ];
 
     return (
       <Block style={headerStyles}>
@@ -222,25 +334,27 @@ class Header extends React.Component {
           style={navbarStyles}
           transparent={transparent}
           right={this.renderRight()}
-          rightStyle={{ alignItems: 'center' }}
+          rightStyle={{ alignItems: "center" }}
           left={
             <Icon
-              name={back ? 'minimal-left2x' : 'align-left-22x'}
+              name={back ? "minimal-left2x" : "align-left-22x"}
               family="NowExtra"
               size={16}
               onPress={this.handleLeftPress}
-              color={iconColor || (white ? nowTheme.COLORS.WHITE : nowTheme.COLORS.ICON)}
+              color={
+                iconColor ||
+                (white ? nowTheme.COLORS.WHITE : nowTheme.COLORS.ICON)
+              }
             />
           }
           leftStyle={{ paddingVertical: 12, flex: 0.2 }}
           titleStyle={[
             styles.title,
-            { color: nowTheme.COLORS[white ? 'WHITE' : 'HEADER'] },
+            { color: nowTheme.COLORS[white ? "WHITE" : "HEADER"] },
             titleColor && { color: titleColor },
           ]}
           {...props}
         />
-
         {this.renderHeader()}
       </Block>
     );
@@ -250,13 +364,13 @@ class Header extends React.Component {
 const styles = StyleSheet.create({
   button: {
     padding: 12,
-    position: 'relative',
+    position: "relative",
   },
   title: {
-    width: '100%',
+    width: "100%",
     fontSize: 16,
-    fontWeight: 'bold',
-    fontFamily: 'montserrat-regular',
+    fontWeight: "bold",
+    fontFamily: "montserrat-regular",
   },
   navbar: {
     paddingVertical: 0,
@@ -266,7 +380,7 @@ const styles = StyleSheet.create({
   },
   shadow: {
     backgroundColor: theme.COLORS.WHITE,
-    shadowColor: 'black',
+    shadowColor: "black",
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 6,
     shadowOpacity: 0.2,
@@ -277,7 +391,7 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     height: theme.SIZES.BASE / 2,
     width: theme.SIZES.BASE / 2,
-    position: 'absolute',
+    position: "absolute",
     top: 9,
     right: 12,
   },
@@ -311,16 +425,15 @@ const styles = StyleSheet.create({
   },
   tabTitle: {
     lineHeight: 19,
-    fontWeight: '400',
-    color: nowTheme.COLORS.BLACK,
-    fontFamily: 'montserrat-regular',
+    fontWeight: "400",
+    color: nowTheme.COLORS.HEADER,
   },
   social: {
     width: theme.SIZES.BASE * 3.5,
     height: theme.SIZES.BASE * 3.5,
     borderRadius: theme.SIZES.BASE * 1.75,
-    justifyContent: 'center',
+    justifyContent: "center",
   },
 });
 
-export default withNavigation(Header);
+export default Header;

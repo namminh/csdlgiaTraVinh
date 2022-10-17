@@ -38,7 +38,7 @@ const TabButton = (props) => {
       <BIcon
         type={item.type}
         name={focused ? item.activeIcon : item.inActiveIcon}
-        color={focused ? COLORS.WHITE : COLORS.BLACK}
+        color={focused ? COLORS.WHITE : COLORS.INPUT}
       />
     </TouchableOpacity>
   );

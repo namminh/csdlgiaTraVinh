@@ -25,6 +25,7 @@ import axios from 'axios';
 //import DateTimePicker from '@react-native-community/datetimepicker';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import Moment from 'moment';
+import { appConfig } from "../constants";
 
 const { width } = Dimensions.get('screen');
 
@@ -62,7 +63,7 @@ class BaoCaoTongHopGiaDangKy extends React.Component {
   }
 
   fetDmDoanhNghiep() {
-    axios.get(`http://113.160.48.98:8790/mwebapi/getdmdoanhnghiep`).then((res) => {
+    axios.get(`${appConfig.BASE_URL}/getdmdoanhnghiep`).then((res) => {
       const ls = JSON.parse(JSON.stringify(res.data.Result));
       this.setState({
         lsDoanhNghiep: ls,
@@ -78,7 +79,7 @@ class BaoCaoTongHopGiaDangKy extends React.Component {
   }
 
   fetDmLoaiGia() {
-    axios.get(`http://113.160.48.98:8790/mwebapi/GetDmLoaiGia`).then((res) => {
+    axios.get(`${appConfig.BASE_URL}/GetDmLoaiGia`).then((res) => {
       const ls = JSON.parse(JSON.stringify(res.data.Result));
       this.setState({
         lsLoaiGia: ls,
@@ -94,7 +95,7 @@ class BaoCaoTongHopGiaDangKy extends React.Component {
   }
 
   fetNhomHHDV() {
-    axios.get(`http://113.160.48.98:8790/mwebapi/GetDmNhomHangHoa`).then((res) => {
+    axios.get(`${appConfig.BASE_URL}/GetDmNhomHangHoa`).then((res) => {
       const ls = JSON.parse(JSON.stringify(res.data.Result));
       this.setState({
         lsNhomHHDV: ls,
@@ -110,7 +111,7 @@ class BaoCaoTongHopGiaDangKy extends React.Component {
   }
 
   fetHHDV() {
-    axios.get(`http://113.160.48.98:8790/mwebapi/GetDmHangHoaDichVu`).then((res) => {
+    axios.get(`${appConfig.BASE_URL}/GetDmHangHoaDichVu`).then((res) => {
       const ls = JSON.parse(JSON.stringify(res.data.Result));
       this.setState({
         lsNhomHHDV: ls,
@@ -126,7 +127,7 @@ class BaoCaoTongHopGiaDangKy extends React.Component {
   }
 
   fetHHDVDK() {
-    axios.get(`http://113.160.48.98:8790/mwebapi/GetDmHHDVDKGia`).then((res) => {
+    axios.get(`${appConfig.BASE_URL}/GetDmHHDVDKGia`).then((res) => {
       const ls = JSON.parse(JSON.stringify(res.data.Result));
       this.setState({
         lsHHDV: arr,
@@ -142,8 +143,8 @@ class BaoCaoTongHopGiaDangKy extends React.Component {
   }
 
   fetData() {
-    //let url = `http://113.160.48.98:8790/mwebapi/GetBaoCaoTongHopGiaDangKy?doanhNghiepId=263&ngayHieuLucTu=01/01/2021&ngayHieuLucDen=01/09/2022&loaiGiaIds=10`;
-    let url = `http://113.160.48.98:8790/mwebapi/GetBaoCaoTongHopGiaDangKy?doanhNghiepId=${this.state.selectedDoanhNghiepId}&ngayHieuLucTu=${this.state.startDate}&ngayHieuLucDen=${this.state.endDate}&loaiGiaIds=${this.state.selectedLoaiGiaId}`;
+    //let url = `${appConfig.BASE_URL}/GetBaoCaoTongHopGiaDangKy?doanhNghiepId=263&ngayHieuLucTu=01/01/2021&ngayHieuLucDen=01/09/2022&loaiGiaIds=10`;
+    let url = `${appConfig.BASE_URL}/GetBaoCaoTongHopGiaDangKy?doanhNghiepId=${this.state.selectedDoanhNghiepId}&ngayHieuLucTu=${this.state.startDate}&ngayHieuLucDen=${this.state.endDate}&loaiGiaIds=${this.state.selectedLoaiGiaId}`;
     console.log(url);
     axios.get(url).then((res) => {
       const ls = JSON.parse(JSON.stringify(res.data.Result));
@@ -316,7 +317,7 @@ class BaoCaoTongHopGiaDangKy extends React.Component {
     //   redirect: 'follow',
     // };
 
-    // fetch('http://113.160.48.98:8790/mwebapi/getdmdoanhnghiep', requestOptions)
+    // fetch('${appConfig.BASE_URL}/getdmdoanhnghiep', requestOptions)
     //   .then((response) => response.json())
     //   .then((result) => {
     //     if (result) {
@@ -333,7 +334,7 @@ class BaoCaoTongHopGiaDangKy extends React.Component {
     //   })
     //   .catch((error) => console.log('error', error));
 
-    // fetch('http://113.160.48.98:8790/mwebapi/GetDmLoaiGia', requestOptions)
+    // fetch('${appConfig.BASE_URL}/GetDmLoaiGia', requestOptions)
     //   .then((response) => response.json())
     //   .then((result) => {
     //     if (result) {
@@ -352,7 +353,7 @@ class BaoCaoTongHopGiaDangKy extends React.Component {
 
     // var config = {
     //   method: 'get',
-    //   url: 'http://113.160.48.98:8790/mwebapi/getdmdoanhnghiep',
+    //   url: '${appConfig.BASE_URL}/getdmdoanhnghiep',
     //   // headers: {
     //   //   'X-CSCAPI-KEY': 'API_KEY',
     //   // },
@@ -377,7 +378,7 @@ class BaoCaoTongHopGiaDangKy extends React.Component {
 
     // config = {
     //   method: 'get',
-    //   url: 'http://113.160.48.98:8790/mwebapi/GetDmLoaiGia',
+    //   url: '${appConfig.BASE_URL}/GetDmLoaiGia',
     //   // headers: {
     //   //   'X-CSCAPI-KEY': 'API_KEY',
     //   // },
@@ -402,7 +403,7 @@ class BaoCaoTongHopGiaDangKy extends React.Component {
 
     // config = {
     //   method: 'get',
-    //   url: 'http://113.160.48.98:8790/mwebapi/GetDmNhomHangHoa',
+    //   url: '${appConfig.BASE_URL}/GetDmNhomHangHoa',
     //   // headers: {
     //   //   'X-CSCAPI-KEY': 'API_KEY',
     //   // },
@@ -427,7 +428,7 @@ class BaoCaoTongHopGiaDangKy extends React.Component {
 
     // config = {
     //   method: 'get',
-    //   url: 'http://113.160.48.98:8790/mwebapi/GetDmHangHoaDichVu',
+    //   url: '${appConfig.BASE_URL}/GetDmHangHoaDichVu',
     //   // headers: {
     //   //   'X-CSCAPI-KEY': 'API_KEY',
     //   // },
@@ -452,7 +453,7 @@ class BaoCaoTongHopGiaDangKy extends React.Component {
 
     // config = {
     //   method: 'get',
-    //   url: 'http://113.160.48.98:8790/mwebapi/GetDmHHDVDKGia',
+    //   url: '${appConfig.BASE_URL}/GetDmHHDVDKGia',
     //   // headers: {
     //   //   'X-CSCAPI-KEY': 'API_KEY',
     //   // },

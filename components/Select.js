@@ -99,8 +99,7 @@ Select.propTypes = {
 const styles = StyleSheet.create({
   qty: {
     flex: 1,
-    //backgroundColor: nowTheme.COLORS.PRIMARY,
-    backgroundColor: nowTheme.COLORS.BORDER,
+    backgroundColor: nowTheme.COLORS.WHITE,
     paddingHorizontal: 16,
     paddingTop: 10,
     paddingBottom: 9.5,
@@ -109,7 +108,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 4,
     shadowOpacity: 1,
-    borderColor: nowTheme.COLORS.BLACK,
+    borderColor: nowTheme.COLORS.ERROR,
   },
   text: {
     color: nowTheme.COLORS.BLACK,

@@ -20,6 +20,7 @@ class ArInput extends React.Component {
       { ...this.props.style },
     ];
 
+    //console.log(this.props);
     return (
       <Input
         placeholder="..."
