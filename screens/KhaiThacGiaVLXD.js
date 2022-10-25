@@ -38,8 +38,8 @@ class KhaiThacGiaVLXD extends React.Component {
       checkSelected: [],
       TenHangHoa: [],
       lsData: [],
-      startDate: new Date(),
-      endDate: new Date(),
+      startDate: Moment(new Date()).format('DD/MM/YYYY'),
+      endDate: Moment(new Date()).format('DD/MM/YYYY'),
       mode: 'date',
       isStartDatePickerVisible: false,
       isEndDatePickerVisible: false,
@@ -78,9 +78,9 @@ class KhaiThacGiaVLXD extends React.Component {
   };
 
   handleStartDateConfirm = (date) => {
-    console.log('Start date picked: ', date);
-    this.setState({ startDate: date });
-    // this.setState({ startDate: Moment(date).format('DD/MM/YYYY') });
+    // console.log('Start date picked: ', date);
+    // this.setState({ startDate: date });
+    this.setState({ startDate: Moment(date).format('DD/MM/YYYY') });
     this.hideStartDatePicker();
   };
 
@@ -95,8 +95,8 @@ class KhaiThacGiaVLXD extends React.Component {
   };
 
   handleEndDateConfirm = (date) => {
-    console.log('Start date picked: ', date);
-    this.setState({ endDate: date });
+    // console.log('Start date picked: ', date);
+    this.setState({ endDate: Moment(date).format('DD/MM/YYYY') });
     this.hideEndDatePicker();
   };
 
