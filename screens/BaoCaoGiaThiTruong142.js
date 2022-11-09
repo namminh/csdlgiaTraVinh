@@ -17,7 +17,9 @@ import { Block, Text, Button as GaButton, theme } from 'galio-framework';
 // Now UI themed components
 import { Images, nowTheme, articles, tabs } from '../constants';
 import { Button, Select, Icon, Input, Header, Switch } from '../components';
-
+import AsyncStorage, {
+  useAsyncStorage,
+} from "@react-native-async-storage/async-storage";
 import Img from '../components/Img';
 import { Card } from '../components';
 import { Card_116 } from '../components';
@@ -38,6 +40,7 @@ class BaoCaoGiaThiTruong142 extends React.Component {
     this.state = {
       checkSelected: [],
       lsDiaBan: [],
+      UrlInfo: [],
       lsTenDiaBan: [],
       lsdanhmuchanghoa: [],
       lsTenhanghoa: [],
@@ -68,7 +71,7 @@ class BaoCaoGiaThiTruong142 extends React.Component {
   toggleSwitch = (switchId) => this.setState({ [switchId]: !this.state[switchId] });
 
   fetDmhanghoa() {
-    axios.get(`${appConfig.BASE_URL}/GetDmNhomHangHoa142`).then((res) => {
+    axios.get(`${this.state.UrlInfo}/mwebapi/GetDmNhomHangHoa142`).then((res) => {
       const json = JSON.parse(JSON.stringify(res.data.Result));
       this.setState({
         lsdanhmuchanghoa: json,
@@ -86,7 +89,7 @@ class BaoCaoGiaThiTruong142 extends React.Component {
   }
 
   fetDmDiaBan() {
-    axios.get(`${appConfig.BASE_URL}/getdmdiaban`).then((res) => {
+    axios.get(`${this.state.UrlInfo}/mwebapi/getdmdiaban`).then((res) => {
       const json = JSON.parse(JSON.stringify(res.data.Result));
       this.setState({
         lsDiaBan: json,
@@ -104,7 +107,7 @@ class BaoCaoGiaThiTruong142 extends React.Component {
   }
 
   fetDmKyDuLieu() {
-    axios.get(`${appConfig.BASE_URL}/GetDmKyDuLieu`).then((res) => {
+    axios.get(`${this.state.UrlInfo}/mwebapi/GetDmKyDuLieu`).then((res) => {
       const json = JSON.parse(JSON.stringify(res.data.Result));
 
       this.setState({
@@ -122,7 +125,7 @@ class BaoCaoGiaThiTruong142 extends React.Component {
     });
   }
   fetDmKyDuLieuChiTiet() {
-    axios.get(`${appConfig.BASE_URL}/GetDmKyDuLieuChiTiet`).then((res) => {
+    axios.get(`${this.state.UrlInfo}/mwebapi/GetDmKyDuLieuChiTiet`).then((res) => {
       const json = JSON.parse(JSON.stringify(res.data.Result));
       this.setState({
         lsKyDuLieuChiTiet: json,
@@ -140,7 +143,7 @@ class BaoCaoGiaThiTruong142 extends React.Component {
   }
 
   async fetData() {
-    let url = `${appConfig.BASE_URL}/GetBaoCaoGiaThiTruong142?SAN_PHAM_ID=HHDV&NHOM_HANG_HOA_ID=${
+    let url = `${this.state.UrlInfo}/mwebapi/GetBaoCaoGiaThiTruong142?SAN_PHAM_ID=HHDV&NHOM_HANG_HOA_ID=${
       this.state.selectedhanghoaId
     }&DIA_BAN_ID=${this.state.selectedDiaBanId}&KY_DU_LIEU_ID=${
       this.state.selectedDinhKyId
@@ -298,7 +301,22 @@ class BaoCaoGiaThiTruong142 extends React.Component {
     //console.log(this.state.lsData.slice(0, 10));
   };
 
-  componentDidMount() {
+  async componentDidMount() {
+    try {
+
+      const diachi = await AsyncStorage.getItem("Dia_chi_Url");
+      
+
+      
+      
+      this.setState({
+        UrlInfo: diachi,
+      });
+      console.log(`bao cao 142 in Url ${this.state.UrlInfo}`);
+    } catch (e) {
+      
+      console.log(`is logged in error ${e}`);
+    }
     this.fetDmhanghoa();
     this.fetDmDiaBan();
     this.fetDmKyDuLieu();

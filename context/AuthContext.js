@@ -6,16 +6,18 @@ import AsyncStorage, {
 } from "@react-native-async-storage/async-storage";
 export const AuthContext = createContext();
 
+
 export const AuthProvider = ({ children }) => {
   const [userInfo, setUserInfo] = useState({});
+  const [UrlInfo, setUrlInfo] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [splashLoading, setSplashLoading] = useState(false);
-
+  
   const register = (name, email, password) => {
     setIsLoading(true);
-
+    console.log(`set UrlInfo ${UrlInfo}`);
     axios
-      .post(`${appConfig.BASE_URL}/register`, {
+      .post(`${UrlInfo}/mwebapi/register`, {
         name,
         email,
         password,
@@ -44,7 +46,7 @@ export const AuthProvider = ({ children }) => {
     };
     let msg = "Thất bại";
     await axios
-      .get(`${appConfig.BASE_URL}/changepass`, config)
+      .get(`${UrlInfo}/mwebapi/changepass`, config)
       .then((res) => {
         let userInfo = res.data.Result;
         //console.log(userInfo);
@@ -67,7 +69,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (username, password) => {
     setIsLoading(true);
-    let url = `${appConfig.BASE_URL}/validateaccount`;
+    let url = `${UrlInfo}/mwebapi/validateaccount`;
     //let url = `${appConfig.BASE_URL}/validateaccount?username=${username}&password=${password}`;
     let config = {
       headers: {
@@ -75,6 +77,7 @@ export const AuthProvider = ({ children }) => {
         password: password,
       },
     };
+    console.log(url);
     let msg = "";
     await axios
       .get(url, config)
@@ -85,6 +88,55 @@ export const AuthProvider = ({ children }) => {
         setUserInfo(userInfo);
         AsyncStorage.setItem("userInfo", JSON.stringify(userInfo));
         setIsLoading(false);
+        //console.log(userInfo);
+      })
+      .catch((e) => {
+        console.log(`register error ${e}`);
+        msg = `register error ${e}`;
+        setIsLoading(false);
+      });
+    return msg;
+    // axios
+    //   .post({
+    //     url: url,
+    //     config: config,
+    //   })
+    //   .then((res) => {
+    //     console.log(res);
+    //     // let ret = res.data;
+    //     // let userInfo = res.data.Result;
+    //     // console.log(userInfo);
+    //     // setUserInfo(userInfo);
+    //     // AsyncStorage.setItem("userInfo", JSON.stringify(userInfo));
+    //     // setIsLoading(false);
+    //   })
+    //   .catch((e) => {
+    //     console.log(`login error ${e}`);
+    //     setIsLoading(false);
+    //   });
+  };
+  const checkUrl = async (Url) => {
+    
+    // console.log(Url);
+    let url = `${Url}/mwebapi/validateaccount`;
+    //let url = `${appConfig.BASE_URL}/validateaccount?username=${username}&password=${password}`;
+    let config = {
+      headers: {
+        username: 'test',
+        password: '123456',
+      },
+    };
+    let msg = "";
+    await axios
+      .get(url, config)
+      .then((res) => {
+        // let userInfo = res.data.Result;
+        msg = res.data.Message;
+        console.log(msg);
+        setUrlInfo(Url);
+        AsyncStorage.setItem("Dia_chi_Url", Url);
+       
+        // setIsLoading(false);
         //console.log(userInfo);
       })
       .catch((e) => {
@@ -145,11 +197,14 @@ export const AuthProvider = ({ children }) => {
       setSplashLoading(true);
 
       let userInfo = await AsyncStorage.getItem("userInfo");
+      let UrlInfo = await AsyncStorage.getItem("Dia_chi_Url");
       userInfo = JSON.parse(userInfo);
+      setUrlInfo(UrlInfo);
 
       if (userInfo) {
         setUserInfo(userInfo);
       }
+     
 
       setSplashLoading(false);
     } catch (e) {
@@ -160,17 +215,19 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     isLoggedIn();
-  }, []);
-
+  }, [UrlInfo]);
+  
   return (
     <AuthContext.Provider
       value={{
         isLoading,
         userInfo,
+        UrlInfo,
         splashLoading,
-        register,
+        checkUrl,
         login,
         logout,
+        register,
         changepass,
       }}
     >

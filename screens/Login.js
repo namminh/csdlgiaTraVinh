@@ -36,6 +36,7 @@ const Login = ({ navigation }) => {
   const [username, setUsername] = useState(null);
   const [password, setPassword] = useState(null);
   const { isLoading, login } = useContext(AuthContext);
+  
   const [isShow, setShow] = useState(false);
   const [message, setMessage] = useState('');
 
@@ -124,6 +125,7 @@ const Login = ({ navigation }) => {
                   <Block center flex={0.9}>
                     <Block flex space="between">
                       <Block>
+                     
                         <Block width={width * 0.8} style={{ marginBottom: 5 }}>
                           <Input
                             placeholder="Tên đăng nhập"
@@ -174,13 +176,14 @@ const Login = ({ navigation }) => {
                         </Block>
                       </Block>
                       <Block center>
-                        <Button
+                      
+                         <Button
                           color="primary"
                           round
                           style={styles.createButton}
                           onPress={async () => {
                             let msg = "";
-                            if (!username || !password) {
+                           if (!username || !password) {
                               msg =
                                 "Tên đăng nhập hoặc mật khẩu không được để trống";
                               setMessage(msg);
@@ -203,12 +206,27 @@ const Login = ({ navigation }) => {
                           >
                             Đăng nhập
                           </Text>
-                        </Button>
+                        </Button> 
+
+                       
+                       
                       </Block>
+                     
                     </Block>
                   </Block>
                 </Block>
               </Block>
+            </Block>
+            <Block bottom>
+                      <Button onlyIcon icon="setting" iconFamily="antdesign" iconSize={30} color="warning" iconColor="#fff" style={{ width: 40, height: 40 }}
+                       
+                        onPress={() => navigation.navigate("Url")}
+                      >
+                        
+                        warning
+                        
+                      </Button>
+
             </Block>
           </Block>
         </ImageBackground>

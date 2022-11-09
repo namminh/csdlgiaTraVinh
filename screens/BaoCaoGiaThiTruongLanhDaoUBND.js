@@ -26,7 +26,9 @@ import axios from "axios";
 import { appConfig } from "../constants";
 import Spinner from "react-native-loading-spinner-overlay";
 import { View } from "react-native-web";
-
+import AsyncStorage, {
+  useAsyncStorage,
+} from "@react-native-async-storage/async-storage";
 const { width } = Dimensions.get("screen");
 
 const thumbMeasure = (width - 48 - 32) / 3;
@@ -47,6 +49,7 @@ const BaoCaoGiaThiTruongLanhDaoUBND = (props) => {
 
   const [checkSelected, setcheckSelected] = useState([]);
   const [lsDiaBan, setlsDiaBan] = useState([]);
+  
   const [lsTenDiaBan, setlsTenDiaBan] = useState([]);
   const [selectedDiaBanId, setselectedDiaBanId] = useState(null);
   const [lsKyDuLieu, setlsKyDuLieu] = useState([]);
@@ -76,12 +79,28 @@ const BaoCaoGiaThiTruongLanhDaoUBND = (props) => {
   const [filter, setFilter] = useState("");
   const [isInfiLoading, setInfiLoading] = useState(false);
   const [pageIndex, setPageIndex] = useState(1);
+  
+  const [UrlInfo, seturl] = useState([]);
+  const URL = async  () => {
+  try {
 
+    const UrlInfo = await AsyncStorage.getItem("Dia_chi_Url");
+    seturl(UrlInfo);
+
+    console.log(`Bao cao lanh dao in Url ${UrlInfo}`);
+    
+
+
+  } catch (e) {
+    console.log(`is logged in error ${e}`);
+  }
+}
   // toggleSwitch = (switchId) =>
   //   setState({ [switchId]: !state[switchId] });
-
-  const fetDmDiaBan = () => {
-    axios.get(`${appConfig.BASE_URL}/getdmdiaban`).then((res) => {
+  
+  const fetDmDiaBan = async () => {
+    
+    axios.get(`${UrlInfo}/mwebapi/getdmdiaban`).then((res) => {
       const json = JSON.parse(JSON.stringify(res.data.Result));
       setlsDiaBan(json);
       let arr = [];
@@ -92,10 +111,12 @@ const BaoCaoGiaThiTruongLanhDaoUBND = (props) => {
 
       setlsTenDiaBan(arr);
     });
+    console.log(`NAMNM01 in Url ${UrlInfo}`);
   };
 
-  const fetDmKyDuLieu = () => {
-    axios.get(`${appConfig.BASE_URL}/GetDmKyDuLieu`).then((res) => {
+  const fetDmKyDuLieu = async () => {
+    
+    axios.get(`${UrlInfo}/mwebapi/GetDmKyDuLieu`).then((res) => {
       const json = JSON.parse(JSON.stringify(res.data.Result));
       setlsKyDuLieu(json);
       let arr = [];
@@ -105,10 +126,12 @@ const BaoCaoGiaThiTruongLanhDaoUBND = (props) => {
       });
       setlsTenKyDuLieu(arr);
     });
+    console.log(`NAMNM02 in Url ${UrlInfo}`);
   };
 
-  const fetDmKyDuLieuChiTiet = () => {
-    axios.get(`${appConfig.BASE_URL}/GetDmKyDuLieuChiTiet`).then((res) => {
+  const fetDmKyDuLieuChiTiet = async () => {
+    
+    axios.get(`${UrlInfo}/mwebapi/GetDmKyDuLieuChiTiet`).then((res) => {
       const json = JSON.parse(JSON.stringify(res.data.Result));
       setlsKyDuLieuChiTiet(json);
 
@@ -119,17 +142,17 @@ const BaoCaoGiaThiTruongLanhDaoUBND = (props) => {
       });
       setlsTenKyDuLieuChiTiet(arr);
     });
+    console.log(`NAMNM03 in Url ${UrlInfo}`);
   };
 
   async function fetData() {
+    
     setisLoading(true);
     setisDataLoaded(false);
     setPageIndex(1);
     setFilter('');
-    //let url = `${appConfig.BASE_URL}/GetBaoCaoGiaThiTruongLanhDaoUBND?DIA_BAN_ID=10843&KY_DU_LIEU_ID=24&KY_DU_LIEU_CHI_TIET_1_ID=37&KY_DU_LIEU_CHI_TIET_2_ID=&NAM=2022`;
-    let url = `${
-      appConfig.BASE_URL
-    }/GetBaoCaoGiaThiTruongLanhDaoUBND?DIA_BAN_ID=${
+    //let url = `${UrlInfo}/mwebapi/GetBaoCaoGiaThiTruongLanhDaoUBND?DIA_BAN_ID=10843&KY_DU_LIEU_ID=24&KY_DU_LIEU_CHI_TIET_1_ID=37&KY_DU_LIEU_CHI_TIET_2_ID=&NAM=2022`;
+    let url = `${UrlInfo}/mwebapi/GetBaoCaoGiaThiTruongLanhDaoUBND?DIA_BAN_ID=${
       selectedDiaBanId ?? ""
     }&KY_DU_LIEU_ID=${selectedDinhKyId ?? ""}&KY_DU_LIEU_CHI_TIET_1_ID=${
       selectedDinhKyChiTiet1Id ?? ""
@@ -158,11 +181,9 @@ const BaoCaoGiaThiTruongLanhDaoUBND = (props) => {
   async function fetMoreData() {
     if (isInfiLoading) return;
     setInfiLoading(true);
-
-    //let url = `${appConfig.BASE_URL}/GetBaoCaoGiaThiTruongLanhDaoUBND?DIA_BAN_ID=8328&KY_DU_LIEU_ID=24&KY_DU_LIEU_CHI_TIET_1_ID=36&KY_DU_LIEU_CHI_TIET_2_ID=&NAM=2022`;
-    let url = `${
-      appConfig.BASE_URL
-    }/GetBaoCaoGiaThiTruongLanhDaoUBND?DIA_BAN_ID=${
+   
+    //let url = `${UrlInfo}/mwebapi/GetBaoCaoGiaThiTruongLanhDaoUBND?DIA_BAN_ID=8328&KY_DU_LIEU_ID=24&KY_DU_LIEU_CHI_TIET_1_ID=36&KY_DU_LIEU_CHI_TIET_2_ID=&NAM=2022`;
+    let url = `${UrlInfo}/mwebapi/GetBaoCaoGiaThiTruongLanhDaoUBND?DIA_BAN_ID=${
       selectedDiaBanId ?? ""
     }&KY_DU_LIEU_ID=${selectedDinhKyId ?? ""}&KY_DU_LIEU_CHI_TIET_1_ID=${
       selectedDinhKyChiTiet1Id ?? ""
@@ -346,14 +367,17 @@ const BaoCaoGiaThiTruongLanhDaoUBND = (props) => {
       }, 3000);
     } //console.log(lsData.slice(0, 10));
   }
+  
 
   useEffect(() => {
+    
+    URL();
     fetDmDiaBan();
     fetDmKyDuLieu();
     fetDmKyDuLieuChiTiet();
     //console.log("rerender");
-  }, []);
-
+  }, [UrlInfo]);
+  
   const showToast = (message) => {
     console.log(message);
     ToastAndroid.show(message, ToastAndroid.SHORT);
@@ -606,6 +630,7 @@ const BaoCaoGiaThiTruongLanhDaoUBND = (props) => {
           {toastMessage}
         </Toast>
         <Spinner visible={isLoading} />
+        
         {renderForm()}
         {isDataLoaded && renderSearchResult()}
         {/* {renderCards()} */}

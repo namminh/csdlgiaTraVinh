@@ -20,7 +20,9 @@ import { Button, Select, Icon, Input, Header, Switch } from '../components';
 
 import Img from '../components/Img';
 import { CardBaoCaoTongHopGiaDangKy } from '../components';
-
+import AsyncStorage, {
+  useAsyncStorage,
+} from "@react-native-async-storage/async-storage";
 import axios from 'axios';
 //import DateTimePicker from '@react-native-community/datetimepicker';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
@@ -37,6 +39,7 @@ class BaoCaoTongHopGiaDangKy extends React.Component {
     this.state = {
       checkSelected: [],
       lsDoanhNghiep: [],
+      UrlInfo: [],
       lsTenDoanhNghiep: [],
       selectedDoanhNghiepId: -1,
       lsLoaiGia: [],
@@ -95,7 +98,7 @@ class BaoCaoTongHopGiaDangKy extends React.Component {
   }
 
   fetNhomHHDV() {
-    axios.get(`${appConfig.BASE_URL}/GetDmNhomHangHoa`).then((res) => {
+    axios.get(`${this.state.UrlInfo}/mwebapi/GetDmNhomHangHoa`).then((res) => {
       const ls = JSON.parse(JSON.stringify(res.data.Result));
       this.setState({
         lsNhomHHDV: ls,
@@ -111,7 +114,7 @@ class BaoCaoTongHopGiaDangKy extends React.Component {
   }
 
   fetHHDV() {
-    axios.get(`${appConfig.BASE_URL}/GetDmHangHoaDichVu`).then((res) => {
+    axios.get(`${this.state.UrlInfo}/mwebapi/GetDmHangHoaDichVu`).then((res) => {
       const ls = JSON.parse(JSON.stringify(res.data.Result));
       this.setState({
         lsNhomHHDV: ls,
@@ -127,7 +130,7 @@ class BaoCaoTongHopGiaDangKy extends React.Component {
   }
 
   fetHHDVDK() {
-    axios.get(`${appConfig.BASE_URL}/GetDmHHDVDKGia`).then((res) => {
+    axios.get(`${this.state.UrlInfo}/mwebapi/GetDmHHDVDKGia`).then((res) => {
       const ls = JSON.parse(JSON.stringify(res.data.Result));
       this.setState({
         lsHHDV: arr,
@@ -143,8 +146,8 @@ class BaoCaoTongHopGiaDangKy extends React.Component {
   }
 
   fetData() {
-    //let url = `${appConfig.BASE_URL}/GetBaoCaoTongHopGiaDangKy?doanhNghiepId=263&ngayHieuLucTu=01/01/2021&ngayHieuLucDen=01/09/2022&loaiGiaIds=10`;
-    let url = `${appConfig.BASE_URL}/GetBaoCaoTongHopGiaDangKy?doanhNghiepId=${this.state.selectedDoanhNghiepId}&ngayHieuLucTu=${this.state.startDate}&ngayHieuLucDen=${this.state.endDate}&loaiGiaIds=${this.state.selectedLoaiGiaId}`;
+    //let url = `${this.state.UrlInfo}/mwebapi/GetBaoCaoTongHopGiaDangKy?doanhNghiepId=263&ngayHieuLucTu=01/01/2021&ngayHieuLucDen=01/09/2022&loaiGiaIds=10`;
+    let url = `${this.state.UrlInfo}/mwebapi/GetBaoCaoTongHopGiaDangKy?doanhNghiepId=${this.state.selectedDoanhNghiepId}&ngayHieuLucTu=${this.state.startDate}&ngayHieuLucDen=${this.state.endDate}&loaiGiaIds=${this.state.selectedLoaiGiaId}`;
     console.log(url);
     axios.get(url).then((res) => {
       const ls = JSON.parse(JSON.stringify(res.data.Result));
@@ -159,7 +162,22 @@ class BaoCaoTongHopGiaDangKy extends React.Component {
     });
   }
 
-  componentDidMount() {
+  async componentDidMount() {
+    try {
+
+      const diachi = await AsyncStorage.getItem("Dia_chi_Url");
+      
+
+      
+      
+      this.setState({
+        UrlInfo: diachi,
+      });
+      console.log(`Dang ky in Url ${this.state.UrlInfo}`);
+    } catch (e) {
+      
+      console.log(`is logged in error ${e}`);
+    }
     this.fetDmDoanhNghiep();
     this.fetDmLoaiGia();
     // this.setState({

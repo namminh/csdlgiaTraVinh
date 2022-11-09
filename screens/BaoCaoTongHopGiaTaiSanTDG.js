@@ -25,7 +25,9 @@ import axios from 'axios';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import Moment from 'moment';
 import { appConfig } from "../constants";
-
+import AsyncStorage, {
+  useAsyncStorage,
+} from "@react-native-async-storage/async-storage";
 const { width } = Dimensions.get('screen');
 
 const thumbMeasure = (width - 48 - 32) / 3;
@@ -35,6 +37,7 @@ class BaoCaoTongHopGiaTaiSanTDG extends React.Component {
     super(props);
     this.state = {
       checkSelected: [],
+      UrlInfo: [],
       lsData: [],
       ngayHieuLucTu: Moment(new Date()).format('DD/MM/YYYY'),
       ngayHieuLucDen: Moment(new Date()).format('DD/MM/YYYY'),
@@ -47,8 +50,8 @@ class BaoCaoTongHopGiaTaiSanTDG extends React.Component {
   }
 
   fetData() {
-    //let url = `${appConfig.BASE_URL}/GetBaoCaoTongHopGiaTaiSanTDG?ngayHieuLucTu=23/09/2019&ngayHieuLucDen=26/09/2022`;
-    let url = `${appConfig.BASE_URL}/GetBaoCaoTongHopGiaTaiSanTDG?ngayHieuLucTu=${this.state.ngayHieuLucTu}&ngayHieuLucDen=${this.state.ngayHieuLucDen}`;
+    //let url = `${this.state.UrlInfo}/mwebapi/GetBaoCaoTongHopGiaTaiSanTDG?ngayHieuLucTu=23/09/2019&ngayHieuLucDen=26/09/2022`;
+    let url = `${this.state.UrlInfo}/mwebapi/GetBaoCaoTongHopGiaTaiSanTDG?ngayHieuLucTu=${this.state.ngayHieuLucTu}&ngayHieuLucDen=${this.state.ngayHieuLucDen}`;
     console.log(url);
     axios.get(url).then((res) => {
       const ls = JSON.parse(JSON.stringify(res.data.Result));
@@ -63,7 +66,22 @@ class BaoCaoTongHopGiaTaiSanTDG extends React.Component {
     });
   }
 
-  componentDidMount() {}
+  async componentDidMount() {
+    try {
+
+    const diachi = await AsyncStorage.getItem("Dia_chi_Url");
+    
+
+    
+    
+    this.setState({
+      UrlInfo: diachi,
+    });
+    console.log(`tai san in Url ${this.state.UrlInfo}`);
+  } catch (e) {
+    
+    console.log(`is logged in error ${e}`);
+  }}
 
   showNgayHieuLucTuPicker = () => {
     //setDatePickerVisibility(true);

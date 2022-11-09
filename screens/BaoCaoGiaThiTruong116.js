@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import {
   ScrollView,
   StyleSheet,
@@ -9,7 +9,10 @@ import {
   ImageBackground,
   ToastAndroid,
 } from 'react-native';
-
+// import { AuthContext } from "../context/AuthContext";
+import AsyncStorage, {
+  useAsyncStorage,
+} from "@react-native-async-storage/async-storage";
 import Articles from './Articles';
 // Galio components
 import { Block, Text, Button as GaButton, theme } from 'galio-framework';
@@ -37,6 +40,7 @@ class BaoCaoGiaThiTruong116 extends React.Component {
     this.state = {
       checkSelected: [],
       lsDiaBan: [],
+      UrlInfo: [],
       lsTenDiaBan: [],
       selectedDiaBanId: null,
       lsKyDuLieu: [],
@@ -60,11 +64,16 @@ class BaoCaoGiaThiTruong116 extends React.Component {
       lsData: [],
     };
   }
-
+  
   toggleSwitch = (switchId) => this.setState({ [switchId]: !this.state[switchId] });
-
+  
+  
+ 
+  
   fetDmDiaBan() {
-    axios.get(`${appConfig.BASE_URL}/getdmdiaban`).then((res) => {
+    
+    
+    axios.get(`${this.state.UrlInfo}/mwebapi/getdmdiaban`).then((res) => {
       const json = JSON.parse(JSON.stringify(res.data.Result));
       this.setState({
         lsDiaBan: json,
@@ -79,10 +88,11 @@ class BaoCaoGiaThiTruong116 extends React.Component {
         lsTenDiaBan: arr,
       });
     });
+    console.log(`NAMNM01 in Url ${this.state.UrlInfo}`);
   }
 
   fetDmKyDuLieu() {
-    axios.get(`${appConfig.BASE_URL}/GetDmKyDuLieu`).then((res) => {
+    axios.get(`${this.state.UrlInfo}/mwebapi/GetDmKyDuLieu`).then((res) => {
       const json = JSON.parse(JSON.stringify(res.data.Result));
 
       this.setState({
@@ -98,9 +108,10 @@ class BaoCaoGiaThiTruong116 extends React.Component {
         lsTenKyDuLieu: arr,
       });
     });
+    console.log(`NAMNM02 in Url ${this.state.UrlInfo}`);
   }
   fetDmKyDuLieuChiTiet() {
-    axios.get(`${appConfig.BASE_URL}/GetDmKyDuLieuChiTiet`).then((res) => {
+    axios.get(`${this.state.UrlInfo}/mwebapi/GetDmKyDuLieuChiTiet`).then((res) => {
       const json = JSON.parse(JSON.stringify(res.data.Result));
       this.setState({
         lsKyDuLieuChiTiet: json,
@@ -115,11 +126,12 @@ class BaoCaoGiaThiTruong116 extends React.Component {
         lsTenKyDuLieuChiTiet: arr,
       });
     });
+    console.log(`NAMNM03 in Url ${this.state.UrlInfo}`);
   }
 
-  async fetData() {
-    // let url = `${appConfig.BASE_URL}/LayBaoCaoGiaThiTruong116`;
-    let url = `${appConfig.BASE_URL}/GetBaoCaoGiaThiTruong116?DIA_BAN_ID=${
+  fetData() {
+    // let url = `${this.state.UrlInfo}/mwebapi/LayBaoCaoGiaThiTruong116`;
+    let url = `${this.state.UrlInfo}/mwebapi/GetBaoCaoGiaThiTruong116?DIA_BAN_ID=${
       this.state.selectedDiaBanId
     }&KY_DU_LIEU_ID=${this.state.selectedDinhKyId}&KY_DU_LIEU_CHI_TIET_1_ID=${
       this.state.selectedDinhKyChiTiet1Id ? this.state.selectedDinhKyChiTiet1Id : ''
@@ -139,6 +151,7 @@ class BaoCaoGiaThiTruong116 extends React.Component {
         });
       }, 2000);
     });
+    console.log(`NAMNM04 in Url ${this.state.UrlInfo}`);
   }
 
   onSelectedDiaBan(index) {
@@ -268,7 +281,24 @@ class BaoCaoGiaThiTruong116 extends React.Component {
     //console.log(this.state.lsData.slice(0, 10));
   };
 
-  componentDidMount() {
+  async componentDidMount() {
+    
+   
+    try {
+
+      const diachi = await AsyncStorage.getItem("Dia_chi_Url");
+      
+
+      
+      
+      this.setState({
+        UrlInfo: diachi,
+      });
+      console.log(`Bao cao 116 in Url ${this.state.UrlInfo}`);
+    } catch (e) {
+      
+      console.log(`is logged in error ${e}`);
+    }
     this.fetDmDiaBan();
     this.fetDmKyDuLieu();
     this.fetDmKyDuLieuChiTiet();

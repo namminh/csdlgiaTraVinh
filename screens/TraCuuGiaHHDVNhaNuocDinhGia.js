@@ -26,7 +26,9 @@ import axios from 'axios';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import Moment from 'moment';
 import { appConfig } from "../constants";
-
+import AsyncStorage, {
+  useAsyncStorage,
+} from "@react-native-async-storage/async-storage";
 const { width } = Dimensions.get('screen');
 
 const thumbMeasure = (width - 48 - 32) / 3;
@@ -37,6 +39,7 @@ class TraCuuGiaHHDVNhaNuocDinhGia extends React.Component {
     this.state = {
       checkSelected: [],
       lsLoaiHHDV: [],
+      UrlInfo: [],
       lsTenLoaiHHDV: [],
       selectedLoaiHHDVId: '',
       lsMauBieu: [],
@@ -61,7 +64,7 @@ class TraCuuGiaHHDVNhaNuocDinhGia extends React.Component {
   }
 
   fetDmLoaiHHDV() {
-    axios.get(`${appConfig.BASE_URL}/GetDmLoaiHHDV`).then((res) => {
+    axios.get(`${this.state.UrlInfo}/mwebapi/GetDmLoaiHHDV`).then((res) => {
       const ls = JSON.parse(JSON.stringify(res.data.Result));
       this.setState({
         lsLoaiHHDV: ls,
@@ -77,7 +80,7 @@ class TraCuuGiaHHDVNhaNuocDinhGia extends React.Component {
   }
 
   fetDsMauBieu() {
-    axios.get(`${appConfig.BASE_URL}/GetDsMauBieu`).then((res) => {
+    axios.get(`${this.state.UrlInfo}/mwebapi/GetDsMauBieu`).then((res) => {
       const ls = JSON.parse(JSON.stringify(res.data.Result));
       this.setState({
         lsMauBieu: ls,
@@ -93,7 +96,7 @@ class TraCuuGiaHHDVNhaNuocDinhGia extends React.Component {
   }
 
   fetDmDonVi() {
-    axios.get(`${appConfig.BASE_URL}/GetDmDonVi`).then((res) => {
+    axios.get(`${this.state.UrlInfo}/mwebapi/GetDmDonVi`).then((res) => {
       const ls = JSON.parse(JSON.stringify(res.data.Result));
       this.setState({
         lsDonVi: ls,
@@ -109,7 +112,7 @@ class TraCuuGiaHHDVNhaNuocDinhGia extends React.Component {
   }
 
   fetData() {
-    let url = `${appConfig.BASE_URL}/GetBaoCaoTraCuuGiaHHDVNhaNuocDinhGia?congkhai=&loaiHHDV=${this.state.selectedLoaiHHDVId}&ngayBanHanhTu=${this.state.ngayBanHanhTu}&ngayBanHanhDen=${this.state.ngayBanHanhDen}&mauBieuId=${this.state.selectedMauBieuId}&thoiHanHieuLucTu=${this.state.ngayHieuLucTu}&thoiHanHieuLucDen=${this.state.ngayHieuLucDen}&soVanBan=${this.state.soVanBan}&coQuanBanHanhId=${this.state.selectedDonViId}`;
+    let url = `${this.state.UrlInfo}/mwebapi/GetBaoCaoTraCuuGiaHHDVNhaNuocDinhGia?congkhai=&loaiHHDV=${this.state.selectedLoaiHHDVId}&ngayBanHanhTu=${this.state.ngayBanHanhTu}&ngayBanHanhDen=${this.state.ngayBanHanhDen}&mauBieuId=${this.state.selectedMauBieuId}&thoiHanHieuLucTu=${this.state.ngayHieuLucTu}&thoiHanHieuLucDen=${this.state.ngayHieuLucDen}&soVanBan=${this.state.soVanBan}&coQuanBanHanhId=${this.state.selectedDonViId}`;
     console.log(url);
     axios.get(url).then((res) => {
       const ls = JSON.parse(JSON.stringify(res.data.Result));
@@ -124,7 +127,22 @@ class TraCuuGiaHHDVNhaNuocDinhGia extends React.Component {
     });
   }
 
-  componentDidMount() {
+  async componentDidMount() {
+    try {
+
+      const diachi = await AsyncStorage.getItem("Dia_chi_Url");
+      
+
+      
+      
+      this.setState({
+        UrlInfo: diachi,
+      });
+      console.log(`tham dinh in Url ${this.state.UrlInfo}`);
+    } catch (e) {
+      
+      console.log(`is logged in error ${e}`);
+    }
     this.fetDmLoaiHHDV();
     this.fetDsMauBieu();
     this.fetDmDonVi();

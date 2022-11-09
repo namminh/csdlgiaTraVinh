@@ -24,7 +24,9 @@ import { CardBaoCaoGiaThiThuongTongHop } from '../components';
 import axios from 'axios';
 
 import { appConfig } from "../constants";
-
+import AsyncStorage, {
+  useAsyncStorage,
+} from "@react-native-async-storage/async-storage";
 const { width } = Dimensions.get('screen');
 
 const thumbMeasure = (width - 48 - 32) / 3;
@@ -38,6 +40,7 @@ class BaoCaoGiaThiThuongTongHop extends React.Component {
     this.state = {
       checkSelected: [],
       lsNhomHHDV: [],
+      UrlInfo: [],
       lsTenNhomHHDV: [],
       selectedNhomHHDVId: -1,
       lsDiaBan: [],
@@ -58,7 +61,7 @@ class BaoCaoGiaThiThuongTongHop extends React.Component {
   }
 
   fetNhomHHDV() {
-    axios.get(`${appConfig.BASE_URL}/GetDmNhomHangHoa142`).then((res) => {
+    axios.get(`${this.state.UrlInfo}/mwebapi/GetDmNhomHangHoa142`).then((res) => {
       const ls = JSON.parse(JSON.stringify(res.data.Result));
       this.setState({
         lsNhomHHDV: ls,
@@ -74,7 +77,7 @@ class BaoCaoGiaThiThuongTongHop extends React.Component {
   }
 
   fetDmDiaBan() {
-    axios.get(`${appConfig.BASE_URL}/getdmdiaban`).then((res) => {
+    axios.get(`${this.state.UrlInfo}/mwebapi/getdmdiaban`).then((res) => {
       const json = JSON.parse(JSON.stringify(res.data.Result));
       this.setState({
         lsDiaBan: json,
@@ -92,7 +95,7 @@ class BaoCaoGiaThiThuongTongHop extends React.Component {
   }
 
   fetDmLoaiGia() {
-    axios.get(`${appConfig.BASE_URL}/GetDmLoaiGia`).then((res) => {
+    axios.get(`${this.state.UrlInfo}/mwebapi/GetDmLoaiGia`).then((res) => {
       const ls = JSON.parse(JSON.stringify(res.data.Result));
       this.setState({
         lsLoaiGia: ls,
@@ -108,7 +111,7 @@ class BaoCaoGiaThiThuongTongHop extends React.Component {
   }
 
   fetDmKyDuLieu() {
-    // axios.get(`${appConfig.BASE_URL}/GetDmKyDuLieu`).then((res) => {
+    // axios.get(`${this.state.UrlInfo}/mwebapi/GetDmKyDuLieu`).then((res) => {
     //   const json = JSON.parse(JSON.stringify(res.data.Result));
 
     //   this.setState({
@@ -139,7 +142,7 @@ class BaoCaoGiaThiThuongTongHop extends React.Component {
   }
 
   fetData() {
-    let url = `${appConfig.BASE_URL}/GetBaoCaoGiaThiTruongTongHop?LOAI_GIA_ID=${this.state.selectedLoaiGiaId}&SAN_PHAM_ID=&NHOM_HANG_HOA_ID=${this.state.selectedNhomHHDVId}&DIA_BAN_ID=${this.state.selectedDiaBanId}&KY_DU_LIEU_ID=&KY_DU_LIEU_CHI_TIET_1_ID=${this.state.selectedKyDuLieuId}&KY_DU_LIEU_CHI_TIET_2_ID=&NAM=${this.state.selectedNam}&MaHHDV=${this.state.maHHDV}`;
+    let url = `${this.state.UrlInfo}/mwebapi/GetBaoCaoGiaThiTruongTongHop?LOAI_GIA_ID=${this.state.selectedLoaiGiaId}&SAN_PHAM_ID=&NHOM_HANG_HOA_ID=${this.state.selectedNhomHHDVId}&DIA_BAN_ID=${this.state.selectedDiaBanId}&KY_DU_LIEU_ID=&KY_DU_LIEU_CHI_TIET_1_ID=${this.state.selectedKyDuLieuId}&KY_DU_LIEU_CHI_TIET_2_ID=&NAM=${this.state.selectedNam}&MaHHDV=${this.state.maHHDV}`;
     console.log(url);
     axios.get(url).then((res) => {
       const ls = JSON.parse(JSON.stringify(res.data.Result));
@@ -154,7 +157,22 @@ class BaoCaoGiaThiThuongTongHop extends React.Component {
     });
   }
 
-  componentDidMount() {
+  async componentDidMount() {
+    try {
+
+      const diachi = await AsyncStorage.getItem("Dia_chi_Url");
+      
+
+      
+      
+      this.setState({
+        UrlInfo: diachi,
+      });
+      console.log(`Bao cao thi truong in Url ${this.state.UrlInfo}`);
+    } catch (e) {
+      
+      console.log(`is logged in error ${e}`);
+    }
     this.fetNhomHHDV();
     this.fetDmDiaBan();
     this.fetDmLoaiGia();

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
   Dimensions,
@@ -14,12 +14,36 @@ import { NavigationContainer } from "@react-navigation/native";
 
 import { Card, Button } from "../components";
 import articles from "../constants/articles";
+import AsyncStorage, {
+  useAsyncStorage,
+} from "@react-native-async-storage/async-storage";
 const { width } = Dimensions.get("screen");
 
 const Stack = createStackNavigator();
 
 const TRANG_CHU = () => {
-  return <WebView source={{ uri: "http://113.160.48.98:8790/adHome2.aspx" }} />;
+  const [UrlInfo, seturl] = useState([]);  
+
+  async function isLoggedIn(){
+    
+    try {
+
+      let UrlInfo = await AsyncStorage.getItem("Dia_chi_Url");
+      seturl(UrlInfo);
+
+     
+      console.log(`TRANG CHU in Url ${UrlInfo}`);
+
+
+    } catch (e) {
+      console.log(`is logged in error ${e}`);
+    }
+  };
+  useEffect(() => {
+    isLoggedIn();
+   
+  }, []);
+  return <WebView source={{ uri: `${UrlInfo}/adHome2.aspx?` }} />;
   // return (
   //   <Block flex center style={styles.home}>
   //     {this.renderArticles()}

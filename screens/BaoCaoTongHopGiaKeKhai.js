@@ -26,7 +26,9 @@ import axios from 'axios';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import Moment from 'moment';
 import { appConfig } from "../constants";
-
+import AsyncStorage, {
+  useAsyncStorage,
+} from "@react-native-async-storage/async-storage";
 const { width } = Dimensions.get('screen');
 
 const thumbMeasure = (width - 48 - 32) / 3;
@@ -37,6 +39,7 @@ class BaoCaoTongHopGiaKeKhai extends React.Component {
     this.state = {
       checkSelected: [],
       lsDoanhNghiep: [],
+      UrlInfo: [],
       lsTenDoanhNghiep: [],
       selectedDoanhNghiepId: -1,
       lsLoaiGia: [],
@@ -62,7 +65,7 @@ class BaoCaoTongHopGiaKeKhai extends React.Component {
   }
 
   fetDmDoanhNghiep() {
-    axios.get(`${appConfig.BASE_URL}/getdmdoanhnghiep`).then((res) => {
+    axios.get(`${this.state.UrlInfo}/mwebapi/getdmdoanhnghiep`).then((res) => {
       const ls = JSON.parse(JSON.stringify(res.data.Result));
       this.setState({
         lsDoanhNghiep: ls,
@@ -78,7 +81,7 @@ class BaoCaoTongHopGiaKeKhai extends React.Component {
   }
 
   fetDmLoaiGia() {
-    axios.get(`${appConfig.BASE_URL}/GetDmLoaiGia`).then((res) => {
+    axios.get(`${this.state.UrlInfo}/mwebapi/GetDmLoaiGia`).then((res) => {
       const ls = JSON.parse(JSON.stringify(res.data.Result));
       this.setState({
         lsLoaiGia: ls,
@@ -94,7 +97,7 @@ class BaoCaoTongHopGiaKeKhai extends React.Component {
   }
 
   fetNhomHHDV() {
-    axios.get(`${appConfig.BASE_URL}/GetDmNhomHangHoa`).then((res) => {
+    axios.get(`${this.state.UrlInfo}/mwebapi/GetDmNhomHangHoa`).then((res) => {
       const ls = JSON.parse(JSON.stringify(res.data.Result));
       this.setState({
         lsNhomHHDV: ls,
@@ -110,7 +113,7 @@ class BaoCaoTongHopGiaKeKhai extends React.Component {
   }
 
   fetHHDV() {
-    axios.get(`${appConfig.BASE_URL}/GetDmHangHoaDichVu`).then((res) => {
+    axios.get(`${this.state.UrlInfo}/mwebapi/GetDmHangHoaDichVu`).then((res) => {
       const ls = JSON.parse(JSON.stringify(res.data.Result));
       this.setState({
         lsNhomHHDV: ls,
@@ -126,7 +129,7 @@ class BaoCaoTongHopGiaKeKhai extends React.Component {
   }
 
   fetHHDVDK() {
-    axios.get(`${appConfig.BASE_URL}/GetDmHHDVDKGia`).then((res) => {
+    axios.get(`${this.state.UrlInfo}/mwebapi/GetDmHHDVDKGia`).then((res) => {
       const ls = JSON.parse(JSON.stringify(res.data.Result));
       this.setState({
         lsHHDV: arr,
@@ -144,8 +147,8 @@ class BaoCaoTongHopGiaKeKhai extends React.Component {
   fetData() {
     let d1 = Moment(this.state.startDate.toLocaleString()).format('DD/MM/YYYY');
     let d2 = Moment(this.state.endDate.toLocaleString()).format('DD/MM/YYYY');
-    //let url = `${appConfig.BASE_URL}/GetBaoCaoTongHopGiaKeKhai?doanhNghiepId=263&ngayHieuLucTu=01/01/2021&ngayHieuLucDen=01/09/2022&loaiGiaIds=10`;
-    let url = `${appConfig.BASE_URL}/GetBaoCaoTongHopGiaKeKhai?doanhNghiepId=${this.state.selectedDoanhNghiepId}&ngayHieuLucTu=${d1}&ngayHieuLucDen=${d2}&loaiGiaIds=${this.state.selectedLoaiGiaId}`;
+    //let url = `${this.state.UrlInfo}/mwebapi/GetBaoCaoTongHopGiaKeKhai?doanhNghiepId=263&ngayHieuLucTu=01/01/2021&ngayHieuLucDen=01/09/2022&loaiGiaIds=10`;
+    let url = `${this.state.UrlInfo}/mwebapi/GetBaoCaoTongHopGiaKeKhai?doanhNghiepId=${this.state.selectedDoanhNghiepId}&ngayHieuLucTu=${d1}&ngayHieuLucDen=${d2}&loaiGiaIds=${this.state.selectedLoaiGiaId}`;
     console.log(url);
     axios.get(url).then((res) => {
       const ls = JSON.parse(JSON.stringify(res.data.Result));
@@ -160,7 +163,22 @@ class BaoCaoTongHopGiaKeKhai extends React.Component {
     });
   }
 
-  componentDidMount() {
+  async componentDidMount() {
+    try {
+
+      const diachi = await AsyncStorage.getItem("Dia_chi_Url");
+      
+
+      
+      
+      this.setState({
+        UrlInfo: diachi,
+      });
+      console.log(`ke khai in Url ${this.state.UrlInfo}`);
+    } catch (e) {
+      
+      console.log(`is logged in error ${e}`);
+    }
     this.fetDmDoanhNghiep();
     this.fetDmLoaiGia();
   }
@@ -303,7 +321,7 @@ class BaoCaoTongHopGiaKeKhai extends React.Component {
     //   redirect: 'follow',
     // };
 
-    // fetch('${appConfig.BASE_URL}/getdmdoanhnghiep', requestOptions)
+    // fetch('${this.state.UrlInfo}/mwebapi/getdmdoanhnghiep', requestOptions)
     //   .then((response) => response.json())
     //   .then((result) => {
     //     if (result) {
@@ -320,7 +338,7 @@ class BaoCaoTongHopGiaKeKhai extends React.Component {
     //   })
     //   .catch((error) => console.log('error', error));
 
-    // fetch('${appConfig.BASE_URL}/GetDmLoaiGia', requestOptions)
+    // fetch('${this.state.UrlInfo}/mwebapi/GetDmLoaiGia', requestOptions)
     //   .then((response) => response.json())
     //   .then((result) => {
     //     if (result) {
@@ -339,7 +357,7 @@ class BaoCaoTongHopGiaKeKhai extends React.Component {
 
     // var config = {
     //   method: 'get',
-    //   url: '${appConfig.BASE_URL}/getdmdoanhnghiep',
+    //   url: '${this.state.UrlInfo}/mwebapi/getdmdoanhnghiep',
     //   // headers: {
     //   //   'X-CSCAPI-KEY': 'API_KEY',
     //   // },
@@ -364,7 +382,7 @@ class BaoCaoTongHopGiaKeKhai extends React.Component {
 
     // config = {
     //   method: 'get',
-    //   url: '${appConfig.BASE_URL}/GetDmLoaiGia',
+    //   url: '${this.state.UrlInfo}/mwebapi/GetDmLoaiGia',
     //   // headers: {
     //   //   'X-CSCAPI-KEY': 'API_KEY',
     //   // },
@@ -389,7 +407,7 @@ class BaoCaoTongHopGiaKeKhai extends React.Component {
 
     // config = {
     //   method: 'get',
-    //   url: '${appConfig.BASE_URL}/GetDmNhomHangHoa',
+    //   url: '${this.state.UrlInfo}/mwebapi/GetDmNhomHangHoa',
     //   // headers: {
     //   //   'X-CSCAPI-KEY': 'API_KEY',
     //   // },
@@ -414,7 +432,7 @@ class BaoCaoTongHopGiaKeKhai extends React.Component {
 
     // config = {
     //   method: 'get',
-    //   url: '${appConfig.BASE_URL}/GetDmHangHoaDichVu',
+    //   url: '${this.state.UrlInfo}/mwebapi/GetDmHangHoaDichVu',
     //   // headers: {
     //   //   'X-CSCAPI-KEY': 'API_KEY',
     //   // },
@@ -439,7 +457,7 @@ class BaoCaoTongHopGiaKeKhai extends React.Component {
 
     // config = {
     //   method: 'get',
-    //   url: '${appConfig.BASE_URL}/GetDmHHDVDKGia',
+    //   url: '${this.state.UrlInfo}/mwebapi/GetDmHHDVDKGia',
     //   // headers: {
     //   //   'X-CSCAPI-KEY': 'API_KEY',
     //   // },

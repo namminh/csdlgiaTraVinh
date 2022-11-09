@@ -3,13 +3,33 @@ import { Linking, StyleSheet, TouchableOpacity } from "react-native";
 
 import Icon from "./Icon";
 import { BIcon } from ".";
-import React, { useContext } from "react";
+import React, { useEffect, useContext, useState } from "react";
 import nowTheme from "../constants/Theme";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { AuthContext } from "../context/AuthContext";
-//import Login from '../screens/Login';
-
+import AsyncStorage, {
+  useAsyncStorage,
+} from "@react-native-async-storage/async-storage";
 const DrawerItem = (props) => {
+  const [UrlInfo, seturl] = useState([]);  
+  const isLoggedIn = async () => {
+    
+    try {
+
+      let UrlInfo = await AsyncStorage.getItem("Dia_chi_Url");
+      seturl(UrlInfo);
+
+     
+      console.log(`DrawerItem in Url ${UrlInfo}`);
+
+
+    } catch (e) {
+      console.log(`is logged in error ${e}`);
+    }
+  };
+  useEffect(() => {
+    isLoggedIn();
+   
+  }, [UrlInfo]);
   renderIcon = () => {
     const { name, title, focused } = props;
     switch (name) {
@@ -216,7 +236,7 @@ const DrawerItem = (props) => {
           onPress={
             () => {
               if (name == "WEB") {
-                Linking.openURL("http://113.160.48.98:8790/").catch((err) =>
+                Linking.openURL(UrlInfo).catch((err) =>
                   console.error("An error occurred", err)
                 );
               } else if (name === "LOG_OUT") {

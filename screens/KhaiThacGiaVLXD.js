@@ -26,7 +26,9 @@ import axios from 'axios';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import Moment from 'moment';
 import { appConfig } from "../constants";
-
+import AsyncStorage, {
+  useAsyncStorage,
+} from "@react-native-async-storage/async-storage";
 const { width } = Dimensions.get('screen');
 
 const thumbMeasure = (width - 48 - 32) / 3;
@@ -37,6 +39,7 @@ class KhaiThacGiaVLXD extends React.Component {
     this.state = {
       checkSelected: [],
       TenHangHoa: [],
+      UrlInfo: [],
       lsData: [],
       startDate: Moment(new Date()).format('DD/MM/YYYY'),
       endDate: Moment(new Date()).format('DD/MM/YYYY'),
@@ -51,8 +54,8 @@ class KhaiThacGiaVLXD extends React.Component {
   fetData() {
     let d1 = Moment(this.state.startDate.toLocaleString()).format('DD/MM/YYYY');
     let d2 = Moment(this.state.endDate.toLocaleString()).format('DD/MM/YYYY');
-    //let url = `${appConfig.BASE_URL}/GetBaoCaoTongHopGiaKeKhai?doanhNghiepId=263&ngayHieuLucTu=01/01/2021&ngayHieuLucDen=01/09/2022&loaiGiaIds=10`;
-    let url = `${appConfig.BASE_URL}/GetKhaiThacGiaVLXD?ten=${this.state.productname}&ngayHieuLucTu=${d1}&ngayHieuLucDen=${d2}`;
+    //let url = `${this.state.UrlInfo}/mwebapi/GetBaoCaoTongHopGiaKeKhai?doanhNghiepId=263&ngayHieuLucTu=01/01/2021&ngayHieuLucDen=01/09/2022&loaiGiaIds=10`;
+    let url = `${this.state.UrlInfo}/mwebapi/GetKhaiThacGiaVLXD?ten=${this.state.productname}&ngayHieuLucTu=${d1}&ngayHieuLucDen=${d2}`;
     console.log(url);
     axios.get(url).then((res) => {
       const ls = JSON.parse(JSON.stringify(res.data.Result));
@@ -66,7 +69,22 @@ class KhaiThacGiaVLXD extends React.Component {
       //console.log(this.state.lsData);
     });
   }
+  async componentDidMount() {
+    try {
 
+    const diachi = await AsyncStorage.getItem("Dia_chi_Url");
+    
+
+    
+    
+    this.setState({
+      UrlInfo: diachi,
+    });
+    console.log(`VLXD in Url ${this.state.UrlInfo}`);
+  } catch (e) {
+    
+    console.log(`is logged in error ${e}`);
+  }}
   showStartDatePicker = () => {
     //setDatePickerVisibility(true);
     this.setState({ isStartDatePickerVisible: true });
