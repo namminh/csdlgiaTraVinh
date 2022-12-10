@@ -57,11 +57,12 @@ class XemGia extends React.Component {
     const timkiem = await AsyncStorage.getItem("Tim_kiem");
    
     console.log(`Keyword ${timkiem}`);
+    this.showToast(`Đang tìm ${timkiem}`);
     let url = `${this.state.UrlInfo}/mwebapi/TimGiaDatMobile?keyword=${timkiem}`;
     console.log(url);
     axios.get(url).then((res) => {
       const ls = JSON.parse(JSON.stringify(res.data.Result));
-      console.log(`ls ${ls}`);
+      
       
       this.setState({
         lsData: ls,
@@ -73,6 +74,7 @@ class XemGia extends React.Component {
     
       Keyword: timkiem,
     });
+    
   }
  
   async componentDidMount() {
@@ -97,15 +99,7 @@ class XemGia extends React.Component {
      this.showSearchResult();
 }
 
-async getKey(){
-  const timkiem = await AsyncStorage.getItem("Tim_kiem");
-  this.setState({
-    
-    Keyword: timkiem,
-  });
-  console.log(`Keyword ${this.state.Keyword}`);
-  this.setState({ isDatakey: false });
-}
+
 
 showSearchResult = () => {
    
@@ -114,23 +108,14 @@ showSearchResult = () => {
     this.fetData();
     this.setState({ isDataLoaded: true });
    
+  
     
-    if (Object.keys(this.state.lsData).length <= 0) {
-      this.showToast('Không tìm thấy dữ liệu phù hợp');
-    }
-    
-    //console.log(this.state.lsData);
   };
   showToast = (message) => {
     console.log(message);
     ToastAndroid.show(message, ToastAndroid.SHORT);
   };
-  showToastWithGravity = (message) => {
-    ToastAndroid.showWithGravity(message, ToastAndroid.SHORT, ToastAndroid.CENTER);
-  };
-  showToastWithGravityAndOffset = (message) => {
-    ToastAndroid.showWithGravityAndOffset(message, ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50);
-  };
+  
 
   renderForm = () => {
     return (

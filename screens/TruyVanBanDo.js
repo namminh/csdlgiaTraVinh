@@ -14,9 +14,9 @@ import {
 
 // Galio components
 import { Block, Text, Button as GaButton, theme, Toast, NavBar, } from 'galio-framework';
-import Geolocation from '@react-native-community/geolocation';
+// import Geolocation from '@react-native-community/geolocation';
+import Geolocation from 'react-native-geolocation-service';
 
-Geolocation.setRNConfiguration(config);
 import MapboxGL from '@rnmapbox/maps';
 MapboxGL.setWellKnownTileServer('Mapbox');
 MapboxGL.setAccessToken('pk.eyJ1IjoiY3NkbCIsImEiOiJjbGJkMGZldWcwaWoyM3FueXYydGM5dG1rIn0.58KbY8drZnJW-pKwqgOOJg');
@@ -54,8 +54,9 @@ class TruyVanBanDo extends React.Component {
       lsResult: [],
      
       lsName: [],
+      address: [],
       
-      Keyword: "Sở tài chính",
+      Keyword: "",
       
       followUserLocation: false,
       isDataLoaded: false,
@@ -123,40 +124,99 @@ class TruyVanBanDo extends React.Component {
     });
 
   }
+  getDataUser(){
+    console.log(`NAMNM02 this.state.Keyword ${this.state.Keyword}`);
+      let url = `https://rsapi.goong.io/Geocode?latlng=${this.state.region.latitude}, ${this.state.region.longitude}&api_key=3S6utgJppy4E4mmGUs7LJTdPmuj8CIh2y98mYKcA`;
+      
+      console.log(url);
+      console.log(`this.state.region ${this.state.region.latitude}`);
+      console.log(`this.state.region ${this.state.region.longitude}`);
+  
+      axios.get(url).then((res) => {
+        const ls = JSON.parse(JSON.stringify(res.data.results));
+        console.log(`Danh sach latlng ${ls}`);
+       
+        
+        let temp = [];
+        let temp1 = [];
+        
+        ls.map((item) => {
+         
+          temp.push(item.name);
+          temp1.push(item.address);
+        });
+        this.setState({
+          
+          lsName: temp[0],
+          address: temp1[0],
+        });
+        AsyncStorage.setItem("Tim_kiem", this.state.lsName);
+        this.setState({
+          
+          followUserLocation: false, 
+        });
 
+        console.log(`name ${this.state.lsName}`);
+        console.log(`address ${this.state.address}`);
+        this.showToast(`Đang tìm ${this.state.Keyword}`);
+      });
+  }
+  getLatLng (){
+    Geolocation.getCurrentPosition(
+      position => {
+        console.log(position);
+        console.log(`latitude: ${position.coords.latitude}, longitude: ${position.coords.longitude}`);
+        this.setState({
+          region:
+          {
+            longitude: position.coords.longitude,
+            latitude: position.coords.latitude,
+            latitudeDelta: LATITUDE_DELTA,
+            longitudeDelta: LONGITUDE_DELTA,
+          },
+          
+          
+        });
+        console.log(`this.state.region ${this.state.region.latitude}`);
+        console.log(`this.state.region ${this.state.region.longitude}`);
+      },
+      error => {
+        // See error code charts below.
+        console.log(error.code, error.message);
+       
+      },
+      {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
+    );
+  }
   handlekey = async () => {
     
 
     
     if (!this.state.Keyword)
     {
-      this.setState({
-        Keyword: 'Sở tài chính',
-        
-      });
+      this.getDataUser();          
     }
-    this.setState({
-      followUserLocation: false,
-      
-    });
-    
-    AsyncStorage.setItem("Tim_kiem", this.state.Keyword);
-    
-    
-    this.fetData();
-    this.setState({ isShow: true });
-  
+    else
+    {
+      this.setState({
+        followUserLocation: false,   
+      });
+      console.log(`NAMNM03`);
+      AsyncStorage.setItem("Tim_kiem", this.state.Keyword);
+      this.fetData();
+      this.setState({ isShow: true });
+    }
   };
    
   async componentDidMount() {
     try {
 
-    const diachi = await AsyncStorage.getItem("Dia_chi_Url");
- 
-      this.setState({
-        UrlInfo: diachi,
-        
-      });
+          const diachi = await AsyncStorage.getItem("Dia_chi_Url");
+    
+          this.setState({
+            UrlInfo: diachi,
+            
+          });
    
         } catch (e) {
                 console.log(`is logged in error ${e}`);
@@ -170,6 +230,7 @@ class TruyVanBanDo extends React.Component {
             followUserLocation: granted,
             
           });
+          this.getLatLng();
         } 
         else {
           console.log( "ACCESS_FINE_LOCATION permission denied" )
@@ -184,6 +245,7 @@ class TruyVanBanDo extends React.Component {
                   followUserLocation: granted,
                   
                 });
+                this.getLatLng();
                 console.log(`is logged in error ${this.state.followUserLocation}`);
             } else {
                 alert("You don't have access for the location");
@@ -193,45 +255,18 @@ class TruyVanBanDo extends React.Component {
 
   
 
+  
+  showToast = () => {
+   
+    ToastAndroid.show(`Địa điểm ${this.state.address}`, ToastAndroid.SHORT);
+  };
  
-  showToast = (message) => {
-    console.log(message);
-    ToastAndroid.show(message, ToastAndroid.SHORT);
-  };
-  showToastWithGravity = (message) => {
-    ToastAndroid.showWithGravity(message, ToastAndroid.SHORT, ToastAndroid.CENTER);
-  };
-  showToastWithGravityAndOffset = (message) => {
-    ToastAndroid.showWithGravityAndOffset(message, ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50);
-  };
 
-  getCoordinate (){
-      
-      geolocate.on('geolocate', function(position) {
-        console.log(`latitude: ${position.coords.latitude}, longitude: ${position.coords.longitude}`);
-        this.setState({
-          region:
-          {
-            longitude: position.coords.longitude,
-            latitude: position.coords.latitude,
-            latitudeDelta: LATITUDE_DELTA,
-            longitudeDelta: LONGITUDE_DELTA,
-          },
-          
-          
-        });
-      });
-      console.log(`this.state.region ${this.state.region.latitude}`);
-      console.log(`this.state.region ${this.state.region.longitude}`);
-  }
+ 
   
  
   render() {
     const { navigation } = this.props;
-    
-   
-
-    
 
     return (
       
@@ -275,15 +310,7 @@ class TruyVanBanDo extends React.Component {
               >
                 
             </Button>
-            {/* <Button
-                shadowless
-                onlyIcon icon="question" iconFamily="antdesign" iconSize={30} color="warning" iconColor="#fff" style={{ width: 40, height: 40 }}
-               
-                onPress={this.getlocation} 
-                // onPress={() => console.log(navigation.navigate("XemGia"))}
-              >
-                
-            </Button> */}
+           
           </Block>
         </Block>      
        
@@ -300,7 +327,8 @@ class TruyVanBanDo extends React.Component {
                 <MapboxGL.UserLocation
                   renderMode="normal"
                   animated={true}
-                  // onPress={this.getCoordinate} 
+                  onPress={this.showToast}
+                  
                 />
                 
                 <MapboxGL.Camera
