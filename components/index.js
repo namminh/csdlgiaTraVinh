@@ -17,6 +17,8 @@ import CardGiaHHDVNhaNuocDinhGia from './CardGiaHHDVNhaNuocDinhGia';
 import CardBaoCaoGiaThiThuongTongHop from './CardBaoCaoGiaThiThuongTongHop';
 import CardBaoCaoTongHopGiaTaiSanTDG from './CardBaoCaoTongHopGiaTaiSanTDG';
 import Card_KhaiThacGiaVLXD from './Card_KhaiThacGiaVLXD';
+import CardTruyvangiadat from './CardTruyvangiadat';
+import CardXemGia from './CardXemGia';
 
 export {
   Button,
@@ -35,6 +37,8 @@ export {
   Card_116,
   Card_142,
   CardGiaHHDVNhaNuocDinhGia,
+  CardTruyvangiadat,
+  CardXemGia,
   CardBaoCaoGiaThiThuongTongHop,
   CardBaoCaoTongHopGiaTaiSanTDG,
   Card_KhaiThacGiaVLXD,

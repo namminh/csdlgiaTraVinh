@@ -29,6 +29,9 @@ import BaoCaoGiaThiTruong142 from "../screens/BaoCaoGiaThiTruong142";
 import TraCuuGiaHHDVNhaNuocDinhGia from "../screens/TraCuuGiaHHDVNhaNuocDinhGia";
 import BaoCaoGiaThiThuongTongHop from "../screens/BaoCaoGiaThiThuongTongHop";
 import BaoCaoTongHopGiaTaiSanTDG from "../screens/BaoCaoTongHopGiaTaiSanTDG";
+import Truyvangiadat from "../screens/Truyvangiadat";
+import TruyVanBanDo from "../screens/TruyVanBanDo";
+import XemGia from "../screens/XemGia";
 
 import AuthStack from "../navigation/AuthStack";
 import { AuthContext, AuthProvider } from "../context/AuthContext";
@@ -36,7 +39,9 @@ import { AuthContext, AuthProvider } from "../context/AuthContext";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { createStackNavigator } from "@react-navigation/stack";
 import BottomNavigator from "./BottomNavigator";
-
+import AsyncStorage, {
+  useAsyncStorage,
+} from "@react-native-async-storage/async-storage";
 const { width } = Dimensions.get("screen");
 
 const Stack = createStackNavigator();
@@ -265,6 +270,64 @@ function TraCuuGiaHHDVNhaNuocDinhGiaStack(props) {
     </Stack.Navigator>
   );
 }
+function TruyvangiadatStack(props) {
+  return (
+    <Stack.Navigator
+      initialRouteName="Truyvangiadat"
+      screenOptions={{
+        mode: "card",
+        headerShown: "screen",
+      }}
+    >
+      <Stack.Screen
+        name="Truyvangiadat"
+        component={Truyvangiadat}
+        options={{
+          header: ({ navigation, scene }) => (
+            <Header
+              title="Truy vấn giá đất do UBND tỉnh quy định"
+              navigation={navigation}
+              scene={scene}
+            />
+          ),
+          backgroundColor: "#FFFFFF",
+        }}
+      />
+      {/* <Stack.Screen name="Home" component={BottomNavigator} /> */}
+    </Stack.Navigator>
+  );
+}
+function XemGiaStack(props) {
+  return (
+    <Stack.Navigator
+      initialRouteName="XemGia"
+      screenOptions={{
+        mode: "card",
+        headerShown: "screen",
+      }}
+    >
+      <Stack.Screen
+        name="Xem Giá Đất"
+        component={XemGia}
+        options={{
+          header: ({ navigation, scene }) => (
+            <Header
+              title="Xem Giá Đất"
+              back={() => navigation.goBack()}
+              
+              
+              navigation={navigation}
+              scene={scene}
+            />
+          ),
+          headerTransparent: false,
+          backgroundColor: "#18ce0f",
+        }}
+      />
+      {/* <Stack.Screen name="Home" component={BottomNavigator} /> */}
+    </Stack.Navigator>
+  );
+}
 function BaoCaoGiaThiThuongTongHopStack(props) {
   return (
     <Stack.Navigator
@@ -320,7 +383,38 @@ function BaoCaoTongHopGiaTaiSanTDGStack(props) {
     </Stack.Navigator>
   );
 }
+function TruyVanBanDoStack(props) {
+  return (
+    <Stack.Navigator
+      initialRouteName="TruyVanBanDo"
+      screenOptions={{
+        mode: "card",
+        headerShown: "screen",
+      }}
+    >
+      <Stack.Screen
+        name="TruyVanBanDo"
+        component={TruyVanBanDo}
+        
+        options={{
+          header: ({ navigation, scene }) => (
+            <Header
+              title="Xem bản đồ"
+              
+              navigation={navigation}
+              scene={scene}
+            />
+          ),
+          backgroundColor: "#FFFFFF",
 
+        }}
+        
+      />
+     
+      {/* <Stack.Screen name="Home" component={BottomNavigator} /> */}
+    </Stack.Navigator>
+  );
+}
 function KT_THEO_BIEU_MAUStack(props) {
   return (
     <Stack.Navigator
@@ -583,6 +677,20 @@ function AppStack(props) {
         }}
       />
       <Drawer.Screen
+        name="Truyvangiadat"
+        component={TruyvangiadatStack}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Drawer.Screen
+        name="XemGia"
+        component={XemGiaStack}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Drawer.Screen
         name="BaoCaoGiaThiThuongTongHop"
         component={BaoCaoGiaThiThuongTongHopStack}
         options={{
@@ -599,6 +707,13 @@ function AppStack(props) {
       <Drawer.Screen
         name="BaoCaoTongHopGiaTaiSanTDG"
         component={BaoCaoTongHopGiaTaiSanTDGStack}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Drawer.Screen
+        name="TruyVanBanDo"
+        component={TruyVanBanDoStack}
         options={{
           headerShown: false,
         }}
@@ -651,6 +766,8 @@ function AppStack(props) {
 
 export default function OnboardingStack(props) {
   const { userInfo, splashLoading } = useContext(AuthContext);
+  // console.log(`userInfo error ${userInfo}`);
+  // console.log(`splashLoading error ${splashLoading}`);
   return (
     <Stack.Navigator
       screenOptions={{

@@ -22,6 +22,9 @@ function CustomDrawerContent({ drawerPosition, navigation, profile, focused, sta
     { name: 'BaoCaoGiaThiThuongTongHop', title: 'Báo cáo tổng hợp giá thị trường' },
     { name: 'KhaiThacGiaVLXD', title: 'Khai thác giá vật liệu xây dựng' },
     { name: 'BaoCaoTongHopGiaTaiSanTDG', title: 'Báo cáo tổng hợp giá trị tài sản TĐG' },
+    { name: 'Truyvangiadat', title: 'Truy vấn giá đất do UBND tỉnh quy định' },
+    { name: 'TruyVanBanDo', title: 'Xem bản đồ giá đất' },
+
     // { name: 'Components', title: 'Components' },
     { name: '', title: '', type: 'line' },
     { name: 'WEB', title: 'Truy cập Website' },
@@ -39,7 +42,7 @@ function CustomDrawerContent({ drawerPosition, navigation, profile, focused, sta
       </Block>
       <Block
         flex
-        style={{ paddingLeft: 8, paddingRight: 14, backgroundColor: nowTheme.COLORS.PRIMARY }}
+        style={{ paddingLeft: 8, paddingRight: 14, backgroundColor: nowTheme.COLORS.PRIMARYDARK }}
       >
         <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
           {menu.map((item, index) => {
