@@ -69,6 +69,10 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (username, password) => {
     setIsLoading(true);
+    if(!UrlInfo)
+    {
+      setUrlInfo('http://113.160.48.98:8798');
+    }
     let url = `${UrlInfo}/mwebapi/validateaccount`;
     //let url = `${appConfig.BASE_URL}/validateaccount?username=${username}&password=${password}`;
     let config = {
@@ -134,7 +138,10 @@ export const AuthProvider = ({ children }) => {
         msg = res.data.Message;
         console.log(msg);
         setUrlInfo(Url);
-        AsyncStorage.setItem("Dia_chi_Url", Url);
+        
+          AsyncStorage.setItem("Dia_chi_Url", Url);
+        
+        
        
         // setIsLoading(false);
         //console.log(userInfo);
