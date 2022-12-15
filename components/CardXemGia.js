@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
     marginVertical: theme.SIZES.BASE,
     borderWidth: 0,
     minHeight: 114,
-    marginBottom: 4,
+    marginBottom: 0,
   },
   cardTitle: {
     paddingHorizontal: 9,
@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
     paddingBottom: 5,
   },
   cardDescription: {
-    padding: theme.SIZES.BASE / 3,
+    padding: theme.SIZES.BASE / 10,
   },
   cardItemName: {
     fontFamily: 'montserrat-regular',

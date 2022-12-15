@@ -5,7 +5,7 @@ import {
   Dimensions,
   TouchableOpacity,
   Image,
-  Animated,
+  
   ImageBackground,
   ToastAndroid,
   View,
@@ -16,17 +16,18 @@ import {
 import { Block, Text, Button as GaButton, theme, Toast, NavBar, } from 'galio-framework';
 // import Geolocation from '@react-native-community/geolocation';
 import Geolocation from 'react-native-geolocation-service';
-
+import CardXemGia from '../components/CardXemGia';
 import MapboxGL from '@rnmapbox/maps';
 MapboxGL.setWellKnownTileServer('Mapbox');
 MapboxGL.setAccessToken('pk.eyJ1IjoiY3NkbCIsImEiOiJjbGJkMGZldWcwaWoyM3FueXYydGM5dG1rIn0.58KbY8drZnJW-pKwqgOOJg');
 // Now UI themed components
 import { Images, nowTheme, articles, tabs } from '../constants';
 import { Button, Select, Icon, Input, Header, Switch } from '../components';
-
+import Animated from 'react-native-reanimated';
+import BottomSheet from 'reanimated-bottom-sheet';
 import Img from '../components/Img';
 import { CardBaoCaoTongHopGiaTaiSanTDG } from '../components';
-
+import Modal from 'react-native-modal';
 import axios from 'axios';
 //import DateTimePicker from '@react-native-community/datetimepicker';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
@@ -43,10 +44,12 @@ const LATITUDE = 11.578000306113399;
 const LONGITUDE = 108.99346725962042;
 const LATITUDE_DELTA = 0.00377;
 const LONGITUDE_DELTA = 0.0037;
-
+ 
 class TruyVanBanDo extends React.Component {
   constructor(props) {
     super(props);
+    this.sheetRef = React.createRef();
+    
     this.state = {
       checkSelected: [],
       UrlInfo: [],
@@ -55,9 +58,9 @@ class TruyVanBanDo extends React.Component {
      
       lsName: [],
       address: [],
-      
+      CountCard: 5,
       Keyword: "",
-      
+      visibleModal: null,
       followUserLocation: false,
       isDataLoaded: false,
       isShow: false,
@@ -70,7 +73,67 @@ class TruyVanBanDo extends React.Component {
       },
     };
   }
- 
+  
+  _renderButton = (text, onPress) => (
+    <TouchableOpacity onPress={onPress}>
+      <View style={styles.textButton}>
+        <Text>{text}</Text>
+      </View>
+    </TouchableOpacity>
+  );
+  _renderModalContent = () => (
+    <View style={styles.modalContent}>
+      
+      {this._renderButton('Close', () => this.setState({ visibleModal: null }))}
+    </View>
+  );
+
+  async fetDataGia() {
+    //let url = `${this.state.UrlInfo}/mwebapi/GetBaoCaoTongHopGiaTaiSanTDG?ngayHieuLucTu=23/09/2019&ngayHieuLucDen=26/09/2022`;
+    
+    // const timkiem = await AsyncStorage.getItem("Tim_kiem");
+   
+    // console.log(`Keyword ${timkiem}`);
+    this.showToast(`Đang tìm ${this.state.Keyword}`);
+    let url = `${this.state.UrlInfo}/mwebapi/TimGiaDatMobile?keyword=${this.state.Keyword}`;
+    console.log(url);
+    axios.get(url).then((res) => {
+      const ls = JSON.parse(JSON.stringify(res.data.Result));
+       var count = Object.keys(ls).length;
+       console.log(count);
+      this.setState({
+        lsData: ls,
+        CountCard: count*150,
+      });
+      
+     
+    });
+    
+    
+  }
+  renderSearchResult = () => {
+   
+    return (
+      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.articles}>
+        <Block flex style={{ paddingHorizontal: theme.SIZES.BASE }}>
+          {this.state.lsData.map((item, index) => {
+            
+           
+            return (
+              <CardXemGia
+                key={index}
+                item={item}
+                horizontal
+                titleStyle={styles.productTitle}
+                imageStyle={{ height: 300, width: '100%', resizeMode: 'contain' }}
+              />
+            );
+          })}
+        </Block>
+      </ScrollView>
+    );
+  };
+
   fetData() {
 
     // let url = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${this.state.Keyword}, Ninh Thuận&key=AIzaSyC1-NUMAIV01HQNMAsxXzuekjA00Yqm6Aw`;
@@ -125,7 +188,7 @@ class TruyVanBanDo extends React.Component {
 
   }
   getDataUser(){
-    console.log(`NAMNM02 this.state.Keyword ${this.state.Keyword}`);
+    
       let url = `https://rsapi.goong.io/Geocode?latlng=${this.state.region.latitude}, ${this.state.region.longitude}&api_key=3S6utgJppy4E4mmGUs7LJTdPmuj8CIh2y98mYKcA`;
       
       console.log(url);
@@ -146,7 +209,7 @@ class TruyVanBanDo extends React.Component {
           temp1.push(item.address);
         });
         this.setState({
-          
+          Keyword: temp[0],
           lsName: temp[0],
           address: temp1[0],
         });
@@ -194,20 +257,38 @@ class TruyVanBanDo extends React.Component {
     
     if (!this.state.Keyword)
     {
-      this.getDataUser();          
+      this.getDataUser();     
+      console.log(`NAMNM03`); 
+      
+
     }
     else
     {
       this.setState({
         followUserLocation: false,   
+        visibleModal: 1,
       });
-      console.log(`NAMNM03`);
+      console.log(`NAMNM04`);
       AsyncStorage.setItem("Tim_kiem", this.state.Keyword);
       this.fetData();
       this.setState({ isShow: true });
     }
-  };
    
+      
+  };
+  showPopUp = async () =>{
+    
+    this.handlekey();
+    this.setState({ 
+      followUserLocation: false,
+      visibleModal: 1,
+     });
+    this.setState({ isDataLoaded: false });
+    this.fetDataGia();
+    this.setState({ isDataLoaded: true });
+    console.log(`NAMNM05`);
+    this.renderContent();
+  } 
   async componentDidMount() {
     try {
 
@@ -255,15 +336,39 @@ class TruyVanBanDo extends React.Component {
 
   
 
+  renderContent = () => (
+   
+
+    <View
+      style={{
+        backgroundColor: 'white',
+        padding: 1,
+        height: this.state.CountCard,
+      }}
+    >
+      
+      <ScrollView
+          showsVerticalScrollIndicator={true}
+          
+        >
+        
+          {this.state.isDataLoaded && this.renderSearchResult()}
+          
+        </ScrollView>
+              
+      
+    </View>
+  );
+
   
   showToast = () => {
    
     ToastAndroid.show(`Địa điểm ${this.state.address}`, ToastAndroid.SHORT);
   };
  
-
- 
   
+ 
+ 
  
   render() {
     const { navigation } = this.props;
@@ -286,15 +391,15 @@ class TruyVanBanDo extends React.Component {
                 size={16}
                 color="#ADB5BD"
                
-                name="search"
+                name="close"
                 family="Font-Awesome"
                 style={styles.inputIcons}
-                onPress={this.handlekey} 
+                onPress={() => this.setState({ Keyword: ''  })} 
               />
             }
              shadowless
              onChangeText={(text) => this.setState({ Keyword: text  })}
-             
+             value={this.state.Keyword}
             />
             
           </Block>
@@ -302,9 +407,9 @@ class TruyVanBanDo extends React.Component {
           
             <Button
                 shadowless
-                onlyIcon icon="eye" iconFamily="antdesign" iconSize={30} color="warning" iconColor="#fff" style={{ width: 40, height: 40 }}
+                onlyIcon icon="magnifying-glass" iconFamily="Entypo" iconSize={30} color="#18ce0f" iconColor="#18ce0f" style={{ width: 40, height: 40 }}
                
-                onPress={() => navigation.navigate('XemGia')&this.setState({ followUserLocation: true })}
+                onPress={this.showPopUp}
                 
                 // onPress={() => console.log(navigation.navigate("XemGia"))}
               >
@@ -339,10 +444,51 @@ class TruyVanBanDo extends React.Component {
                         followUserMode="normal"
                         centerCoordinate={[this.state.region.longitude, this.state.region.latitude, LONGITUDE_DELTA, LATITUDE_DELTA]}
                     />
-                   
+               
           </MapboxGL.MapView>
-         
+          
         </View>
+        {this.state.visibleModal? (
+          
+            //  <View>
+             
+            //   <ScrollView
+            //       showsVerticalScrollIndicator={false}
+            //       contentContainerStyle={{ paddingBottom: 30, width }}
+            //         >
+            //       <Modal isVisible={this.state.visibleModal === 1} style={styles.bottomModal}>
+            //         {this.state.isDataLoaded && this.renderSearchResult()}
+            //         {this._renderModalContent()}
+            //       </Modal>
+            //   </ScrollView>
+              
+             
+            
+            // </View>
+            <View>
+             
+            <Button 
+              small onlyIcon icon="up" iconFamily="antdesign" iconSize={20} color="warning" iconColor="#fff" style={styles.button}
+              justifyConten
+              onPress={() => this.sheetRef.current.snapTo(0)}
+            />
+         
+            <BottomSheet
+              ref={this.sheetRef}
+              snapPoints={[450, 300, 0]}
+              borderRadius={10}
+              renderContent={this.renderContent}
+            />
+            </View>
+         
+         
+           
+         
+       
+        ) : null}
+       
+      
+         
       </View>
   
     );
@@ -378,6 +524,8 @@ const styles = StyleSheet.create({
   button: {
     marginBottom: theme.SIZES.BASE,
     width: width - theme.SIZES.BASE * 2,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   optionsButton: {
     width: 'auto',
@@ -433,7 +581,18 @@ const styles = StyleSheet.create({
     height: '100%',
     
   },
-  
+  modalContent: {
+    backgroundColor: 'white',
+    padding: 22,
+    justifyContent: 'left',
+    alignItems: 'center',
+    borderRadius: 4,
+    borderColor: 'rgba(0, 0, 0, 0.1)',
+  },
+  bottomModal: {
+    justifyContent: 'flex-end',
+    margin: 0,
+  },
 });
 
 export default TruyVanBanDo;
