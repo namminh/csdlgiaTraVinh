@@ -14,25 +14,19 @@ import {
 
 // Galio components
 import { Block, Text, Button as GaButton, theme, Toast, NavBar, } from 'galio-framework';
-// import Geolocation from '@react-native-community/geolocation';
-import Geolocation from 'react-native-geolocation-service';
+
 import CardXemGia from '../components/CardXemGia';
-import MapboxGL from '@rnmapbox/maps';
-MapboxGL.setWellKnownTileServer('Mapbox');
-MapboxGL.setAccessToken('pk.eyJ1IjoiY3NkbCIsImEiOiJjbGJkMGZldWcwaWoyM3FueXYydGM5dG1rIn0.58KbY8drZnJW-pKwqgOOJg');
+import MapView, {Marker, Callout, PROVIDER_GOOGLE} from 'react-native-maps';
+
 // Now UI themed components
 import { Images, nowTheme, articles, tabs } from '../constants';
 import { Button, Select, Icon, Input, Header, Switch } from '../components';
-import Animated from 'react-native-reanimated';
 import BottomSheet from 'reanimated-bottom-sheet';
-import Img from '../components/Img';
-import { CardBaoCaoTongHopGiaTaiSanTDG } from '../components';
-import Modal from 'react-native-modal';
+
+// import Modal from 'react-native-modal';
 import axios from 'axios';
 //import DateTimePicker from '@react-native-community/datetimepicker';
-import DateTimePickerModal from 'react-native-modal-datetime-picker';
-import Moment from 'moment';
-import { appConfig } from "../constants";
+
 import AsyncStorage, {
   useAsyncStorage,
 } from "@react-native-async-storage/async-storage";
@@ -65,8 +59,9 @@ class TruyVanBanDo extends React.Component {
       isDataLoaded: false,
       isShow: false,
       region: {
-        longitude: LONGITUDE,
         latitude: LATITUDE,
+        longitude: LONGITUDE,
+        
         
         latitudeDelta: LATITUDE_DELTA,
         longitudeDelta: LONGITUDE_DELTA,
@@ -103,7 +98,7 @@ class TruyVanBanDo extends React.Component {
        console.log(count);
       this.setState({
         lsData: ls,
-        CountCard: count*150,
+        CountCard: (count-3)*110,
       });
       
      
@@ -168,8 +163,9 @@ class TruyVanBanDo extends React.Component {
       this.setState({
           region:
           {
-            longitude: res.data.result.geometry.location.lng,
             latitude: res.data.result.geometry.location.lat,
+            longitude: res.data.result.geometry.location.lng,
+            
             latitudeDelta: LATITUDE_DELTA,
             longitudeDelta: LONGITUDE_DELTA,
           },
@@ -224,33 +220,7 @@ class TruyVanBanDo extends React.Component {
         this.showToast(`Đang tìm ${this.state.Keyword}`);
       });
   }
-  getLatLng (){
-    Geolocation.getCurrentPosition(
-      position => {
-        console.log(position);
-        console.log(`latitude: ${position.coords.latitude}, longitude: ${position.coords.longitude}`);
-        this.setState({
-          region:
-          {
-            longitude: position.coords.longitude,
-            latitude: position.coords.latitude,
-            latitudeDelta: LATITUDE_DELTA,
-            longitudeDelta: LONGITUDE_DELTA,
-          },
-          
-          
-        });
-        console.log(`this.state.region ${this.state.region.latitude}`);
-        console.log(`this.state.region ${this.state.region.longitude}`);
-      },
-      error => {
-        // See error code charts below.
-        console.log(error.code, error.message);
-       
-      },
-      {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
-    );
-  }
+  
   handlekey = async () => {
     
 
@@ -289,6 +259,15 @@ class TruyVanBanDo extends React.Component {
     console.log(`NAMNM05`);
     this.renderContent();
   } 
+  showDirect = async () =>{
+    
+    this.getLatLng();
+    this.setState({ 
+      followUserLocation: true,
+      visibleModal: 0,
+     });
+    
+  } 
   async componentDidMount() {
     try {
 
@@ -306,22 +285,22 @@ class TruyVanBanDo extends React.Component {
       const granted = await PermissionsAndroid.check( PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION );
 
         if (granted) {
-          console.log( "You can use the ACCESS_FINE_LOCATION" )
+          console.log( "Bạn có quyền truy cập vị trí" )
           this.setState({
             followUserLocation: granted,
             
           });
-          this.getLatLng();
+         // this.getLatLng();
         } 
         else {
-          console.log( "ACCESS_FINE_LOCATION permission denied" )
+          console.log( "Quyền truy cập vị trí bị từ chối" )
           const granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
             {
                 
             }
             )
             if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-                alert("You've access for the location");
+                alert("Bạn có thể truy cập vị trí");
                 this.setState({
                   followUserLocation: granted,
                   
@@ -329,7 +308,7 @@ class TruyVanBanDo extends React.Component {
                 this.getLatLng();
                 console.log(`is logged in error ${this.state.followUserLocation}`);
             } else {
-                alert("You don't have access for the location");
+                alert("Bạn không có quyền truy cập vị trí");
             }
         }
   }
@@ -343,7 +322,7 @@ class TruyVanBanDo extends React.Component {
       style={{
         backgroundColor: 'white',
         padding: 1,
-        height: this.state.CountCard,
+        height: 700+this.state.CountCard,
       }}
     >
       
@@ -360,8 +339,7 @@ class TruyVanBanDo extends React.Component {
     </View>
   );
 
-  
-  showToast = () => {
+    showToast = () => {
    
     ToastAndroid.show(`Địa điểm ${this.state.address}`, ToastAndroid.SHORT);
   };
@@ -416,66 +394,45 @@ class TruyVanBanDo extends React.Component {
                 
             </Button>
            
+           
           </Block>
         </Block>      
        
         
           
         <View style={styles.container}>
-          <MapboxGL.MapView 
-              style={styles.map}
-              // onDidFinishRenderingMapFully={(r) => {
-              //   this.setState({followUserLocation: true})
-              // }}
-              
-              >
-                <MapboxGL.UserLocation
-                  renderMode="normal"
-                  animated={true}
-                  onPress={this.showToast}
-                  
-                />
-                
-                <MapboxGL.Camera
-                        zoomLevel={18}
-                        animationMode={'flyTo'}
-                        animationDuration={1100}
-                        followUserLocation={this.state.followUserLocation}
-                        followUserMode="normal"
-                        centerCoordinate={[this.state.region.longitude, this.state.region.latitude, LONGITUDE_DELTA, LATITUDE_DELTA]}
-                    />
-               
-          </MapboxGL.MapView>
+         
+          <MapView
+            style={styles.map}
+            provider={PROVIDER_GOOGLE}
+            mapType='standard'
+            showsUserLocation={true}
+            region={this.state.region}
+            showsMyLocationButton={true}
+            followsUserLocation={this.state.followUserLocation}
+            
+          />
           
         </View>
         {this.state.visibleModal? (
           
-            //  <View>
-             
-            //   <ScrollView
-            //       showsVerticalScrollIndicator={false}
-            //       contentContainerStyle={{ paddingBottom: 30, width }}
-            //         >
-            //       <Modal isVisible={this.state.visibleModal === 1} style={styles.bottomModal}>
-            //         {this.state.isDataLoaded && this.renderSearchResult()}
-            //         {this._renderModalContent()}
-            //       </Modal>
-            //   </ScrollView>
+          
               
              
             
-            // </View>
-            <View>
+            
+            <View >
              
             <Button 
-              small onlyIcon icon="up" iconFamily="antdesign" iconSize={20} color="warning" iconColor="#fff" style={styles.button}
+              small onlyIcon icon="up" iconFamily="antdesign" iconSize={20} color="warning" iconColor="#fff"
+              style={styles.button} 
               justifyConten
               onPress={() => this.sheetRef.current.snapTo(0)}
             />
          
             <BottomSheet
               ref={this.sheetRef}
-              snapPoints={[450, 300, 0]}
+              snapPoints={[450, 300, 10]}
               borderRadius={10}
               renderContent={this.renderContent}
             />

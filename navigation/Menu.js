@@ -22,8 +22,8 @@ function CustomDrawerContent({ drawerPosition, navigation, profile, focused, sta
     { name: 'BaoCaoGiaThiThuongTongHop', title: 'Báo cáo tổng hợp giá thị trường' },
     { name: 'KhaiThacGiaVLXD', title: 'Khai thác giá vật liệu xây dựng' },
     { name: 'BaoCaoTongHopGiaTaiSanTDG', title: 'Báo cáo tổng hợp giá trị tài sản TĐG' },
-    { name: 'Truyvangiadat', title: 'Truy vấn giá đất do UBND tỉnh quy định' },
-    { name: 'TruyVanBanDo', title: 'Xem bản đồ giá đất' },
+    // { name: 'Truyvangiadat', title: 'Truy vấn giá đất do UBND tỉnh quy định' },
+    // { name: 'TruyVanBanDo', title: 'Xem bản đồ giá đất' },
 
     // { name: 'Components', title: 'Components' },
     { name: '', title: '', type: 'line' },

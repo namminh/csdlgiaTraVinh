@@ -41,13 +41,13 @@ export default class Onboarding extends React.Component {
                     color="white"
                     size={44}
                   >
-                    CSDL GIÁ NINH THUẬN
+                    CSDL GIÁ TRÀ VINH
                   </Text>
                 </Block>
               </Block>
               <Block middle row>
                 <Text color="white" size={18} style={{ fontFamily: 'montserrat-regular' }}>
-                  UBND Tỉnh Ninh Thuận
+                  UBND Tỉnh TRÀ VINH
                 </Text>
                 {/* <Image
                   source={Images.InvisionLogo}

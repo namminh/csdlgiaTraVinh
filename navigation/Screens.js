@@ -383,6 +383,7 @@ function BaoCaoTongHopGiaTaiSanTDGStack(props) {
     </Stack.Navigator>
   );
 }
+
 function TruyVanBanDoStack(props) {
   return (
     <Stack.Navigator
@@ -415,6 +416,7 @@ function TruyVanBanDoStack(props) {
     </Stack.Navigator>
   );
 }
+
 function KT_THEO_BIEU_MAUStack(props) {
   return (
     <Stack.Navigator

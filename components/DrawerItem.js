@@ -63,7 +63,25 @@ const DrawerItem = (props) => {
             style={{ opacity: 0.8 }}
           />
         );
-
+        case "TruyVanBanDo":
+          return (
+            <BIcon
+              name="ios-receipt-outline"
+              size={18}
+              color={focused ? nowTheme.COLORS.PRIMARY : "white"}
+              style={{ opacity: 0.8 }}
+            />
+          );
+          case "Truyvangiadat":
+        return (
+          <BIcon
+            name="md-open-outline"
+            //family="NowExtra"
+            size={18}
+            color={focused ? nowTheme.COLORS.PRIMARY : "white"}
+            style={{ opacity: 0.8 }}
+          />
+        );
       case "BaoCaoGiaThiTruong142":
         return (
           <BIcon
@@ -247,7 +265,7 @@ const DrawerItem = (props) => {
             }
 
             // name == 'WEB'
-            //   ? Linking.openURL('http://113.160.48.98:8790/').catch((err) =>
+            //   ? Linking.openURL('http://113.160.48.98:8794/').catch((err) =>
             //       console.error('An error occurred', err)
             //     )
             //   : navigation.navigate(name == 'LOG_OUT' ? 'Login' : name)

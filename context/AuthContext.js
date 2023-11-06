@@ -6,7 +6,6 @@ import AsyncStorage, {
 } from "@react-native-async-storage/async-storage";
 export const AuthContext = createContext();
 
-
 export const AuthProvider = ({ children }) => {
   const [userInfo, setUserInfo] = useState({});
   const [UrlInfo, setUrlInfo] = useState({});
@@ -43,6 +42,10 @@ export const AuthProvider = ({ children }) => {
         password: password,
         newpassword: newpassword,
       },
+      params: {
+       
+        
+      },
     };
     let msg = "Thất bại";
     await axios
@@ -69,10 +72,11 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (username, password) => {
     setIsLoading(true);
-    if(!UrlInfo)
-    {
-      setUrlInfo('http://113.160.48.98:8798');
-    }
+    AsyncStorage.setItem("Dia_chi_Url", "http://113.160.48.98:8794");
+
+    setUrlInfo('http://113.160.48.98:8794');
+      
+    
     let url = `${UrlInfo}/mwebapi/validateaccount`;
     //let url = `${appConfig.BASE_URL}/validateaccount?username=${username}&password=${password}`;
     let config = {
@@ -80,57 +84,55 @@ export const AuthProvider = ({ children }) => {
         username: username,
         password: password,
       },
+      params: {
+       
+        
+      },
     };
     console.log(url);
     let msg = "";
-    await axios
-      .get(url, config)
-      .then((res) => {
-        let userInfo = res.data.Result;
-        msg = res.data.Message;
-        console.log(msg);
-        setUserInfo(userInfo);
-        AsyncStorage.setItem("userInfo", JSON.stringify(userInfo));
-        setIsLoading(false);
-        //console.log(userInfo);
-      })
-      .catch((e) => {
-        console.log(`register error ${e}`);
-        msg = `register error ${e}`;
-        setIsLoading(false);
-      });
+    try {
+      const res = await axios.get(url, config);
+      const userInfo = res.data.Result;
+      msg = res.data.Message;
+      console.log(msg);
+      setUserInfo(userInfo);
+       AsyncStorage.setItem('userInfo', JSON.stringify(userInfo));
+    } catch (e) {
+      console.log(`register error ${e}`);
+      msg = `register error ${e}`;
+    } finally {
+      setIsLoading(false);
+    }
     return msg;
-    // axios
-    //   .post({
-    //     url: url,
-    //     config: config,
-    //   })
-    //   .then((res) => {
-    //     console.log(res);
-    //     // let ret = res.data;
-    //     // let userInfo = res.data.Result;
-    //     // console.log(userInfo);
-    //     // setUserInfo(userInfo);
-    //     // AsyncStorage.setItem("userInfo", JSON.stringify(userInfo));
-    //     // setIsLoading(false);
-    //   })
-    //   .catch((e) => {
-    //     console.log(`login error ${e}`);
-    //     setIsLoading(false);
-    //   });
+   
   };
   const checkUrl = async (Url) => {
     
-    // console.log(Url);
-    let url = `${Url}/mwebapi/validateaccount`;
+    
+    let url = `http://113.160.48.98:8794/mwebapi/validateaccount`;
+    
     //let url = `${appConfig.BASE_URL}/validateaccount?username=${username}&password=${password}`;
     let config = {
       headers: {
-        username: 'test',
-        password: '123456',
+        
+        'Content-Type': 'multipart/form-data',
+        'Accept': "application/json",
+        username: 'admin',
+        password: 'csdl@123',
       },
+      params: {
+        
+        country:'',
+        apiKey: '',
+        },
     };
+    console.log(url);
+    console.log(config);
     let msg = "";
+   
+
+    
     await axios
       .get(url, config)
       .then((res) => {
@@ -144,32 +146,16 @@ export const AuthProvider = ({ children }) => {
         
        
         // setIsLoading(false);
-        //console.log(userInfo);
+        console.log(msg);
       })
       .catch((e) => {
+        AsyncStorage.setItem("Dia_chi_Url", Url);
         console.log(`register error ${e}`);
         msg = `register error ${e}`;
         setIsLoading(false);
       });
     return msg;
-    // axios
-    //   .post({
-    //     url: url,
-    //     config: config,
-    //   })
-    //   .then((res) => {
-    //     console.log(res);
-    //     // let ret = res.data;
-    //     // let userInfo = res.data.Result;
-    //     // console.log(userInfo);
-    //     // setUserInfo(userInfo);
-    //     // AsyncStorage.setItem("userInfo", JSON.stringify(userInfo));
-    //     // setIsLoading(false);
-    //   })
-    //   .catch((e) => {
-    //     console.log(`login error ${e}`);
-    //     setIsLoading(false);
-    //   });
+    
   };
 
   const logout = () => {
@@ -178,24 +164,7 @@ export const AuthProvider = ({ children }) => {
     setUserInfo({});
     setIsLoading(false);
 
-    // axios
-    //   .post(
-    //     `${appConfig.BASE_URL}/logout`,
-    //     {},
-    //     {
-    //       headers: { Authorization: `Bearer ${userInfo.access_token}` },
-    //     }
-    //   )
-    //   .then((res) => {
-    //     console.log(res.data);
-    //     AsyncStorage.removeItem("userInfo");
-    //     setUserInfo({});
-    //     setIsLoading(false);
-    //   })
-    //   .catch((e) => {
-    //     console.log(`logout error ${e}`);
-    //     setIsLoading(false);
-    //   });
+   
   };
 
   const isLoggedIn = async () => {

@@ -88,22 +88,22 @@ const Url = ({ navigation }) => {
                       <Block>
                       <Block width={width * 0.8} style={{ marginBottom: 5 }}>
                           <Input
-                            placeholder="Địa chỉ Url:"
+                            placeholder="http://113.160.48.98:8794"
                             style={styles.inputs}
                             iconContent={
                               <Icon
                                 size={16}
                                 color="#ADB5BD"
-                                //name="profile-circle"
-                                //family="NowExtra"
-                                name="smile-o"
+                              
+                                name="close"
                                 family="Font-Awesome"
                                 style={styles.inputIcons}
+                                onPress={() => seturl('')}
                               />
                             }
                             onChangeText={(text) => seturl(text)}
-                                                                                     
-                            defaultValue={'http://113.160.48.98:8798'}
+                            value={Url}                                                         
+                            // defaultValue={'http://113.160.48.98:8798'}
                                            
                                                          
                           />
@@ -141,7 +141,7 @@ const Url = ({ navigation }) => {
                             }
                             setMessage(msg);
                             console.log(`Msg:${message}`);
-
+                            console.log(`Url la:${Url}`);
                             setShow(true);
                             setTimeout(() => {
                               setShow(false);

@@ -23,32 +23,39 @@ const Stack = createStackNavigator();
 
 const TRANG_CHU = () => {
   const [UrlInfo, seturl] = useState([]);  
-
+  const [isLoading, setIsLoading] = useState(false);
   async function isLoggedIn(){
-    
+    setIsLoading(true);
     try {
-
+  
       let UrlInfo = await AsyncStorage.getItem("Dia_chi_Url");
       seturl(UrlInfo);
-
-     
-      console.log(`TRANG CHU in Url ${UrlInfo}`);
-
-
+      setIsLoading(false);
+  
+      console.log(`TRANG CHU  ${UrlInfo}`);
+  
+  
     } catch (e) {
       console.log(`is logged in error ${e}`);
+      setIsLoading(false);
     }
   };
   useEffect(() => {
     isLoggedIn();
    
   }, []);
-  return <WebView source={{ uri: `${UrlInfo}/adHome2.aspx?` }} />;
-  // return (
-  //   <Block flex center style={styles.home}>
-  //     {this.renderArticles()}
-  //   </Block>
-  // );
+ 
+  return (
+    
+       
+        <WebView 
+        source={{ uri: `${UrlInfo}/adHome2.aspx?` }} />
+    
+    
+   
+  );
+  
+
 };
 
 const styles = StyleSheet.create({
@@ -72,7 +79,7 @@ export default TRANG_CHU;
 
 //   render() {
 
-//     return <WebView source={{ uri: 'http://113.160.48.98:8790/' }} />;
+//     return <WebView source={{ uri: 'http://113.160.48.98:8794/' }} />;
 
 //   }
 
