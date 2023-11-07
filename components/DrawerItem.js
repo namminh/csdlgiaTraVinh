@@ -265,7 +265,7 @@ const DrawerItem = (props) => {
             }
 
             // name == 'WEB'
-            //   ? Linking.openURL('http://113.160.48.98:8794/').catch((err) =>
+            //   ? Linking.openURL('http://113.160.48.98:8787/').catch((err) =>
             //       console.error('An error occurred', err)
             //     )
             //   : navigation.navigate(name == 'LOG_OUT' ? 'Login' : name)

@@ -72,12 +72,12 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (username, password) => {
     setIsLoading(true);
-    AsyncStorage.setItem("Dia_chi_Url", "http://113.160.48.98:8794");
+    AsyncStorage.setItem("Dia_chi_Url", "http://113.160.48.98:8787");
 
-    setUrlInfo('http://113.160.48.98:8794');
+    setUrlInfo('http://113.160.48.98:8787');
       
     
-    let url = `${UrlInfo}/mwebapi/validateaccount`;
+    let url = `${UrlInfo}/mWebApi/validateaccount`;
     //let url = `${appConfig.BASE_URL}/validateaccount?username=${username}&password=${password}`;
     let config = {
       headers: {
@@ -95,7 +95,7 @@ export const AuthProvider = ({ children }) => {
       const res = await axios.get(url, config);
       const userInfo = res.data.Result;
       msg = res.data.Message;
-      console.log(msg);
+      console.log(`Namnm test: ${msg}`);
       setUserInfo(userInfo);
        AsyncStorage.setItem('userInfo', JSON.stringify(userInfo));
     } catch (e) {
@@ -110,7 +110,7 @@ export const AuthProvider = ({ children }) => {
   const checkUrl = async (Url) => {
     
     
-    let url = `http://113.160.48.98:8794/mwebapi/validateaccount`;
+    let url = `http://113.160.48.98:8787/mwebapi/validateaccount`;
     
     //let url = `${appConfig.BASE_URL}/validateaccount?username=${username}&password=${password}`;
     let config = {

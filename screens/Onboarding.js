@@ -23,7 +23,7 @@ export default class Onboarding extends React.Component {
               <Block middle>
                 <Image
                   source={Images.NowLogo}
-                  style={{ width: 124, height: 124, bottom: 200, position: 'absolute' }}
+                  style={{ width: 248, height: 124, bottom: 200, position: 'absolute' }}
                 />
               </Block>
               <Block>

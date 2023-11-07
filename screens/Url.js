@@ -9,20 +9,15 @@ import {
 } from "react-native";
 import {
   Block,
-  Checkbox,
   Text,
-  Button as GaButton,
-  theme,
+  Button,
   Toast,
 } from "galio-framework";
 
-import { Button, Icon, Input } from "../components";
-import { COLORS, Images, nowTheme } from "../constants";
+import { Input, Icon } from "../components";
 import { AuthContext } from "../context/AuthContext";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-
 import Spinner from "react-native-loading-spinner-overlay";
-import { color, measure } from "react-native-reanimated";
+import { COLORS, Images, nowTheme } from "../constants";
 
 const { width, height } = Dimensions.get("screen");
 
@@ -33,14 +28,25 @@ const DismissKeyboard = ({ children }) => (
 );
 
 const Url = ({ navigation }) => {
-  // const [username, setUsername] = useState(null);
-  // const [password, setPassword] = useState(null);
-  // const { userInfo, splashLoading } = useContext(AuthContext);
-  const { UrlInfo, splashLoading } = useContext(AuthContext);
-  const [Url, seturl] = useState(null);
+  const [url, setUrl] = useState(""); // Thay đổi tên biến thành `url` thay vì `Url`
   const { isLoading, checkUrl } = useContext(AuthContext);
   const [isShow, setShow] = useState(false);
   const [message, setMessage] = useState('');
+
+  const handleSaveUrl = async () => {
+    let msg = "";
+    if (!url) {
+      msg = "Url không được để trống";
+      setMessage(msg);
+    } else {
+      msg = await checkUrl(url);
+    }
+    setMessage(msg);
+    setShow(true);
+    setTimeout(() => {
+      setShow(false);
+    }, 3000);
+  };
 
   return (
     <DismissKeyboard>
@@ -64,91 +70,50 @@ const Url = ({ navigation }) => {
                       color="#333"
                       size={24}
                     >
-                      Nhập Url
+                      Nhập URL
                     </Text>
                   </Block>
-
-                  
                 </Block>
-                {/* <Block flex={0.1} middle>
-                    <Text
-                      style={{
-                        fontFamily: 'montserrat-regular',
-                        textAlign: 'center'
-                      }}
-                      muted
-                      size={16}
-                    >
-                      or be classical
-                    </Text>
-                  </Block> */}
                 <Block flex={1} middle space="between">
                   <Block center flex={0.9}>
                     <Block flex space="between">
                       <Block>
-                      <Block width={width * 0.8} style={{ marginBottom: 5 }}>
+                        <Block width={width * 0.8} style={styles.inputBlock}>
                           <Input
-                            placeholder="http://113.160.48.98:8794"
+                            placeholder="http://113.160.48.98:8787"
                             style={styles.inputs}
                             iconContent={
                               <Icon
                                 size={16}
                                 color="#ADB5BD"
-                              
                                 name="close"
                                 family="Font-Awesome"
                                 style={styles.inputIcons}
-                                onPress={() => seturl('')}
+                                onPress={() => setUrl('')}
                               />
                             }
-                            onChangeText={(text) => seturl(text)}
-                            value={Url}                                                         
-                            // defaultValue={'http://113.160.48.98:8798'}
-                                           
-                                                         
+                            onChangeText={(text) => setUrl(text)}
+                            value={url}
                           />
                         </Block>
-                            
-                        <Block width={width * 0.8} style={{ marginBottom: 5 }}>
+                        <Block width={width * 0.8} style={styles.inputBlock}>
                           <Toast
                             isShow={isShow}
                             positionIndicator="top"
                             fadeOutDuration={300}
                             color="warning"
                             textStyle={styles.toastTextStyle}
-                            //style={styles.toast}
                           >
                             {message}
                           </Toast>
                         </Block>
                       </Block>
                       <Block center>
-                      
                         <Button
-                          color="primary"
+                          color={nowTheme.COLORS.PRIMARY}
                           round
                           style={styles.createButton}
-                          onPress={async () => {
-                            let msg = "";
-                            if (!Url)
-                            {
-                              msg =
-                              "Url không được để trống";
-                            setMessage(msg);
-                            }
-                            else {
-                              msg = await checkUrl(Url);
-                            }
-                            setMessage(msg);
-                            console.log(`Msg:${message}`);
-                            console.log(`Url la:${Url}`);
-                            setShow(true);
-                            setTimeout(() => {
-                              setShow(false);
-                            }, 3000);
-                          }}
-                          
-                          //onPress={() => navigation.navigate("App")}
+                          onPress={handleSaveUrl}
                         >
                           <Text
                             style={{ fontFamily: "montserrat-bold" }}
@@ -158,22 +123,25 @@ const Url = ({ navigation }) => {
                             Lưu địa chỉ
                           </Text>
                         </Button>
+                        <Button
+                          color={nowTheme.COLORS.PRIMARY}
+                          round
+                          style={styles.createButton}
+                          onPress={() => navigation.navigate("Login")}
+                        >
+                          <Text
+                            style={{ fontFamily: "montserrat-bold" }}
+                            size={14}
+                            color={nowTheme.COLORS.WHITE}
+                          >
+                            Quay về
+                          </Text>
+                        </Button>
                       </Block>
                     </Block>
                   </Block>
                 </Block>
               </Block>
-            </Block>
-            <Block bottom>
-                      <Button onlyIcon icon="setting" iconFamily="antdesign" iconSize={30} color="warning" iconColor="#fff" style={{ width: 40, height: 40 }}
-                       
-                        onPress={() => navigation.navigate("Login")}
-                      >
-                        
-                        warning
-                        
-                      </Button>
-
             </Block>
           </Block>
         </ImageBackground>
@@ -211,57 +179,23 @@ const styles = StyleSheet.create({
   },
   socialConnect: {
     backgroundColor: nowTheme.COLORS.WHITE,
-    // borderBottomWidth: StyleSheet.hairlineWidth,
-    // borderColor: "rgba(136, 152, 170, 0.3)"
   },
-  socialButtons: {
-    width: 120,
-    height: 40,
-    backgroundColor: "#fff",
-    shadowColor: nowTheme.COLORS.BLACK,
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowRadius: 8,
-    shadowOpacity: 0.1,
-    elevation: 1,
-  },
-  socialTextButtons: {
-    color: nowTheme.COLORS.PRIMARY,
-    fontWeight: "800",
-    fontSize: 14,
-  },
-  inputIcons: {
-    marginRight: 12,
-    color: nowTheme.COLORS.ICON_INPUT,
+  inputBlock: {
+    width: width * 0.8,
+    marginBottom: 10,
   },
   inputs: {
     borderWidth: 1,
-    borderColor: "#E3E3E3",
-    borderRadius: 21.5,
+    borderColor: nowTheme.COLORS.INPUT,
+    borderRadius: 15,
   },
-  passwordCheck: {
-    paddingLeft: 2,
-    paddingTop: 6,
-    paddingBottom: 15,
+  inputIcons: {
+    marginRight: 10,
+    color: nowTheme.COLORS.ICON_INPUT,
   },
   createButton: {
     width: width * 0.5,
-    //marginTop: 25,
-    marginBottom: 200,
-  },
-  social: {
-    width: theme.SIZES.BASE * 3.5,
-    height: theme.SIZES.BASE * 3.5,
-    borderRadius: theme.SIZES.BASE * 1.75,
-    justifyContent: "center",
-    marginHorizontal: 10,
-  },
-  toast: {
-    //marginLeft: -70,
-    width: width - theme.SIZES.BASE * 5,
-    //borderRadius: theme.SIZES.BASE * 1.75,
+    marginBottom: 20,
   },
   toastTextStyle: {
     fontFamily: "montserrat-regular",

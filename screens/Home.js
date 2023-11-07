@@ -72,7 +72,7 @@ export default Home;
 
 //   render() {
 
-//     return <WebView source={{ uri: 'http://113.160.48.98:8794/' }} />;
+//     return <WebView source={{ uri: 'http://113.160.48.98:8787/' }} />;
 
 //   }
 
