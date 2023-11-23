@@ -21,10 +21,17 @@ export default class Onboarding extends React.Component {
           <Block space="between" style={styles.padded}>
             <Block>
               <Block middle>
-                <Image
-                  source={Images.NowLogo}
-                  style={{ width: 248, height: 124, bottom: 200, position: 'absolute' }}
-                />
+              <Image
+      source={Images.NowLogo}
+      style={{
+        width: 250,
+        height: 250,
+        borderRadius: 124, // Đặt `borderRadius` là nửa chiều cao để tạo thành hình tròn
+        overflow: 'hidden', // Đảm bảo cắt bớt phần thừa của hình ảnh
+        bottom: 200,
+        position: 'absolute',
+      }}
+    />
               </Block>
               <Block>
                 <Block middle>
